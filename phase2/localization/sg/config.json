@@ -1,0 +1,114 @@
+{
+  "region": "sg",
+  "name": "Singapore",
+  "language": {
+    "primary": "en",
+    "secondary": ["zh", "ms", "ta"],
+    "encoding": "UTF-8"
+  },
+  "cultural_context": {
+    "business_style": "efficient_pragmatic_global",
+    "communication_preference": "direct_professional",
+    "decision_making": "data_driven_fast",
+    "relationship_building": "professional_networking",
+    "time_orientation": "time_conscious"
+  },
+  "localization_rules": {
+    "name_format": "varies_by_ethnicity",
+    "title_usage": "mr_ms_dr_standard",
+    "business_cards": "professional_exchange",
+    "gift_giving": "not_expected_avoid_extravagance",
+    "punctuality": "critical",
+    "dress_code": "business_professional"
+  },
+  "messaging": {
+    "tone": "professional_direct_efficient",
+    "honorifics": "standard_english_titles",
+    "subject_lines": "clear_specific_actionable",
+    "email_structure": "concise_bullet_points_preferred",
+    "response_time": "within_business_day"
+  },
+  "translations": {
+    "scrollverse": "ScrollVerse",
+    "partnership": "Partnership",
+    "innovation": "Innovation",
+    "collaboration": "Collaboration",
+    "metaverse": "Metaverse",
+    "web3": "Web3",
+    "blockchain": "Blockchain",
+    "trust": "Trust",
+    "infrastructure": "Infrastructure"
+  },
+  "key_values": [
+    "efficiency",
+    "meritocracy",
+    "innovation",
+    "pragmatism",
+    "multiculturalism",
+    "global connectivity",
+    "excellence",
+    "integrity"
+  ],
+  "dos": [
+    "Be punctual - Singapore values time",
+    "Be direct and clear in communication",
+    "Focus on data and results",
+    "Respect multiracial diversity",
+    "Follow proper government channels",
+    "Demonstrate compliance readiness",
+    "Show global perspective",
+    "Be efficient in meetings"
+  ],
+  "donts": [
+    "Don't be late",
+    "Don't waste time with fluff",
+    "Don't ignore regulations",
+    "Don't be culturally insensitive",
+    "Don't bypass official processes",
+    "Don't underestimate competition",
+    "Don't assume English-only is enough"
+  ],
+  "meeting_protocol": {
+    "preparation": "thorough_data_ready",
+    "greeting": "handshake_business_card_exchange",
+    "seating": "flexible_merit_based",
+    "presentation": "concise_data_driven_visual",
+    "decision": "fast_if_value_clear",
+    "follow_up": "prompt_professional_email"
+  },
+  "contact_times": {
+    "preferred_hours": "09:00-18:00 SGT",
+    "avoid": ["public_holidays", "lunch_12:00-14:00"],
+    "response_expectation": "same_business_day"
+  },
+  "government_engagement": {
+    "key_agencies": ["MAS", "IMDA", "ESG", "GovTech"],
+    "approach": "formal_professional_compliant",
+    "documentation": "comprehensive_and_accurate",
+    "timeline": "structured_with_milestones",
+    "grants_available": ["EDG", "Startup_SG", "Market_Readiness"],
+    "sandbox_programs": ["MAS_FinTech_Sandbox", "IMDA_Innovation_Lab"]
+  },
+  "smart_nation": {
+    "alignment_required": true,
+    "focus_areas": [
+      "digital_economy",
+      "digital_identity",
+      "digital_trust",
+      "digital_governance",
+      "cross_border_commerce"
+    ],
+    "integration_points": ["SingPass", "MyInfo", "SGTraDex", "NDI"]
+  },
+  "asean_expansion": {
+    "hub_role": "regional_headquarters",
+    "target_markets": ["Malaysia", "Indonesia", "Thailand", "Vietnam", "Philippines"],
+    "advantages": [
+      "central_location",
+      "stable_legal_framework",
+      "talent_pool",
+      "infrastructure",
+      "connectivity"
+    ]
+  }
+}

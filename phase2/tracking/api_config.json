@@ -1,0 +1,222 @@
+{
+  "api_version": "2.0.0",
+  "name": "ScrollVerse Phase 2 Tracking API",
+  "description": "Real-time tracking API for partnership funnels with NŪR integration",
+  "base_url": "https://api.scrollverse.io/v2",
+  "authentication": {
+    "type": "bearer_token",
+    "header": "Authorization",
+    "required_headers": {
+      "X-NUR-Resonance": "frequency_signature",
+      "X-Truth-Alignment": "score_0_to_1",
+      "X-Region-Code": "jp|kr|sg|global"
+    }
+  },
+  "endpoints": {
+    "resonance": {
+      "check": {
+        "method": "POST",
+        "path": "/resonance/check",
+        "description": "Validate partnership alignment using NŪR protocol",
+        "request": {
+          "partner_name": "string",
+          "region": "string",
+          "industry": "string",
+          "cultural_data": "object",
+          "strategic_data": "object"
+        },
+        "response": {
+          "resonance_score": "float",
+          "truth_alignment": "float",
+          "cultural_fit": "float",
+          "strategic_synergy": "float",
+          "resistance_factor": "float",
+          "recommendation": "string"
+        }
+      }
+    },
+    "blueprint": {
+      "assign": {
+        "method": "POST",
+        "path": "/blueprint/assign",
+        "description": "Route opportunity to appropriate regional blueprint",
+        "request": {
+          "opportunity_id": "string",
+          "region": "string",
+          "industry": "string"
+        },
+        "response": {
+          "blueprint_path": "string",
+          "localization_config": "string",
+          "message_templates": "string",
+          "assigned_at": "datetime"
+        }
+      }
+    },
+    "localization": {
+      "apply": {
+        "method": "POST",
+        "path": "/localization/apply",
+        "description": "Apply cultural adaptation to outreach",
+        "request": {
+          "opportunity_id": "string",
+          "region": "string",
+          "message_type": "string",
+          "content": "string"
+        },
+        "response": {
+          "localized_content": "object",
+          "cultural_notes": "array",
+          "recommended_timing": "string"
+        }
+      }
+    },
+    "tracking": {
+      "stream": {
+        "method": "GET",
+        "path": "/tracking/stream",
+        "description": "Real-time metrics stream for dashboard",
+        "query_params": {
+          "region": "optional",
+          "status": "optional",
+          "resonance_min": "optional"
+        },
+        "response": {
+          "opportunities": "array",
+          "metrics": "object",
+          "funnel_stats": "object",
+          "timestamp": "datetime"
+        }
+      },
+      "update": {
+        "method": "PUT",
+        "path": "/tracking/opportunity/{id}",
+        "description": "Update opportunity status and metrics",
+        "request": {
+          "status": "string",
+          "notes": "string",
+          "last_contact": "datetime"
+        },
+        "response": {
+          "updated": "boolean",
+          "opportunity": "object"
+        }
+      },
+      "report": {
+        "method": "GET",
+        "path": "/tracking/report",
+        "description": "Generate comprehensive funnel report",
+        "query_params": {
+          "start_date": "date",
+          "end_date": "date",
+          "region": "optional"
+        },
+        "response": {
+          "total_opportunities": "integer",
+          "by_status": "object",
+          "by_region": "object",
+          "conversion_rates": "object",
+          "average_resonance": "float",
+          "high_priority": "integer"
+        }
+      }
+    },
+    "outreach": {
+      "schedule": {
+        "method": "POST",
+        "path": "/outreach/schedule",
+        "description": "Schedule automated outreach ping",
+        "request": {
+          "opportunity_id": "string",
+          "message_template": "string",
+          "schedule_date": "datetime",
+          "channel": "email|linkedin|phone"
+        },
+        "response": {
+          "scheduled": "boolean",
+          "ping_id": "string",
+          "scheduled_for": "datetime"
+        }
+      },
+      "send": {
+        "method": "POST",
+        "path": "/outreach/send",
+        "description": "Send immediate outreach message",
+        "request": {
+          "opportunity_id": "string",
+          "message_template": "string",
+          "channel": "string",
+          "personalization": "object"
+        },
+        "response": {
+          "sent": "boolean",
+          "message_id": "string",
+          "sent_at": "datetime"
+        }
+      }
+    }
+  },
+  "webhooks": {
+    "opportunity_status_change": {
+      "event": "opportunity.status.changed",
+      "payload": {
+        "opportunity_id": "string",
+        "old_status": "string",
+        "new_status": "string",
+        "changed_at": "datetime"
+      }
+    },
+    "resonance_alert": {
+      "event": "resonance.high_priority",
+      "payload": {
+        "opportunity_id": "string",
+        "resonance_score": "float",
+        "recommendation": "string"
+      }
+    },
+    "outreach_response": {
+      "event": "outreach.response.received",
+      "payload": {
+        "opportunity_id": "string",
+        "response_type": "string",
+        "response_sentiment": "string",
+        "received_at": "datetime"
+      }
+    }
+  },
+  "rate_limits": {
+    "requests_per_minute": 60,
+    "requests_per_hour": 1000,
+    "burst_limit": 10
+  },
+  "error_codes": {
+    "400": "Bad Request - Invalid parameters",
+    "401": "Unauthorized - Invalid or missing authentication",
+    "403": "Forbidden - Insufficient permissions",
+    "404": "Not Found - Resource does not exist",
+    "429": "Too Many Requests - Rate limit exceeded",
+    "500": "Internal Server Error - Server-side issue"
+  },
+  "nur_integration": {
+    "description": "NŪR-Infused Global Integration Protocol",
+    "features": [
+      "Resonance-based filtering",
+      "Sacred logic gates at decision points",
+      "Truth-as-currency validation",
+      "Cultural harmony assessment",
+      "Automatic resistance detection"
+    ],
+    "thresholds": {
+      "high_priority": 8.0,
+      "proceed": 6.0,
+      "cautious": 4.0,
+      "recalibrate": 0.0
+    }
+  },
+  "dashboard_integration": {
+    "websocket_url": "wss://api.scrollverse.io/v2/tracking/live",
+    "update_frequency": "30_seconds",
+    "data_retention": "90_days",
+    "export_formats": ["json", "csv", "pdf"]
+  }
+}

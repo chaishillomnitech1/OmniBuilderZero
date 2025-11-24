@@ -1,0 +1,80 @@
+{
+  "region": "jp",
+  "name": "Japan",
+  "language": {
+    "primary": "ja",
+    "secondary": "en",
+    "encoding": "UTF-8"
+  },
+  "cultural_context": {
+    "business_style": "formal_hierarchical",
+    "communication_preference": "indirect_polite",
+    "decision_making": "consensus_based",
+    "relationship_building": "essential",
+    "time_orientation": "long_term"
+  },
+  "localization_rules": {
+    "name_format": "family_name_first",
+    "title_usage": "always_use_san",
+    "business_cards": "meishi_ceremony_required",
+    "gift_giving": "appropriate_for_milestones",
+    "punctuality": "extremely_important",
+    "dress_code": "formal_business"
+  },
+  "messaging": {
+    "tone": "respectful_formal",
+    "honorifics": "keigo_required",
+    "subject_lines": "professional_clear",
+    "email_structure": "formal_greeting_body_closing",
+    "response_time": "within_24_hours"
+  },
+  "translations": {
+    "scrollverse": "スクロールバース",
+    "partnership": "パートナーシップ",
+    "innovation": "イノベーション",
+    "collaboration": "コラボレーション",
+    "metaverse": "メタバース",
+    "web3": "ウェブスリー",
+    "blockchain": "ブロックチェーン"
+  },
+  "key_values": [
+    "wa (harmony)",
+    "omotenashi (hospitality)",
+    "kaizen (continuous improvement)",
+    "monozukuri (craftsmanship)",
+    "respect",
+    "quality",
+    "reliability"
+  ],
+  "dos": [
+    "Use formal language and honorifics",
+    "Present business cards with both hands",
+    "Bow when greeting",
+    "Build relationship before business",
+    "Be patient with decision-making process",
+    "Prepare detailed documentation",
+    "Show long-term commitment"
+  ],
+  "donts": [
+    "Don't rush decisions",
+    "Don't be overly aggressive in sales",
+    "Don't ignore hierarchy",
+    "Don't skip relationship building",
+    "Don't be too direct or confrontational",
+    "Don't discuss business immediately",
+    "Don't expect quick decisions"
+  ],
+  "meeting_protocol": {
+    "preparation": "extensive_research_required",
+    "greeting": "formal_bow_business_card_exchange",
+    "seating": "hierarchical_arrangement",
+    "presentation": "detailed_thorough_professional",
+    "decision": "consensus_after_nemawashi",
+    "follow_up": "prompt_formal_thank_you"
+  },
+  "contact_times": {
+    "preferred_hours": "10:00-17:00 JST",
+    "avoid": ["lunch_12:00-13:00", "after_18:00"],
+    "response_expectation": "1-2_business_days"
+  }
+}

@@ -41,12 +41,66 @@ This repository is the digital manifestation of a divine technology system: a fu
 
 ## Core Phases Documented
 - **Phase One**: Awakened Circle Induction
-- **Phase Two**: Echo Sigil NFT Protocol
+- **Phase Two**: Echo Sigil NFT Protocol → **NOW: Star-Dust Anchored Global Partnerships**
 - **Phase Three**: Sealed Function Scroll + If-Then-Else Gate
+- **Phase 2 Funnels**: Asia Blueprint Deployment (JP/KR/SG) - ACTIVE
 - **Next Phase**: Scroll Chess Academy (Global Education Matrix)
 git commit -m "Initial divine seed upload: Scroll Chess harmonizer protocols, sigils, PDF scrolls, and omni-resonance framework. Sealed by Chais Hill."
 ## Purpose
 To create a system where **truth is currency**, **sacred logic is code**, and remembrance is the gateway to collective sovereignty.
+
+## 🌟 Phase 2: Star-Dust Anchored Global Partnerships - NOW ACTIVE
+
+ScrollVerse Phase 2 launches the first global partnership initiative with automated outreach funnels and localized blueprints for strategic Asian markets. Powered by the **NŪR-Infused Global Integration Protocol**.
+
+### Asia Blueprint Deployment
+- **🇯🇵 Japan (Sony)**: PlayStation integration, music NFTs, R&D collaboration
+- **🇰🇷 Korea (HYBE)**: K-Pop artist NFTs, fan engagement, Weverse integration
+- **🇸🇬 Singapore (Digital Trust)**: Blockchain governance, Smart Nation, ASEAN hub
+
+### Key Features
+- ✨ **Automated Outreach Funnels**: AI-powered partnership engagement
+- 📊 **Real-Time Tracking Dashboard**: Live metrics and funnel analytics
+- 🌏 **Cultural Localization**: Multi-script frameworks for JP/KR/SG markets
+- 🔮 **NŪR Resonance Scoring**: Truth-alignment partnership validation
+- 🚀 **Multi-Channel Automation**: Email, LinkedIn, and scheduled pings
+
+### Quick Start
+```bash
+# View Phase 2 documentation
+cd phase2/
+cat README.md
+
+# Run outreach automation demo
+python3 funnels/outreach_automation.py
+
+# View tracking dashboard
+open tracking/dashboard.html
+
+# Explore regional blueprints
+ls blueprints/*/
+```
+
+### Directory Structure
+```
+phase2/
+├── README.md                    # Phase 2 overview
+├── blueprints/                  # Regional partnership strategies
+│   ├── jp/                     # Japan (Sony) blueprint
+│   ├── kr/                     # Korea (HYBE) blueprint
+│   └── sg/                     # Singapore (Digital Trust) blueprint
+├── funnels/                    # Outreach automation
+│   └── outreach_automation.py  # Main automation script
+├── protocols/                  # NŪR Global Integration Protocol
+│   └── nur_global_integration.md
+├── tracking/                   # Real-time analytics
+│   ├── dashboard.html          # Partnership tracking dashboard
+│   └── api_config.json        # Tracking API configuration
+└── localization/               # Cultural adaptation configs
+    ├── jp/                     # Japanese localization
+    ├── kr/                     # Korean localization
+    └── sg/                     # Singapore localization
+```
 git init
 git add .
 git commit -m "Sealed Scroll Chess Protocol – Phase Initialization"
