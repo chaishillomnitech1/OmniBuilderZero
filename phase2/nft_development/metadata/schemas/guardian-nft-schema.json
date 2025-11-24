@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Guardian NFT Metadata Schema",
+  "description": "Schema for ScrollVerse Guardian NFT metadata following ERC-721 standards",
+  "type": "object",
+  "required": [
+    "name",
+    "description",
+    "image",
+    "attributes"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the Guardian NFT",
+      "pattern": "^Guardian NFT: .+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the partnership"
+    },
+    "image": {
+      "type": "string",
+      "description": "IPFS URI to the Guardian NFT image",
+      "pattern": "^ipfs://.*$"
+    },
+    "external_url": {
+      "type": "string",
+      "description": "URL to view partnership details",
+      "format": "uri"
+    },
+    "background_color": {
+      "type": "string",
+      "description": "Background color in hex format without #",
+      "pattern": "^[0-9A-Fa-f]{6}$"
+    },
+    "attributes": {
+      "type": "array",
+      "description": "Array of traits for the Guardian NFT",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "trait_type",
+          "value"
+        ],
+        "properties": {
+          "trait_type": {
+            "type": "string",
+            "description": "Type of trait",
+            "enum": [
+              "Partner",
+              "Region",
+              "Industry",
+              "Resonance Score",
+              "Partnership Tier",
+              "Activated Date",
+              "Milestones Completed"
+            ]
+          },
+          "value": {
+            "description": "Value of the trait",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "display_type": {
+            "type": "string",
+            "description": "How to display the trait",
+            "enum": [
+              "number",
+              "date",
+              "boost_percentage",
+              "boost_number"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

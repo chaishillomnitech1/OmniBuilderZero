@@ -1,0 +1,46 @@
+{
+  "chain_id": 534352,
+  "name": "Scroll",
+  "network": "scroll",
+  "rpc_url": "https://rpc.scroll.io",
+  "explorer": "https://scrollscan.com",
+  "native_currency": {
+    "name": "Ether",
+    "symbol": "ETH",
+    "decimals": 18
+  },
+  "contracts": {
+    "private_guardian": "${PRIVATE_GUARDIAN_ADDRESS}",
+    "zkp_verifier": "${ZKP_VERIFIER_ADDRESS}",
+    "confidential_resonance": "${CONFIDENTIAL_RESONANCE_ADDRESS}"
+  },
+  "deployment": {
+    "gas_price_strategy": "eip1559",
+    "max_priority_fee": "0.05 gwei",
+    "max_fee": "2 gwei",
+    "gas_limit": 2000000
+  },
+  "security": {
+    "multi_sig_address": "${MULTI_SIG_ADDRESS}",
+    "required_confirmations": 2,
+    "timelock_delay": 86400
+  },
+  "zkp_features": {
+    "privacy_enabled": true,
+    "confidential_scoring": true,
+    "anonymous_participation": true,
+    "proof_system": "plonk"
+  },
+  "integrations": {
+    "ipfs": {
+      "gateway": "https://scrollverse.mypinata.cloud/ipfs/",
+      "pinning_service": "pinata",
+      "encryption": "enabled"
+    },
+    "bridge": {
+      "scroll_bridge": "0x6774Bcbd5ceCeF1336b5300fb5186a12DDD8b367",
+      "layerzero_endpoint": "${LAYERZERO_ENDPOINT_SCROLL}"
+    }
+  },
+  "notes": "Scroll provides zero-knowledge privacy features for confidential partnership negotiations and private resonance scoring. Use for sensitive operations requiring privacy."
+}
