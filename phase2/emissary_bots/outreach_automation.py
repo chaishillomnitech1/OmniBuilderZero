@@ -35,7 +35,13 @@ class OutreachStatus(Enum):
 
 @dataclass
 class ResonanceScore:
-    """NŪR-based resonance scoring for partnerships"""
+    """
+    NŪR-based resonance scoring for partnerships
+    
+    Note: This is a lightweight version for the emissary bot system.
+    For detailed resonance calculations, see:
+    phase2/star_dust_frequencies/resonance_calculator.py
+    """
     truth_alignment: float  # 0.0 to 1.0
     cultural_fit: float     # 0.0 to 1.0
     strategic_synergy: float  # 0.0 to 1.0
@@ -43,10 +49,21 @@ class ResonanceScore:
     
     @property
     def overall_score(self) -> float:
-        """Calculate overall resonance score"""
-        if self.resistance_factor == 0:
+        """
+        Calculate overall resonance score using NŪR formula
+        
+        Formula: RS = ((TA + CF + SS) / 3) / RF × 10
+        Capped at 10.0 maximum
+        """
+        # Small epsilon to prevent division by exact zero
+        EPSILON = 1e-10
+        
+        if self.resistance_factor < EPSILON:
             return 10.0
-        return ((self.truth_alignment + self.cultural_fit + self.strategic_synergy) / 3.0) / self.resistance_factor * 10
+        
+        avg_positive = (self.truth_alignment + self.cultural_fit + self.strategic_synergy) / 3.0
+        score = (avg_positive / self.resistance_factor) * 10.0
+        return min(score, 10.0)
     
     @property
     def recommendation(self) -> str:

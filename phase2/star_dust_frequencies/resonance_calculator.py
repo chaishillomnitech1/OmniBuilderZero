@@ -55,13 +55,20 @@ class ResonanceScore:
         
         Formula: RS = ((TA + CF + SS) / 3) / RF × 10
         
+        Special cases:
+        - If RF = 0 or very close to 0: Returns 10.0 (perfect resonance)
+        - Score is capped at 10.0 maximum
+        
         Returns:
             float: Score from 0.0 to 10.0
         """
         f = self.frequencies
         
-        # Handle special case: zero resistance = perfect resonance
-        if f.resistance_factor == 0:
+        # Small epsilon to prevent division by exact zero due to floating point precision
+        EPSILON = 1e-10
+        
+        # Handle special case: zero or near-zero resistance = perfect resonance
+        if f.resistance_factor < EPSILON:
             return 10.0
         
         # Calculate average of positive frequencies

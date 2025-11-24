@@ -12,8 +12,9 @@
   "properties": {
     "name": {
       "type": "string",
-      "description": "Name of the Guardian NFT",
-      "pattern": "^Guardian NFT: .+$"
+      "description": "Name of the Guardian NFT. Recommended format: 'Guardian NFT: [Partner Name]' but flexible to accommodate internationalization and variations",
+      "minLength": 1,
+      "maxLength": 100
     },
     "description": {
       "type": "string",
