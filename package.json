@@ -1,0 +1,42 @@
+{
+  "name": "legacy-of-light-nft",
+  "version": "1.0.0",
+  "description": "Legacy of Light: Prophetic Omnichords - Music NFT Collection for GOAT USB-Cassette OmniTapes Catalog",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network mainnet",
+    "deploy:polygon": "hardhat run scripts/deploy.js --network polygon",
+    "verify": "hardhat verify",
+    "clean": "hardhat clean"
+  },
+  "keywords": [
+    "NFT",
+    "ERC721",
+    "ERC1155",
+    "Music",
+    "OmniTapes",
+    "IPFS",
+    "Arweave",
+    "KUN Coin",
+    "OTCP",
+    "ARCHITEX"
+  ],
+  "author": "Chais The Great - OmniTech1",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
+    "chai": "^4.3.10",
+    "ethers": "^6.9.0",
+    "hardhat": "^2.19.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1",
+    "dotenv": "^16.3.1"
+  }
+}

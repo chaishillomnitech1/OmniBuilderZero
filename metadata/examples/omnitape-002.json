@@ -1,0 +1,92 @@
+{
+  "name": "Echoes of Eternity",
+  "description": "OmniTape #002 from the GOAT USB-Cassette Legacy of Light collection. Eternal echoes resonating through the multiverse, preserved forever on Arweave. A collaborative masterpiece from the OmniTech Collective, anchored to the Omni-Temporal Coherence Protocol.",
+  "image": "ar://ExampleArweaveHash002-image",
+  "animation_url": "ar://ExampleArweaveHash002-audio",
+  "external_url": "https://chaishillomnitech1.github.io/OmniBuilderZero/omnitapes/002",
+  "attributes": [
+    {
+      "trait_type": "Artist",
+      "value": "OmniTech Collective"
+    },
+    {
+      "trait_type": "Catalog Number",
+      "value": "002"
+    },
+    {
+      "trait_type": "Release Date",
+      "value": "2023-01-01"
+    },
+    {
+      "trait_type": "Storage Type",
+      "value": "Arweave"
+    },
+    {
+      "trait_type": "Collection",
+      "value": "GOAT USB-Cassette OmniTapes"
+    },
+    {
+      "trait_type": "Series",
+      "value": "Legacy of Light: Prophetic Omnichords"
+    },
+    {
+      "trait_type": "Genre",
+      "value": "Eternal Resonance"
+    },
+    {
+      "trait_type": "Duration",
+      "value": "7:47",
+      "display_type": "string"
+    },
+    {
+      "trait_type": "BPM",
+      "value": 128,
+      "display_type": "number"
+    },
+    {
+      "trait_type": "Key",
+      "value": "A Minor"
+    },
+    {
+      "trait_type": "OTCP Marker",
+      "value": "Deployment Timestamp Anchored"
+    },
+    {
+      "trait_type": "Royalty Recipient",
+      "value": "KUN Coin Treasury"
+    },
+    {
+      "trait_type": "Royalty Percentage",
+      "value": "10%"
+    },
+    {
+      "trait_type": "ARCHITEX Override",
+      "value": "Enabled"
+    },
+    {
+      "trait_type": "Storage Permanence",
+      "value": "Eternal (Arweave)"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "ar://ExampleArweaveHash002-audio",
+        "type": "audio/mpeg",
+        "cdn": false
+      },
+      {
+        "uri": "ar://ExampleArweaveHash002-image",
+        "type": "image/jpeg",
+        "cdn": false
+      }
+    ],
+    "category": "audio",
+    "creators": [
+      {
+        "address": "0x0000000000000000000000000000000000000000",
+        "share": 100
+      }
+    ]
+  }
+}
