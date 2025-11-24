@@ -55,3 +55,14 @@ npm-debug.log
 ##########################
 phase2/funnels/funnel_data.json
 phase2/funnels/*_funnel_data.json
+
+# Smart Contract Development #
+##############################
+.env
+cache/
+artifacts/
+typechain/
+typechain-types/
+coverage/
+coverage.json
+deployments/
