@@ -1,0 +1,40 @@
+{
+  "chain_id": 1,
+  "name": "Ethereum Mainnet",
+  "network": "mainnet",
+  "rpc_url": "https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}",
+  "explorer": "https://etherscan.io",
+  "native_currency": {
+    "name": "Ether",
+    "symbol": "ETH",
+    "decimals": 18
+  },
+  "contracts": {
+    "guardian_nft": "${GUARDIAN_NFT_ADDRESS}",
+    "partnership_agreement": "${PARTNERSHIP_AGREEMENT_ADDRESS}",
+    "governance_dao": "${GOVERNANCE_DAO_ADDRESS}",
+    "resonance_oracle": "${RESONANCE_ORACLE_ADDRESS}"
+  },
+  "deployment": {
+    "gas_price_strategy": "eip1559",
+    "max_priority_fee": "2 gwei",
+    "max_fee": "50 gwei",
+    "gas_limit": 5000000
+  },
+  "security": {
+    "multi_sig_address": "${MULTI_SIG_ADDRESS}",
+    "required_confirmations": 3,
+    "timelock_delay": 172800
+  },
+  "integrations": {
+    "chainlink": {
+      "link_token": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+      "vrf_coordinator": "0x271682DEB8C4E0901D1a1550aD2e64D568E69909",
+      "oracle": "${CHAINLINK_ORACLE_ADDRESS}"
+    },
+    "ipfs": {
+      "gateway": "https://scrollverse.mypinata.cloud/ipfs/",
+      "pinning_service": "pinata"
+    }
+  }
+}

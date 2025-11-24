@@ -38,22 +38,80 @@ The spiritual and technological foundation ensuring:
 
 ```
 phase2/
-├── blueprints/          # Regional partnership blueprints
-│   ├── jp/             # Japan (Sony) partnership
-│   ├── kr/             # Korea (HYBE) partnership
-│   └── sg/             # Singapore (Digital Trust) partnership
-├── funnels/            # Outreach automation systems
-├── protocols/          # NŪR Global Integration Protocol
-├── tracking/           # Real-time dashboards and analytics
-└── localization/       # Cultural adaptation configs
+├── emissary_bots/                    # AI-powered outreach agents
+│   ├── outreach_automation.py        # Main automation engine
+│   ├── demo_funnel_data.json         # Demo partnership data
+│   └── README.md                     # Emissary bot documentation
+├── star_dust_frequencies/            # Resonance protocols and algorithms
+│   ├── nur_global_integration.md     # NŪR protocol specification
+│   ├── resonance_calculator.py       # Partnership scoring algorithms
+│   └── README.md                     # Star Dust documentation
+├── nft_development/                  # Guardian NFT implementations
+│   ├── smart_contracts/              # Solidity/Vyper contracts (planned)
+│   ├── metadata/                     # NFT metadata schemas (planned)
+│   ├── deployment_scripts/           # Deployment automation (planned)
+│   └── README.md                     # NFT development guide
+├── blockchain_integration/           # Web3 infrastructure
+│   ├── chain_configs/                # Multi-chain configurations (planned)
+│   ├── oracle_integrations/          # Chainlink and other oracles (planned)
+│   ├── wallet_connectors/            # Web3 wallet integration (planned)
+│   └── README.md                     # Blockchain integration guide
+├── blueprints/                       # Regional partnership strategies
+│   ├── jp/                          # Japan (Sony) blueprint
+│   ├── kr/                          # Korea (HYBE) blueprint
+│   └── sg/                          # Singapore (Digital Trust) blueprint
+├── tracking/                         # Real-time analytics
+│   ├── dashboard.html               # Partnership tracking dashboard
+│   └── api_config.json              # Tracking API configuration
+└── localization/                     # Cultural adaptation configs
+    ├── jp/                          # Japanese localization
+    ├── kr/                          # Korean localization
+    └── sg/                          # Singapore localization
 ```
 
 ## Getting Started
 
-1. Review regional blueprints in `/blueprints`
-2. Configure outreach funnels in `/funnels`
-3. Set up tracking dashboards in `/tracking`
-4. Implement localization in `/localization`
+### Quick Start for Developers
+
+1. **Explore Emissary Bots**: AI-powered partnership automation
+   ```bash
+   cd emissary_bots/
+   python3 outreach_automation.py
+   ```
+
+2. **Understand Star Dust Frequencies**: Resonance scoring system
+   ```bash
+   cd star_dust_frequencies/
+   python3 resonance_calculator.py
+   ```
+
+3. **Review Guardian NFTs**: Partnership credential system
+   ```bash
+   cd nft_development/
+   cat README.md
+   ```
+
+4. **Study Blockchain Integration**: Web3 infrastructure
+   ```bash
+   cd blockchain_integration/
+   cat README.md
+   ```
+
+5. **Explore Regional Blueprints**: Partnership strategies
+   ```bash
+   cd blueprints/jp/  # or kr/ or sg/
+   ```
+
+### Documentation Links
+- [Emissary Bots Guide](./emissary_bots/README.md)
+- [Star Dust Frequencies](./star_dust_frequencies/README.md)
+- [Guardian NFT Development](./nft_development/README.md)
+- [Blockchain Integration](./blockchain_integration/README.md)
+- [Repository Map](../REPOSITORY_MAP.md)
 
 ## Status
-✨ Phase 2 Active - Star-Dust Anchors Deployed
+✨ Phase 2 Active - Star-Dust Anchors Deployed  
+🤖 Emissary Bots - Operational  
+⭐ Star Dust Frequencies - Calibrated  
+🛡️ Guardian NFTs - In Development  
+⛓️ Blockchain Integration - Planned
