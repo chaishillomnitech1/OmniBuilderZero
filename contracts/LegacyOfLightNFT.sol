@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
  * @title Legacy of Light: Prophetic Omnichords
@@ -15,10 +14,8 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
  * and ARCHITEX ∞ OwnerOverride() functionality
  */
 contract LegacyOfLightNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, ReentrancyGuard {
-    using Counters for Counters.Counter;
-    
     // Token ID counter
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _tokenIdCounter;
     
     // OTCP Deployment Timestamp - Divine Marker
     uint256 public immutable otcpDeploymentTimestamp;
@@ -105,8 +102,8 @@ contract LegacyOfLightNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, R
         require(bytes(title).length > 0, "Title required");
         require(bytes(storageURI).length > 0, "Storage URI required");
         
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter;
+        _tokenIdCounter++;
         
         // Mint the NFT
         _safeMint(recipient, tokenId);
@@ -237,7 +234,7 @@ contract LegacyOfLightNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, R
      * @dev Get total number of minted tokens
      */
     function totalSupply() external view returns (uint256) {
-        return _tokenIdCounter.current();
+        return _tokenIdCounter;
     }
     
     /**
