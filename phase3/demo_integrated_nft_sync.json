@@ -1,0 +1,121 @@
+{
+  "nfts": [
+    {
+      "id": "nft_7fb5051c",
+      "name": "Celestial Warden Alpha",
+      "token_id": "GN-000",
+      "owner_address": "0x826297eaf40e882aa1b1c88573b0f489a7e7591f",
+      "home_dimension": "prime",
+      "status": "minted",
+      "power_level": 94,
+      "resonance_signature": "RES_CBB04C9CDC43",
+      "attributes": {
+        "class": "Guardian",
+        "vehicle_paired": "Guardian's Wings Alpha",
+        "deployment_priority": 95
+      },
+      "synced_dimensions": [
+        "prime"
+      ],
+      "last_sync": null,
+      "sync_history": []
+    },
+    {
+      "id": "nft_98e0f7aa",
+      "name": "Dimensional Keeper Beta",
+      "token_id": "GN-001",
+      "owner_address": "0x3699833b1c02c90a9928b4ba9cbc6333b83dc460",
+      "home_dimension": "prime",
+      "status": "minted",
+      "power_level": 94,
+      "resonance_signature": "RES_95D17B281330",
+      "attributes": {
+        "class": "Guardian",
+        "vehicle_paired": "Dimensional Ark Beta",
+        "deployment_priority": 90
+      },
+      "synced_dimensions": [
+        "prime"
+      ],
+      "last_sync": null,
+      "sync_history": []
+    },
+    {
+      "id": "nft_cf5f9170",
+      "name": "Quantum Sentinel Gamma",
+      "token_id": "GN-002",
+      "owner_address": "0xd8866a36ac6001a4f654e2146a385dcfb4d203f3",
+      "home_dimension": "prime",
+      "status": "minted",
+      "power_level": 93,
+      "resonance_signature": "RES_14926A4F7027",
+      "attributes": {
+        "class": "Guardian",
+        "vehicle_paired": "Quantum Phoenix Gamma",
+        "deployment_priority": 85
+      },
+      "synced_dimensions": [
+        "prime"
+      ],
+      "last_sync": null,
+      "sync_history": []
+    }
+  ],
+  "bridges": [
+    {
+      "id": "bridge_362258c2",
+      "source_dimension": "prime",
+      "target_dimension": "echo",
+      "bandwidth": 150.0,
+      "latency": 25.0,
+      "stability": 0.95,
+      "active": true
+    },
+    {
+      "id": "bridge_bac426b8",
+      "source_dimension": "prime",
+      "target_dimension": "quantum",
+      "bandwidth": 200.0,
+      "latency": 15.0,
+      "stability": 0.98,
+      "active": true
+    },
+    {
+      "id": "bridge_2454da69",
+      "source_dimension": "echo",
+      "target_dimension": "astral",
+      "bandwidth": 100.0,
+      "latency": 50.0,
+      "stability": 0.88,
+      "active": true
+    },
+    {
+      "id": "bridge_56857c28",
+      "source_dimension": "quantum",
+      "target_dimension": "ethereal",
+      "bandwidth": 180.0,
+      "latency": 20.0,
+      "stability": 0.93,
+      "active": true
+    },
+    {
+      "id": "bridge_7fc4bd04",
+      "source_dimension": "astral",
+      "target_dimension": "void",
+      "bandwidth": 75.0,
+      "latency": 100.0,
+      "stability": 0.8,
+      "active": true
+    },
+    {
+      "id": "bridge_34f7e487",
+      "source_dimension": "ethereal",
+      "target_dimension": "void",
+      "bandwidth": 120.0,
+      "latency": 40.0,
+      "stability": 0.85,
+      "active": true
+    }
+  ],
+  "sync_jobs": []
+}
