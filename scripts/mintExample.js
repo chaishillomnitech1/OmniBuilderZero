@@ -8,7 +8,7 @@ const hre = require("hardhat");
  */
 async function main() {
   console.log("🎵 Minting GOAT USB-Cassette OmniTapes 🎵");
-  console.log("=" .repeat(70));
+  console.log("=".repeat(70));
   
   // Configuration - Update these with your deployed contract addresses
   const NFT721_ADDRESS = process.env.NFT721_ADDRESS || "0x...";
@@ -152,7 +152,7 @@ async function main() {
   console.log("🎵 The GOAT USB-Cassette OmniTapes are now tokenized!");
   console.log("💎 Connected to KUN Coin Treasury for royalties");
   console.log("∞ ARCHITEX OwnerOverride() functionality active");
-  console.log("=" .repeat(70));
+  console.log("=".repeat(70));
 }
 
 main()

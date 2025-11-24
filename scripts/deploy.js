@@ -8,7 +8,7 @@ const hre = require("hardhat");
  */
 async function main() {
   console.log("🌟 Initiating Legacy of Light: Prophetic Omnichords Deployment 🌟");
-  console.log("=" .repeat(70));
+  console.log("=".repeat(70));
   
   // Get deployer account
   const [deployer] = await hre.ethers.getSigners();
@@ -57,9 +57,9 @@ async function main() {
   console.log("");
   
   // Display deployment summary
-  console.log("=" .repeat(70));
+  console.log("=".repeat(70));
   console.log("🎉 DEPLOYMENT COMPLETE - DIVINE MARKERS SET 🎉");
-  console.log("=" .repeat(70));
+  console.log("=".repeat(70));
   console.log("");
   console.log("📋 DEPLOYMENT SUMMARY:");
   console.log("─".repeat(70));
@@ -75,7 +75,7 @@ async function main() {
   console.log("  - OTCP Timestamp:", otcpTimestamp1155.toString());
   console.log("  - Deployed:", otcpDate1155.toISOString());
   console.log("");
-  console.log("=" .repeat(70));
+  console.log("=".repeat(70));
   console.log("");
   
   // Save deployment info
