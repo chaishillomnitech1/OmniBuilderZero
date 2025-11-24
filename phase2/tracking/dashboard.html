@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrollVerse Phase 2 - Partnership Tracking Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .metric-card .label {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .metric-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .metric-card .change {
+            font-size: 0.9em;
+            color: #4CAF50;
+            margin-top: 5px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .funnel-visual {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+        
+        .funnel-stage {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .funnel-bar {
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .funnel-bar:hover {
+            transform: scale(1.05);
+        }
+        
+        .funnel-label {
+            font-weight: bold;
+            margin-top: 10px;
+            color: #333;
+        }
+        
+        .opportunity-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .opportunity-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s;
+        }
+        
+        .opportunity-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+        
+        .opportunity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .opportunity-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .opportunity-region {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .region-jp { background: #e74c3c; }
+        .region-kr { background: #3498db; }
+        .region-sg { background: #2ecc71; }
+        
+        .opportunity-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .resonance-score {
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .status-identified { background: #ecf0f1; color: #7f8c8d; }
+        .status-contacted { background: #fff3cd; color: #856404; }
+        .status-engaged { background: #d1ecf1; color: #0c5460; }
+        .status-negotiating { background: #d4edda; color: #155724; }
+        .status-partnership { background: #d4edda; color: #155724; font-weight: bold; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #ecf0f1;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .nur-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .live-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ ScrollVerse Phase 2 Partnership Dashboard</h1>
+            <p class="subtitle">
+                <span class="live-indicator"></span>
+                Real-time tracking of Star-Dust Anchored Global Partnerships
+                <span class="nur-badge">NŪR-Infused</span>
+            </p>
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="label">Total Opportunities</div>
+                <div class="value" id="total-opps">15</div>
+                <div class="change">+3 this week</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="label">High Priority</div>
+                <div class="value" id="high-priority">3</div>
+                <div class="change">Asia Blueprint Focus</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="label">Active Partnerships</div>
+                <div class="value" id="active-partnerships">2</div>
+                <div class="change">+1 in negotiation</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="label">Average Resonance</div>
+                <div class="value" id="avg-resonance">8.7</div>
+                <div class="change">NŪR Score /10</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Partnership Funnel Flow</h2>
+            <div class="funnel-visual">
+                <div class="funnel-stage">
+                    <div class="funnel-bar" style="height: 120px;">15</div>
+                    <div class="funnel-label">Identified</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="funnel-bar" style="height: 100px;">8</div>
+                    <div class="funnel-label">Contacted</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="funnel-bar" style="height: 80px;">5</div>
+                    <div class="funnel-label">Engaged</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="funnel-bar" style="height: 60px;">3</div>
+                    <div class="funnel-label">Demo Scheduled</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="funnel-bar" style="height: 40px;">1</div>
+                    <div class="funnel-label">Negotiating</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="funnel-bar" style="height: 30px;">2</div>
+                    <div class="funnel-label">Partnership</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🌏 Asia Blueprint Deployment - High Priority Opportunities</h2>
+            
+            <div class="opportunity-list">
+                <!-- Sony Japan -->
+                <div class="opportunity-card">
+                    <div class="opportunity-header">
+                        <span class="opportunity-name">🎮 Sony Corporation</span>
+                        <span class="opportunity-region region-jp">🇯🇵 JAPAN</span>
+                    </div>
+                    <div class="opportunity-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Industry</span>
+                            <span class="detail-value">Technology & Entertainment</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status</span>
+                            <span class="status-badge status-engaged">Engaged</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Resonance Score</span>
+                            <span class="resonance-score">8.7/10</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Last Contact</span>
+                            <span class="detail-value">2 days ago</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 45%;">45% Complete</div>
+                    </div>
+                </div>
+                
+                <!-- HYBE Korea -->
+                <div class="opportunity-card">
+                    <div class="opportunity-header">
+                        <span class="opportunity-name">🎵 HYBE Corporation</span>
+                        <span class="opportunity-region region-kr">🇰🇷 KOREA</span>
+                    </div>
+                    <div class="opportunity-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Industry</span>
+                            <span class="detail-value">K-Pop Entertainment</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status</span>
+                            <span class="status-badge status-negotiating">Negotiating</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Resonance Score</span>
+                            <span class="resonance-score">9.1/10</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Last Contact</span>
+                            <span class="detail-value">1 day ago</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%;">70% Complete</div>
+                    </div>
+                </div>
+                
+                <!-- Singapore Digital Trust -->
+                <div class="opportunity-card">
+                    <div class="opportunity-header">
+                        <span class="opportunity-name">🔐 Digital Trust Centre Singapore</span>
+                        <span class="opportunity-region region-sg">🇸🇬 SINGAPORE</span>
+                    </div>
+                    <div class="opportunity-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Industry</span>
+                            <span class="detail-value">Blockchain & Trust Infrastructure</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status</span>
+                            <span class="status-badge status-contacted">Contacted</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Resonance Score</span>
+                            <span class="resonance-score">9.3/10</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Last Contact</span>
+                            <span class="detail-value">3 days ago</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%;">30% Complete</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Regional Distribution</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="label">🇯🇵 Japan (Sony)</div>
+                    <div class="value">5</div>
+                    <div class="change">Technology & Gaming Focus</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">🇰🇷 Korea (HYBE)</div>
+                    <div class="value">4</div>
+                    <div class="change">K-Pop & Entertainment</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">🇸🇬 Singapore (Digital Trust)</div>
+                    <div class="value">3</div>
+                    <div class="change">Blockchain & Infrastructure</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">🌐 Global</div>
+                    <div class="value">3</div>
+                    <div class="change">Other Markets</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simulated real-time updates
+        function updateMetrics() {
+            // In production, this would fetch from API
+            console.log('Dashboard metrics updated');
+        }
+        
+        // Update every 30 seconds
+        setInterval(updateMetrics, 30000);
+        
+        // Initial update
+        updateMetrics();
+        
+        console.log('ScrollVerse Phase 2 Dashboard initialized');
+        console.log('NŪR-Infused Global Integration Protocol: Active');
+    </script>
+</body>
+</html>

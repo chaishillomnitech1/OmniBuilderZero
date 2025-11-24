@@ -1,0 +1,90 @@
+{
+  "region": "kr",
+  "name": "Korea",
+  "language": {
+    "primary": "ko",
+    "secondary": "en",
+    "encoding": "UTF-8"
+  },
+  "cultural_context": {
+    "business_style": "dynamic_hierarchical",
+    "communication_preference": "direct_results_focused",
+    "decision_making": "quick_when_convinced",
+    "relationship_building": "important_through_networking",
+    "time_orientation": "fast_paced"
+  },
+  "localization_rules": {
+    "name_format": "family_name_first",
+    "title_usage": "use_appropriate_honorific",
+    "business_cards": "two_handed_exchange",
+    "gift_giving": "appreciated_not_required",
+    "punctuality": "important",
+    "dress_code": "business_casual_to_formal"
+  },
+  "messaging": {
+    "tone": "dynamic_professional_friendly",
+    "honorifics": "jondaemal_in_formal_contexts",
+    "subject_lines": "clear_action_oriented",
+    "email_structure": "concise_with_visuals",
+    "response_time": "fast_expected"
+  },
+  "translations": {
+    "scrollverse": "스크롤버스",
+    "partnership": "파트너십",
+    "innovation": "혁신",
+    "collaboration": "협력",
+    "metaverse": "메타버스",
+    "web3": "웹3",
+    "blockchain": "블록체인",
+    "kpop": "케이팝",
+    "fan": "팬"
+  },
+  "key_values": [
+    "ppalli-ppalli (speed/efficiency)",
+    "jeong (emotional connection)",
+    "nunchi (social awareness)",
+    "innovation",
+    "hard work",
+    "relationship",
+    "results"
+  ],
+  "dos": [
+    "Be responsive and quick",
+    "Show enthusiasm and energy",
+    "Use visual presentations",
+    "Focus on results and metrics",
+    "Respect hierarchy but be innovative",
+    "Build relationships through social events",
+    "Demonstrate tech-savviness"
+  ],
+  "donts": [
+    "Don't be slow to respond",
+    "Don't lack energy or enthusiasm",
+    "Don't be overly conservative",
+    "Don't ignore K-Pop fan culture",
+    "Don't underestimate competition",
+    "Don't be inflexible",
+    "Don't miss social networking opportunities"
+  ],
+  "meeting_protocol": {
+    "preparation": "thorough_but_agile",
+    "greeting": "bow_business_card_exchange",
+    "seating": "somewhat_hierarchical",
+    "presentation": "dynamic_visual_data_driven",
+    "decision": "relatively_quick_if_convinced",
+    "follow_up": "immediate_and_frequent"
+  },
+  "contact_times": {
+    "preferred_hours": "09:00-18:00 KST",
+    "avoid": ["early_morning_before_9"],
+    "response_expectation": "same_day_preferred"
+  },
+  "kpop_specific": {
+    "fan_culture": "extremely_engaged_and_passionate",
+    "fandom_names": "respect_official_names",
+    "artist_respect": "always_formal_and_respectful",
+    "collectibles": "high_value_to_fans",
+    "platforms": ["weverse", "vlive", "twitter", "instagram", "tiktok"],
+    "engagement_style": "authentic_interactive_exclusive"
+  }
+}
