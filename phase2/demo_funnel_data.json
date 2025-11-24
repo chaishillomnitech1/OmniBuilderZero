@@ -1,0 +1,53 @@
+[
+  {
+    "id": "jp_001",
+    "name": "Sony Corporation",
+    "region": "japan",
+    "industry": "Technology & Entertainment",
+    "contact_email": "innovation@sony.com",
+    "status": "identified",
+    "resonance": {
+      "truth_alignment": 0.85,
+      "cultural_fit": 0.9,
+      "strategic_synergy": 0.88,
+      "resistance_factor": 0.25
+    },
+    "created_at": "2025-11-24T03:15:37.918476",
+    "last_contact": null,
+    "notes": []
+  },
+  {
+    "id": "kr_001",
+    "name": "HYBE Corporation",
+    "region": "korea",
+    "industry": "K-Pop Entertainment",
+    "contact_email": "innovation@hybecorp.com",
+    "status": "identified",
+    "resonance": {
+      "truth_alignment": 0.9,
+      "cultural_fit": 0.92,
+      "strategic_synergy": 0.91,
+      "resistance_factor": 0.2
+    },
+    "created_at": "2025-11-24T03:15:37.918653",
+    "last_contact": null,
+    "notes": []
+  },
+  {
+    "id": "sg_001",
+    "name": "Digital Trust Centre Singapore",
+    "region": "singapore",
+    "industry": "Blockchain & Trust Infrastructure",
+    "contact_email": "partnerships@digitaltrust.sg",
+    "status": "identified",
+    "resonance": {
+      "truth_alignment": 0.95,
+      "cultural_fit": 0.88,
+      "strategic_synergy": 0.93,
+      "resistance_factor": 0.18
+    },
+    "created_at": "2025-11-24T03:15:37.918942",
+    "last_contact": null,
+    "notes": []
+  }
+]
