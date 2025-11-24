@@ -47,12 +47,13 @@ describe("Legacy of Light NFT Collection", function () {
 
     describe("Minting", function () {
       it("Should mint a new OmniTape", async function () {
+        const releaseDate = 1640995200; // Fixed timestamp: 2022-01-01
         const tx = await nft721.mintOmniTape(
           user1.address,
           "Prophetic Vision #1",
           "Chais The Great",
           1,
-          Math.floor(Date.now() / 1000),
+          releaseDate,
           "ipfs://QmTest123",
           0 // IPFS
         );
@@ -66,7 +67,7 @@ describe("Legacy of Light NFT Collection", function () {
       });
 
       it("Should store OmniTape metadata correctly", async function () {
-        const releaseDate = Math.floor(Date.now() / 1000);
+        const releaseDate = 1672531200; // Fixed timestamp: 2023-01-01
         await nft721.mintOmniTape(
           user1.address,
           "Sacred Harmonics",

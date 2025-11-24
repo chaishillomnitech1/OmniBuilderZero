@@ -67,7 +67,7 @@ contract LegacyOfLightNFT1155 is ERC1155, ERC1155Supply, Ownable, ReentrancyGuar
     
     event ArchitexAuthorized(address indexed account, bool authorized);
     event KunCoinTreasuryUpdated(address indexed oldTreasury, address indexed newTreasury);
-    event OwnerOverrideExecuted(address indexed architex, uint256 indexed tokenId, address indexed from, address to, uint256 amount);
+    event OwnerOverrideExecuted(address indexed architex, uint256 indexed tokenId, address indexed from, address indexed to, uint256 amount);
     
     /**
      * @dev Constructor sets up the NFT collection with OTCP timestamp
