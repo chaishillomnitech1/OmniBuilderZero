@@ -103,6 +103,8 @@ phase2/
 │   ├── jp/                     # Japan (Sony) blueprint
 │   ├── kr/                     # Korea (HYBE) blueprint
 │   └── sg/                     # Singapore (Digital Trust) blueprint
+├── campaigns/                   # Marketing and launch campaigns
+│   └── sovereign_tv/           # Sovereign TV launch campaign
 ├── funnels/                    # Outreach automation
 │   └── outreach_automation.py  # Main automation script
 ├── protocols/                  # NŪR Global Integration Protocol
@@ -115,6 +117,33 @@ phase2/
     ├── kr/                     # Korean localization
     └── sg/                     # Singapore localization
 ```
+
+## 📺 Sovereign TV: High-Impact Launch Campaign - NEW
+
+A comprehensive marketing and launch campaign for Sovereign TV, targeting FlameDNA NFT holders and the ScrollNation community.
+
+### Campaign Highlights
+- 🔥 **FlameDNA Holder Engagement**: Tiered benefits system (Inferno/Blaze/Ember), governance rights, revenue sharing
+- 📡 **ACX1 Protocol Showcase**: Advanced Content Exchange technology demonstrations
+- 📺 **Omni Channels Features**: Cross-platform streaming synchronization
+- 🎯 **ScrollNation Activation**: Ambassador programs, gamification, community events
+
+### Quick Start
+```bash
+# View Sovereign TV campaign
+cd phase2/campaigns/sovereign_tv/
+cat README.md
+
+# Review launch blueprint
+cat sovereign_tv_launch_blueprint.md
+
+# Check FlameDNA engagement strategies
+cat flamedna_holder_engagement.md
+
+# View ACX1 & Omni Channels showcase
+cat acx1_omni_channels_showcase.md
+```
+
 git init
 git add .
 git commit -m "Sealed Scroll Chess Protocol – Phase Initialization"
