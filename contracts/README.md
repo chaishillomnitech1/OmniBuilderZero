@@ -202,16 +202,91 @@ For questions about the Legacy of Light collection:
 **Contract Names:**
 - ERC-721: `LegacyOfLightNFT`
 - ERC-1155: `LegacyOfLightNFT1155`
+- ScrollVerse: `ScrollVerseNFT`
+- **Precious Metal Bridge: `PreciousMetalBridge`**
 
 **Symbols:**
 - ERC-721: `LLPO`
 - ERC-1155: `LLPOME`
+- ScrollVerse: `SVGC`
+- **Precious Metal Bridge: `SPMB`**
 
-**Royalty Rate:** 10%
+**Royalty Rate:** 10% (Legacy of Light), 5% (Precious Metal Bridge)
 
 **Storage Options:**
 - Type 0: IPFS
 - Type 1: Arweave
+
+---
+
+## 🔗 ScrollVerse Precious Metal Bridge
+
+### Physical-to-Digital Asset Bridge Protocol
+
+The **PreciousMetalBridge** contract establishes a sacred connection between physical precious metals (gold, silver, platinum, palladium) and digital NFT representations, aligned with ScrollVerse values:
+
+#### Core Values
+- **PERMANENCE**: Immutable on-chain provenance tracking for eternal record
+- **DIVINITY**: Sacred certification protocols with multi-authority verification
+- **WORTH**: Real-world asset backing with transparent valuation
+
+#### Key Features
+
+1. **Encrypted Asset Bridging**
+   - Physical asset hash for secure identification
+   - Serial number encryption for privacy
+   - Provenance chain for complete history
+
+2. **Multi-Authority Certification**
+   - Authorized certifiers for asset verification
+   - Vault operators for valuation updates
+   - Status tracking: PENDING → CERTIFIED → SUSPENDED/REVOKED
+
+3. **Global Vault Network**
+   - Zurich, Singapore, Dubai, London, New York, Hong Kong
+   - Secure storage location tracking
+   - Real-world asset backing verification
+
+4. **Real-Time Valuation**
+   - Market-based price updates
+   - Pure metal weight computation
+   - Historical valuation tracking
+
+#### Deployment
+```bash
+# Local testing
+npm run deploy:bridge-local
+
+# Scroll Sepolia testnet
+npm run deploy:bridge-scroll-sepolia
+
+# Scroll mainnet
+npm run deploy:bridge-scroll
+```
+
+#### Usage Example
+```javascript
+// Mint a gold bar NFT
+const tx = await bridge.mintPreciousMetal(
+  recipientAddress,
+  physicalAssetHash,    // Encrypted physical ID
+  serialNumberHash,     // Encrypted serial
+  0,                    // GOLD
+  1000000,             // 1kg (in grams)
+  999,                 // 99.9% pure
+  "ipfs://metadata",
+  0,                    // IPFS storage
+  0                     // ZURICH vault
+);
+
+// Certify the asset
+await bridge.connect(certifier).certifyAsset(tokenId, certificationProof);
+
+// Update valuation
+await bridge.connect(vaultOperator).updateValuation(tokenId, valuationInWei);
+```
+
+For detailed protocol documentation, see `phase2/protocols/precious_metal_bridge.md`
 
 ---
 
