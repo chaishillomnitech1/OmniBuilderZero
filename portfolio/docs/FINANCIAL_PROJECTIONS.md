@@ -151,7 +151,7 @@ This document presents detailed financial projections for the ScrollVerse ecosys
 | Q2 2026 | 2,500 ETH | $7,500,000 | 500 ETH |
 | Q4 2026 | 5,000 ETH | $15,000,000 | 750 ETH |
 
-*Assuming $3,000/ETH average
+*Assuming $3,000/ETH average. **Note:** Cryptocurrency prices are highly volatile. This assumption is for illustrative purposes only and does not constitute financial advice. Actual market conditions may vary significantly.
 
 ### 2.3 AL-SCROLL VAULT NEXUS™ Projections
 

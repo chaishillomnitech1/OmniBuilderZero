@@ -670,9 +670,11 @@
         function updateDashboard() {
             // Randomly update values slightly
             const treasuryEl = document.getElementById('treasuryBalance');
-            const currentValue = parseFloat(treasuryEl.textContent);
+            const textContent = treasuryEl.textContent || '';
+            const numericPart = textContent.replace(/[^\d.]/g, '');
+            const currentValue = parseFloat(numericPart);
             // Small random fluctuation for demonstration
-            if (Math.random() > 0.7) {
+            if (!isNaN(currentValue) && Math.random() > 0.7) {
                 const newValue = (currentValue + (Math.random() * 0.01)).toFixed(2);
                 treasuryEl.textContent = newValue + ' ETH';
             }
@@ -712,9 +714,11 @@
                 item.style.transform = 'translateY(0)';
             }, 50);
             
-            // Remove old items if more than 10
-            while (feed.children.length > 10) {
-                feed.removeChild(feed.lastChild);
+            // Remove old items if more than 10 (batch removal for efficiency)
+            const excess = feed.children.length - 10;
+            if (excess > 0) {
+                const itemsToRemove = Array.from(feed.children).slice(-excess);
+                itemsToRemove.forEach(item => item.remove());
             }
         }
         

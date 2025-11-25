@@ -487,9 +487,11 @@
         
         /* Print styles */
         @media print {
-            body { background: white; color: black; }
+            body { background: white; color: #333; }
             .nav { display: none; }
-            .card { break-inside: avoid; }
+            .card { break-inside: avoid; border: 1px solid #ccc; }
+            .section-title, .card-title { color: #333; }
+            .stat-value, .metric-value { color: #b8860b; }
         }
     </style>
 </head>
@@ -1093,7 +1095,7 @@
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                if (window.pageYOffset >= sectionTop - 100) {
+                if (window.scrollY >= sectionTop - 100) {
                     current = section.getAttribute('id');
                 }
             });
