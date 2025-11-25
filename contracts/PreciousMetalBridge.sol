@@ -20,7 +20,7 @@ contract PreciousMetalBridge is ERC721, ERC721URIStorage, ERC721Royalty, Ownable
     
     // ============ CONSTANTS ============
     
-    /// @notice Royalty basis points (1000 = 10%)
+    /// @notice Royalty basis points (500 = 5%)
     uint96 public constant ROYALTY_BASIS_POINTS = 500; // 5% royalty for physical asset bridge
     
     // ============ STATE VARIABLES ============
@@ -36,9 +36,6 @@ contract PreciousMetalBridge is ERC721, ERC721URIStorage, ERC721Royalty, Ownable
     
     /// @notice Metal types supported
     enum MetalType { GOLD, SILVER, PLATINUM, PALLADIUM }
-    
-    /// @notice Purity grades (in parts per thousand)
-    /// 999 = 99.9% pure, 995 = 99.5% pure, etc.
     
     /// @notice Certification status
     enum CertificationStatus { PENDING, CERTIFIED, SUSPENDED, REVOKED }
@@ -232,8 +229,7 @@ contract PreciousMetalBridge is ERC721, ERC721URIStorage, ERC721Royalty, Ownable
     ) public onlyOwner returns (uint256) {
         require(recipient != address(0), "Invalid recipient");
         require(physicalAssetHash != bytes32(0), "Physical asset hash required");
-        require(assetHashToTokenId[physicalAssetHash] == 0 || assetHashToTokenId[physicalAssetHash] == type(uint256).max, 
-            "Asset already tokenized");
+        require(assetHashToTokenId[physicalAssetHash] == 0, "Asset already tokenized");
         require(weightInGrams > 0, "Weight must be greater than zero");
         require(purityInThousandths > 0 && purityInThousandths <= 1000, "Invalid purity");
         require(bytes(metadataURI).length > 0, "Metadata URI required");
