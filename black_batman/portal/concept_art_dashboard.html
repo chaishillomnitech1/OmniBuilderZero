@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Batman Concept Art Dashboard - OmniTech1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a1a 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            padding: 20px 30px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #ffd700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5em;
+            filter: drop-shadow(0 0 10px #ffd700);
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8em;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .logo-text p {
+            font-size: 0.9em;
+            color: #888;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Main Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 20px;
+            padding: 20px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .sidebar h3 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .nav-section {
+            margin-bottom: 25px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 8px;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 237, 78, 0.1) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .nav-icon {
+            font-size: 1.2em;
+        }
+        
+        .nav-label {
+            font-size: 0.95em;
+        }
+        
+        .nav-count {
+            margin-left: auto;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .content-title {
+            font-size: 1.5em;
+            color: #ffd700;
+        }
+        
+        .view-toggles {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .view-btn {
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .view-btn.active {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+        }
+        
+        /* Art Grid */
+        .art-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .art-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .art-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+        
+        .art-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            position: relative;
+        }
+        
+        .art-preview .placeholder-icon {
+            opacity: 0.3;
+        }
+        
+        .art-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+        
+        .badge-character { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .badge-environment { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .badge-action { background: linear-gradient(135deg, #f12711 0%, #f5af19 100%); }
+        .badge-storyboard { background: linear-gradient(135deg, #4568dc 0%, #b06ab3 100%); }
+        
+        .art-info {
+            padding: 15px;
+        }
+        
+        .art-title {
+            font-size: 1.05em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .art-meta {
+            font-size: 0.85em;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* Storyboard View */
+        .storyboard-view {
+            display: none;
+        }
+        
+        .storyboard-view.active {
+            display: block;
+        }
+        
+        .storyboard-strip {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        
+        .storyboard-panel {
+            flex-shrink: 0;
+            width: 280px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .panel-header {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .panel-number {
+            font-weight: 600;
+            color: #ffd700;
+        }
+        
+        .panel-shot {
+            font-size: 0.85em;
+            color: #888;
+        }
+        
+        .panel-preview {
+            height: 160px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            opacity: 0.3;
+        }
+        
+        .panel-description {
+            padding: 12px;
+            font-size: 0.9em;
+            color: #ccc;
+            line-height: 1.4;
+        }
+        
+        .panel-footer {
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            color: #888;
+        }
+        
+        /* Right Panel */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .panel-card {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .panel-card h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        /* Prompt Generator */
+        .prompt-generator textarea {
+            width: 100%;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 0.9em;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        
+        .prompt-generator textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .prompt-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .prompt-controls select {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9em;
+        }
+        
+        .prompt-controls select option {
+            background: #1a1a2e;
+        }
+        
+        .generate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .generate-btn:hover {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        /* Location Selector */
+        .location-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .location-item {
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .location-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .location-item.active {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .location-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .location-type {
+            font-size: 0.8em;
+            color: #888;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .quick-action-btn {
+            padding: 15px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .quick-action-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+        
+        .quick-action-btn .icon {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .quick-action-btn .label {
+            font-size: 0.85em;
+        }
+        
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ffd700;
+        }
+        
+        .stat-label {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 15px 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            margin-right: 20px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #ffd700;
+        }
+        
+        .footer-branding {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar, .right-panel {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .art-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-section">
+            <span class="logo-icon">🦇</span>
+            <div class="logo-text">
+                <h1>Black Batman</h1>
+                <p>Concept Art Dashboard - Mays Landing</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn btn-secondary" onclick="exportAll()">📥 Export All</button>
+            <button class="header-btn btn-primary" onclick="generateNew()">✨ Generate New</button>
+        </div>
+    </header>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>📂 Categories</h3>
+            <div class="nav-section">
+                <div class="nav-item active" onclick="filterCategory('all', event)">
+                    <span class="nav-icon">🎨</span>
+                    <span class="nav-label">All Art</span>
+                    <span class="nav-count" id="count-all">12</span>
+                </div>
+                <div class="nav-item" onclick="filterCategory('character', event)">
+                    <span class="nav-icon">🦸</span>
+                    <span class="nav-label">Character</span>
+                    <span class="nav-count" id="count-character">5</span>
+                </div>
+                <div class="nav-item" onclick="filterCategory('environment', event)">
+                    <span class="nav-icon">🏞️</span>
+                    <span class="nav-label">Environments</span>
+                    <span class="nav-count" id="count-environment">4</span>
+                </div>
+                <div class="nav-item" onclick="filterCategory('action', event)">
+                    <span class="nav-icon">⚡</span>
+                    <span class="nav-label">Action</span>
+                    <span class="nav-count" id="count-action">2</span>
+                </div>
+                <div class="nav-item" onclick="filterCategory('storyboard', event)">
+                    <span class="nav-icon">📽️</span>
+                    <span class="nav-label">Storyboards</span>
+                    <span class="nav-count" id="count-storyboard">1</span>
+                </div>
+            </div>
+            
+            <h3>📍 Locations</h3>
+            <div class="location-list">
+                <div class="location-item active" onclick="selectLocation('all', event)">
+                    <div class="location-name">All Locations</div>
+                    <div class="location-type">Mays Landing, NJ</div>
+                </div>
+                <div class="location-item" onclick="selectLocation('loc_001', event)">
+                    <div class="location-name">Downtown</div>
+                    <div class="location-type">Urban</div>
+                </div>
+                <div class="location-item" onclick="selectLocation('loc_002', event)">
+                    <div class="location-name">Lake Lenape</div>
+                    <div class="location-type">Natural</div>
+                </div>
+                <div class="location-item" onclick="selectLocation('loc_003', event)">
+                    <div class="location-name">Township Park</div>
+                    <div class="location-type">Parkland</div>
+                </div>
+                <div class="location-item" onclick="selectLocation('loc_006', event)">
+                    <div class="location-name">Historic Courthouse</div>
+                    <div class="location-type">Landmark</div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2 class="content-title">Concept Art Gallery</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="switchView('gallery', event)">🖼️ Gallery</button>
+                    <button class="view-btn" onclick="switchView('storyboard', event)">📽️ Storyboard</button>
+                </div>
+            </div>
+            
+            <!-- Gallery View -->
+            <div class="art-grid" id="gallery-view">
+                <div class="art-card" data-category="character">
+                    <div class="art-preview">
+                        <span class="placeholder-icon">🦇</span>
+                        <span class="art-badge badge-character">Character</span>
+                    </div>
+                    <div class="art-info">
+                        <div class="art-title">Hero Rooftop Vigil</div>
+                        <div class="art-meta">
+                            <span>Courthouse</span>
+                            <span>Night</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="art-card" data-category="environment">
+                    <div class="art-preview">
+                        <span class="placeholder-icon">🌊</span>
+                        <span class="art-badge badge-environment">Environment</span>
+                    </div>
+                    <div class="art-info">
+                        <div class="art-title">Lake Lenape Dawn</div>
+                        <div class="art-meta">
+                            <span>Lake Lenape</span>
+                            <span>Dawn</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="art-card" data-category="action">
+                    <div class="art-preview">
+                        <span class="placeholder-icon">⚡</span>
+                        <span class="art-badge badge-action">Action</span>
+                    </div>
+                    <div class="art-info">
+                        <div class="art-title">Rooftop Leap</div>
+                        <div class="art-meta">
+                            <span>Downtown</span>
+                            <span>Night</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="art-card" data-category="character">
+                    <div class="art-preview">
+                        <span class="placeholder-icon">🌙</span>
+                        <span class="art-badge badge-character">Character</span>
+                    </div>
+                    <div class="art-info">
+                        <div class="art-title">Moonlit Silhouette</div>
+                        <div class="art-meta">
+                            <span>Rooftops</span>
+                            <span>Night</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="art-card" data-category="environment">
+                    <div class="art-preview">
+                        <span class="placeholder-icon">🏛️</span>
+                        <span class="art-badge badge-environment">Environment</span>
+                    </div>
+                    <div class="art-info">
+                        <div class="art-title">Courthouse at Dusk</div>
+                        <div class="art-meta">
+                            <span>Historic Courthouse</span>
+                            <span>Dusk</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="art-card" data-category="environment">
+                    <div class="art-preview">
+                        <span class="placeholder-icon">🌉</span>
+                        <span class="art-badge badge-environment">Environment</span>
+                    </div>
+                    <div class="art-info">
+                        <div class="art-title">River Bridge Stormy</div>
+                        <div class="art-meta">
+                            <span>Great Egg Harbor</span>
+                            <span>Storm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="art-card" data-category="character">
+                    <div class="art-preview">
+                        <span class="placeholder-icon">🦸</span>
+                        <span class="art-badge badge-character">Character</span>
+                    </div>
+                    <div class="art-info">
+                        <div class="art-title">Cape Flow Study</div>
+                        <div class="art-meta">
+                            <span>Wind Effects</span>
+                            <span>Dynamic</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="art-card" data-category="action">
+                    <div class="art-preview">
+                        <span class="placeholder-icon">💥</span>
+                        <span class="art-badge badge-action">Action</span>
+                    </div>
+                    <div class="art-info">
+                        <div class="art-title">Vehicle Intercept</div>
+                        <div class="art-meta">
+                            <span>Downtown</span>
+                            <span>Night</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Storyboard View -->
+            <div class="storyboard-view" id="storyboard-view">
+                <h3 style="color: #ffd700; margin-bottom: 15px;">Episode 1 - Hero Reveal Sequence</h3>
+                <div class="storyboard-strip">
+                    <div class="storyboard-panel">
+                        <div class="panel-header">
+                            <span class="panel-number">Panel 1</span>
+                            <span class="panel-shot">EXTREME WIDE</span>
+                        </div>
+                        <div class="panel-preview">🌃</div>
+                        <div class="panel-description">Mays Landing skyline at night, courthouse silhouette visible</div>
+                        <div class="panel-footer">
+                            <span>🎬 Static</span>
+                            <span>⏱️ 3.0s</span>
+                        </div>
+                    </div>
+                    
+                    <div class="storyboard-panel">
+                        <div class="panel-header">
+                            <span class="panel-number">Panel 2</span>
+                            <span class="panel-shot">WIDE</span>
+                        </div>
+                        <div class="panel-preview">🏛️</div>
+                        <div class="panel-description">Camera tilts up courthouse building, mysterious shadow at top</div>
+                        <div class="panel-footer">
+                            <span>🎬 Tilt Up</span>
+                            <span>⏱️ 2.5s</span>
+                        </div>
+                    </div>
+                    
+                    <div class="storyboard-panel">
+                        <div class="panel-header">
+                            <span class="panel-number">Panel 3</span>
+                            <span class="panel-shot">MEDIUM</span>
+                        </div>
+                        <div class="panel-preview">🦇</div>
+                        <div class="panel-description">Black Batman's cape billows in wind, back to camera</div>
+                        <div class="panel-footer">
+                            <span>🎬 Static</span>
+                            <span>⏱️ 3.0s</span>
+                        </div>
+                    </div>
+                    
+                    <div class="storyboard-panel">
+                        <div class="panel-header">
+                            <span class="panel-number">Panel 4</span>
+                            <span class="panel-shot">CLOSEUP</span>
+                        </div>
+                        <div class="panel-preview">👁️</div>
+                        <div class="panel-description">Black Batman's masked face, eyes narrowing with determination</div>
+                        <div class="panel-footer">
+                            <span>🎬 Dolly In</span>
+                            <span>⏱️ 2.5s</span>
+                        </div>
+                    </div>
+                    
+                    <div class="storyboard-panel">
+                        <div class="panel-header">
+                            <span class="panel-number">Panel 5</span>
+                            <span class="panel-shot">EXTREME WIDE</span>
+                        </div>
+                        <div class="panel-preview">🌙</div>
+                        <div class="panel-description">Full hero reveal, Black Batman standing powerful against moon</div>
+                        <div class="panel-footer">
+                            <span>🎬 Crane Up</span>
+                            <span>⏱️ 4.0s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Right Panel -->
+        <aside class="right-panel">
+            <!-- Prompt Generator -->
+            <div class="panel-card prompt-generator">
+                <h3>✨ AI Prompt Generator</h3>
+                <textarea id="promptOutput" placeholder="Generated prompt will appear here..."></textarea>
+                <div class="prompt-controls">
+                    <select id="artStyle">
+                        <option value="concept_art">Concept Art</option>
+                        <option value="cinematic">Cinematic</option>
+                        <option value="comic_book">Comic Book</option>
+                        <option value="storyboard">Storyboard</option>
+                    </select>
+                    <select id="timeOfDay">
+                        <option value="night">Night</option>
+                        <option value="dawn">Dawn</option>
+                        <option value="dusk">Dusk</option>
+                        <option value="stormy">Stormy</option>
+                    </select>
+                </div>
+                <button class="generate-btn" onclick="generatePrompt()">⚡ Generate Prompt</button>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="panel-card">
+                <h3>🚀 Quick Actions</h3>
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="quickAction('character')">
+                        <div class="icon">🦸</div>
+                        <div class="label">Character</div>
+                    </button>
+                    <button class="quick-action-btn" onclick="quickAction('environment')">
+                        <div class="icon">🏞️</div>
+                        <div class="label">Environment</div>
+                    </button>
+                    <button class="quick-action-btn" onclick="quickAction('action')">
+                        <div class="icon">⚡</div>
+                        <div class="label">Action</div>
+                    </button>
+                    <button class="quick-action-btn" onclick="quickAction('storyboard')">
+                        <div class="icon">📽️</div>
+                        <div class="label">Storyboard</div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="panel-card">
+                <h3>📊 Project Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Total Assets</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Sequences</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Locations</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Prompts</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://github.com/chaishillomnitech1/OmniBuilderZero/blob/main/black_batman/README.md" target="_blank">Documentation</a>
+            <a href="../../portal/scrollverse_portal.html">ScrollVerse Portal</a>
+            <a href="../../portal/vibe_canvas.html">VibeCanvas</a>
+        </div>
+        <div class="footer-branding">
+            Black Batman © 2025 OmniTech1 - Chais The Great
+        </div>
+    </footer>
+    
+    <script>
+        // Black Batman Concept Art Dashboard - Interactive Features
+        
+        const locations = [
+            { id: 'loc_001', name: 'Downtown Mays Landing', type: 'urban' },
+            { id: 'loc_002', name: 'Lake Lenape', type: 'natural' },
+            { id: 'loc_003', name: 'Hamilton Township Park', type: 'parkland' },
+            { id: 'loc_004', name: 'Atlantic City Skyline View', type: 'vista' },
+            { id: 'loc_005', name: 'Great Egg Harbor River', type: 'waterway' },
+            { id: 'loc_006', name: 'Historic Courthouse', type: 'landmark' }
+        ];
+        
+        const promptTemplates = {
+            character: [
+                "Black Batman in heroic stance, cape flowing dramatically",
+                "Black Batman silhouette against moonlit sky",
+                "Black Batman crouching on rooftop, vigilant",
+                "Black Batman emerging from shadows"
+            ],
+            environment: [
+                "Mays Landing downtown at night, moody atmosphere",
+                "Lake Lenape at dawn, mist rising, serene",
+                "Historic courthouse under stormy sky",
+                "Great Egg Harbor River bridge, fog rolling in"
+            ],
+            action: [
+                "Black Batman leaping between rooftops, dynamic motion",
+                "Black Batman diving toward vehicle, cape spread",
+                "Black Batman landing dramatic pose, impact moment",
+                "Black Batman grappling through night sky"
+            ],
+            storyboard: [
+                "Storyboard panel, Black Batman reveal sequence",
+                "Sequential art, hero confrontation scene",
+                "Animation keyframe, chase sequence",
+                "Storyboard layout, contemplative moment"
+            ]
+        };
+        
+        let currentCategory = 'all';
+        let currentLocation = 'all';
+        let currentView = 'gallery';
+        
+        function filterCategory(category, evt) {
+            currentCategory = category;
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add('active');
+            }
+            
+            // Filter art cards
+            const cards = document.querySelectorAll('.art-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        function selectLocation(locationId, evt) {
+            currentLocation = locationId;
+            
+            // Update location active state
+            document.querySelectorAll('.location-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add('active');
+            }
+            
+            // Generate location-specific prompt
+            if (locationId !== 'all') {
+                const location = locations.find(l => l.id === locationId);
+                if (location) {
+                    const style = document.getElementById('artStyle').value;
+                    const time = document.getElementById('timeOfDay').value;
+                    const prompt = `Black Batman in ${location.name}, ${time} atmosphere, ${style} style, Mays Landing New Jersey, heroic composition`;
+                    document.getElementById('promptOutput').value = prompt;
+                }
+            }
+        }
+        
+        function switchView(view, evt) {
+            currentView = view;
+            
+            // Update view toggle active state
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add('active');
+            }
+            
+            // Show/hide views
+            if (view === 'gallery') {
+                document.getElementById('gallery-view').style.display = 'grid';
+                document.getElementById('storyboard-view').classList.remove('active');
+            } else {
+                document.getElementById('gallery-view').style.display = 'none';
+                document.getElementById('storyboard-view').classList.add('active');
+            }
+        }
+        
+        function generatePrompt() {
+            const style = document.getElementById('artStyle').value;
+            const time = document.getElementById('timeOfDay').value;
+            
+            // Get random template based on current category
+            let category = currentCategory === 'all' ? 'character' : currentCategory;
+            const templates = promptTemplates[category] || promptTemplates.character;
+            const template = templates[Math.floor(Math.random() * templates.length)];
+            
+            // Build full prompt
+            let location = 'Mays Landing';
+            if (currentLocation !== 'all') {
+                const loc = locations.find(l => l.id === currentLocation);
+                if (loc) location = loc.name;
+            }
+            
+            const styleDescriptions = {
+                concept_art: 'professional concept art, detailed rendering',
+                cinematic: 'cinematic lighting, movie quality, widescreen',
+                comic_book: 'comic book style, bold inking, dynamic',
+                storyboard: 'clean storyboard style, sequential art'
+            };
+            
+            const timeDescriptions = {
+                night: 'moonlit night, dark atmospheric, shadows',
+                dawn: 'early dawn light, misty, hopeful',
+                dusk: 'twilight glow, fading light, dramatic',
+                stormy: 'stormy weather, lightning, dramatic clouds'
+            };
+            
+            const prompt = `${template}, set in ${location}, ${timeDescriptions[time]}, ${styleDescriptions[style]}, heroic essence, motion cartoon style`;
+            
+            document.getElementById('promptOutput').value = prompt;
+        }
+        
+        function quickAction(type) {
+            // Set category and generate prompt
+            const templates = promptTemplates[type];
+            if (templates) {
+                const template = templates[Math.floor(Math.random() * templates.length)];
+                const style = document.getElementById('artStyle').value;
+                const time = document.getElementById('timeOfDay').value;
+                
+                const prompt = `${template}, ${time} atmosphere, ${style.replace('_', ' ')} style, Mays Landing, dynamic composition`;
+                document.getElementById('promptOutput').value = prompt;
+            }
+        }
+        
+        function generateNew() {
+            generatePrompt();
+            alert('🎨 New prompt generated! Copy it to your AI art generator to create concept art.');
+        }
+        
+        function exportAll() {
+            const exportData = {
+                project: 'Black Batman Motion Cartoon',
+                location: 'Mays Landing, NJ',
+                exported_at: new Date().toISOString(),
+                assets: [
+                    { title: 'Hero Rooftop Vigil', category: 'character', location: 'Courthouse' },
+                    { title: 'Lake Lenape Dawn', category: 'environment', location: 'Lake Lenape' },
+                    { title: 'Rooftop Leap', category: 'action', location: 'Downtown' }
+                ]
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'black_batman_assets_export.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Initialize with a prompt
+        document.addEventListener('DOMContentLoaded', function() {
+            generatePrompt();
+        });
+    </script>
+</body>
+</html>
