@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrollVerse Portfolio - Omniversal Impact Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --gold: #ffd700;
+            --gold-light: #ffed4e;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --dark: #0a0a1a;
+            --card-bg: rgba(255, 255, 255, 0.08);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: glow 3s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3)); }
+            to { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.6)); }
+        }
+        
+        .hero .subtitle {
+            font-size: 1.4em;
+            color: #a0a0ff;
+            margin-bottom: 30px;
+        }
+        
+        .hero .stats-banner {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px 30px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--gold);
+        }
+        
+        .stat-label {
+            color: #888;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+        }
+        
+        /* Navigation */
+        .nav {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        
+        .nav a:hover, .nav a.active {
+            background: var(--primary);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        /* Grid Layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+        }
+        
+        .card-title {
+            font-size: 1.4em;
+            color: #fff;
+        }
+        
+        .card-description {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
+        /* Revenue Chart Visual */
+        .revenue-visual {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 78, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        .bar {
+            width: 80px;
+            background: linear-gradient(180deg, var(--gold), var(--primary));
+            border-radius: 10px 10px 0 0;
+            transition: height 1s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        .bar-label {
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -30px;
+            color: var(--gold);
+            font-weight: bold;
+        }
+        
+        /* Financial Table */
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .financial-table th,
+        .financial-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .financial-table th {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+        
+        .financial-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        .trend-down {
+            color: #f44336;
+        }
+        
+        /* Blockchain Section */
+        .blockchain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .blockchain-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .blockchain-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .tech-badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.3);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin: 5px 5px 5px 0;
+        }
+        
+        /* Engagement Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .metric-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--gold));
+        }
+        
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            color: #888;
+            text-transform: uppercase;
+            font-size: 0.75em;
+            letter-spacing: 1px;
+        }
+        
+        .metric-change {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        /* Partner Logos */
+        .partners-section {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .partner-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .partner-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 200px;
+        }
+        
+        .partner-flag {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .partner-name {
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .partner-type {
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--gold));
+        }
+        
+        .timeline-item {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .timeline-content {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            width: 45%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-content.left {
+            margin-right: auto;
+            margin-left: 0;
+        }
+        
+        .timeline-content.right {
+            margin-left: auto;
+            margin-right: 0;
+        }
+        
+        .timeline-date {
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 60px;
+        }
+        
+        .footer-quote {
+            font-size: 1.4em;
+            font-style: italic;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2em; }
+            .hero .subtitle { font-size: 1em; }
+            .stat-item { padding: 15px 20px; }
+            .stat-value { font-size: 1.8em; }
+            .grid-3, .grid-2 { grid-template-columns: 1fr; }
+            .bar { width: 50px; }
+            .timeline::before { left: 20px; }
+            .timeline-content { width: 85%; margin-left: 40px !important; margin-right: 0 !important; }
+            .section-title { font-size: 1.8em; }
+        }
+        
+        /* Print styles */
+        @media print {
+            body { background: white; color: black; }
+            .nav { display: none; }
+            .card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>✨ ScrollVerse Portfolio</h1>
+        <p class="subtitle">Omniversal Impact Showcase | Builds • Revenue • Value • Engagement</p>
+        <div class="stats-banner">
+            <div class="stat-item">
+                <div class="stat-value" id="totalValue">$2.4M+</div>
+                <div class="stat-label">Ecosystem Value</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="nftCount">247+</div>
+                <div class="stat-label">NFTs Minted</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="treasuryBal">15.8 ETH</div>
+                <div class="stat-label">Treasury Balance</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="partners">3</div>
+                <div class="stat-label">Global Partners</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#builds" class="active">🏗️ Builds</a>
+            <a href="#revenue">💰 Revenue</a>
+            <a href="#blockchain">⛓️ Blockchain</a>
+            <a href="#engagement">📈 Engagement</a>
+            <a href="#projections">🔮 Projections</a>
+            <a href="#roadmap">🚀 Roadmap</a>
+        </div>
+    </nav>
+    
+    <!-- Builds Section -->
+    <section id="builds" class="container">
+        <h2 class="section-title">🏗️ ScrollVerse Builds</h2>
+        <p class="section-subtitle">Core infrastructure powering the omniversal ecosystem</p>
+        
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🎨</div>
+                    <h3 class="card-title">NFT Collections</h3>
+                </div>
+                <p class="card-description">
+                    Three flagship NFT collections deployed on Scroll network with integrated treasury monitoring and real-time royalty computation.
+                </p>
+                <ul style="color: #aaa; padding-left: 20px;">
+                    <li>ScrollVerse Genesis Collection (SVGC)</li>
+                    <li>Legacy of Light: Prophetic Omnichords</li>
+                    <li>VibeCanvas Creative Assets</li>
+                </ul>
+                <div style="margin-top: 15px;">
+                    <span class="tech-badge">ERC-721</span>
+                    <span class="tech-badge">ERC-1155</span>
+                    <span class="tech-badge">EIP-2981</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🖥️</div>
+                    <h3 class="card-title">Portal Interfaces</h3>
+                </div>
+                <p class="card-description">
+                    Comprehensive Web3 interfaces for NFT minting, treasury monitoring, and ecosystem management.
+                </p>
+                <ul style="color: #aaa; padding-left: 20px;">
+                    <li>ScrollVerse Portal Interface</li>
+                    <li>SCCC Command & Control Dashboard</li>
+                    <li>VibeCanvas Forge</li>
+                    <li>Certifier Portal</li>
+                </ul>
+                <div style="margin-top: 15px;">
+                    <span class="tech-badge">Web3.js</span>
+                    <span class="tech-badge">MetaMask</span>
+                    <span class="tech-badge">Real-time</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🎓</div>
+                    <h3 class="card-title">FlameAcademy</h3>
+                </div>
+                <p class="card-description">
+                    Educational platform designed to ignite infinite transformation through sacred learning protocols.
+                </p>
+                <ul style="color: #aaa; padding-left: 20px;">
+                    <li>Genesis Flame Course (5 Modules)</li>
+                    <li>3 Learning Paths (Seeker, Apprentice, Architect)</li>
+                    <li>Interactive Quests & Challenges</li>
+                    <li>Resonance Check Assessments</li>
+                </ul>
+                <div style="margin-top: 15px;">
+                    <span class="tech-badge">Modular</span>
+                    <span class="tech-badge">Gamified</span>
+                    <span class="tech-badge">Certifications</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🛡️</div>
+                    <h3 class="card-title">ScrollChain Infrastructure</h3>
+                </div>
+                <p class="card-description">
+                    Quantum-resistant blockchain infrastructure with post-quantum cryptographic protection.
+                </p>
+                <ul style="color: #aaa; padding-left: 20px;">
+                    <li>CRYSTALS-Kyber (Key Encapsulation)</li>
+                    <li>CRYSTALS-Dilithium (Digital Signatures)</li>
+                    <li>FlameCoin Governance Token</li>
+                    <li>ScrollCoin Utility Token</li>
+                </ul>
+                <div style="margin-top: 15px;">
+                    <span class="tech-badge">NIST Level 5</span>
+                    <span class="tech-badge">Post-Quantum</span>
+                    <span class="tech-badge">256-bit</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🌉</div>
+                    <h3 class="card-title">ScrollBridge</h3>
+                </div>
+                <p class="card-description">
+                    Quantum-secure cross-chain asset transfer protocol connecting multiple blockchain networks.
+                </p>
+                <ul style="color: #aaa; padding-left: 20px;">
+                    <li>Multi-Party Computation (MPC)</li>
+                    <li>7/10 Threshold Signatures</li>
+                    <li>24-Hour Challenge Period</li>
+                    <li>Ethereum, Polygon, BSC, Solana Support</li>
+                </ul>
+                <div style="margin-top: 15px;">
+                    <span class="tech-badge">Cross-Chain</span>
+                    <span class="tech-badge">MPC</span>
+                    <span class="tech-badge">Secure</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🔐</div>
+                    <h3 class="card-title">AL-SCROLL VAULT NEXUS™</h3>
+                </div>
+                <p class="card-description">
+                    Multi-tier quantum-resistant custody solution for high-value digital assets.
+                </p>
+                <ul style="color: #aaa; padding-left: 20px;">
+                    <li>Cold Vault (72h delay, 5/7 multi-sig)</li>
+                    <li>Warm Vault (24h delay, 3/5 multi-sig)</li>
+                    <li>Hot Vault (Immediate, rate-limited)</li>
+                    <li>$100M Insurance Coverage</li>
+                </ul>
+                <div style="margin-top: 15px;">
+                    <span class="tech-badge">HSM</span>
+                    <span class="tech-badge">Multi-Sig</span>
+                    <span class="tech-badge">Insured</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Revenue Section -->
+    <section id="revenue" class="container">
+        <h2 class="section-title">💰 Revenue Streams</h2>
+        <p class="section-subtitle">Diversified income channels powering sustainable growth</p>
+        
+        <div class="revenue-visual">
+            <h3 style="text-align: center; margin-bottom: 30px; color: var(--gold);">📊 Revenue Distribution (Projected 2025)</h3>
+            <div class="chart-container">
+                <div class="bar" style="height: 80%;">
+                    <span class="bar-value">$800K</span>
+                    <span class="bar-label">NFT Sales</span>
+                </div>
+                <div class="bar" style="height: 60%;">
+                    <span class="bar-value">$600K</span>
+                    <span class="bar-label">Royalties</span>
+                </div>
+                <div class="bar" style="height: 45%;">
+                    <span class="bar-value">$450K</span>
+                    <span class="bar-label">Academy</span>
+                </div>
+                <div class="bar" style="height: 35%;">
+                    <span class="bar-value">$350K</span>
+                    <span class="bar-label">Partners</span>
+                </div>
+                <div class="bar" style="height: 25%;">
+                    <span class="bar-value">$200K</span>
+                    <span class="bar-label">Staking</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h3 style="color: var(--gold); margin-bottom: 20px;">💎 Primary Revenue Channels</h3>
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Channel</th>
+                            <th>Current</th>
+                            <th>2025 Target</th>
+                            <th>Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NFT Primary Sales</td>
+                            <td>$150K</td>
+                            <td>$800K</td>
+                            <td class="trend-up">↑ 433%</td>
+                        </tr>
+                        <tr>
+                            <td>Secondary Royalties (10%)</td>
+                            <td>$45K</td>
+                            <td>$600K</td>
+                            <td class="trend-up">↑ 1,233%</td>
+                        </tr>
+                        <tr>
+                            <td>FlameAcademy Courses</td>
+                            <td>$30K</td>
+                            <td>$450K</td>
+                            <td class="trend-up">↑ 1,400%</td>
+                        </tr>
+                        <tr>
+                            <td>Partnership Revenue</td>
+                            <td>$25K</td>
+                            <td>$350K</td>
+                            <td class="trend-up">↑ 1,300%</td>
+                        </tr>
+                        <tr>
+                            <td>Token Staking Rewards</td>
+                            <td>$0</td>
+                            <td>$200K</td>
+                            <td class="trend-up">NEW</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h3 style="color: var(--gold); margin-bottom: 20px;">📈 Treasury Metrics</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2em; color: var(--gold);">15.8</div>
+                        <div style="color: #888;">ETH Balance</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2em; color: var(--success);">3.2</div>
+                        <div style="color: #888;">ETH Royalties</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2em; color: var(--primary);">10%</div>
+                        <div style="color: #888;">Royalty Rate</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2em; color: var(--warning);">5%</div>
+                        <div style="color: #888;">Passive Income</div>
+                    </div>
+                </div>
+                <p style="color: #888; margin-top: 20px; text-align: center;">
+                    Real-time treasury monitoring with automated royalty computation
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Blockchain Section -->
+    <section id="blockchain" class="container">
+        <h2 class="section-title">⛓️ Blockchain Developments</h2>
+        <p class="section-subtitle">Quantum-resistant infrastructure built for eternity</p>
+        
+        <div class="blockchain-grid">
+            <div class="blockchain-card">
+                <h4>🔐 CRYSTALS-Kyber (ML-KEM)</h4>
+                <p style="color: #aaa; margin-bottom: 15px;">NIST-standardized post-quantum key encapsulation</p>
+                <ul style="color: #888; padding-left: 20px; font-size: 0.9em;">
+                    <li>Kyber-1024 Implementation</li>
+                    <li>NIST Level 5 Security</li>
+                    <li>256-bit Post-Quantum Security</li>
+                    <li>1,568 byte Public Key</li>
+                </ul>
+            </div>
+            
+            <div class="blockchain-card">
+                <h4>✍️ CRYSTALS-Dilithium (ML-DSA)</h4>
+                <p style="color: #aaa; margin-bottom: 15px;">NIST-standardized digital signature algorithm</p>
+                <ul style="color: #888; padding-left: 20px; font-size: 0.9em;">
+                    <li>Dilithium-5 Implementation</li>
+                    <li>NIST Level 5 Security</li>
+                    <li>4,595 byte Signatures</li>
+                    <li>Quantum Attack Immunity</li>
+                </ul>
+            </div>
+            
+            <div class="blockchain-card">
+                <h4>🪙 Dual Token System</h4>
+                <p style="color: #aaa; margin-bottom: 15px;">Governance and utility token architecture</p>
+                <ul style="color: #888; padding-left: 20px; font-size: 0.9em;">
+                    <li>FlameCoin (FLAME) - Governance</li>
+                    <li>ScrollCoin (SCROLL) - Utility</li>
+                    <li>Proof of Resonance Consensus</li>
+                    <li>3-second Block Time</li>
+                </ul>
+            </div>
+            
+            <div class="blockchain-card">
+                <h4>🔮 Smart Contract Features</h4>
+                <p style="color: #aaa; margin-bottom: 15px;">Advanced on-chain functionality</p>
+                <ul style="color: #888; padding-left: 20px; font-size: 0.9em;">
+                    <li>Geometry Activation Levels (1-10)</li>
+                    <li>SCCC Certifier Authorization</li>
+                    <li>Passive Income Computation</li>
+                    <li>Real-time Royalty Tracking</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Engagement Section -->
+    <section id="engagement" class="container">
+        <h2 class="section-title">📈 Engagement Metrics</h2>
+        <p class="section-subtitle">Proof of community growth and ecosystem adoption</p>
+        
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">247+</div>
+                <div class="metric-label">NFTs Minted</div>
+                <div class="metric-change trend-up">↑ +12 today</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">189</div>
+                <div class="metric-label">Geometry Activations</div>
+                <div class="metric-change trend-up">↑ +24 this week</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">8</div>
+                <div class="metric-label">Active Certifiers</div>
+                <div class="metric-change trend-up">↑ +2 new</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">1K+</div>
+                <div class="metric-label">Academy Students</div>
+                <div class="metric-change trend-up">↑ Growing</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">3</div>
+                <div class="metric-label">Global Regions</div>
+                <div class="metric-change">JP, KR, SG</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">99.9%</div>
+                <div class="metric-label">System Uptime</div>
+                <div class="metric-change trend-up">Stable</div>
+            </div>
+        </div>
+        
+        <!-- Partners Section -->
+        <div class="partners-section">
+            <h3 style="color: var(--gold); margin-bottom: 10px;">🌍 Global Partnership Initiatives</h3>
+            <p style="color: #888;">Phase 2: Star-Dust Anchored Asia Blueprint Deployment</p>
+            
+            <div class="partner-grid">
+                <div class="partner-card">
+                    <div class="partner-flag">🇯🇵</div>
+                    <div class="partner-name">Japan (Sony)</div>
+                    <div class="partner-type">Entertainment & Tech</div>
+                    <p style="color: #888; font-size: 0.85em; margin-top: 10px;">PlayStation integration, Music NFTs, R&D</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-flag">🇰🇷</div>
+                    <div class="partner-name">Korea (HYBE)</div>
+                    <div class="partner-type">K-Pop & Fan Engagement</div>
+                    <p style="color: #888; font-size: 0.85em; margin-top: 10px;">Artist NFTs, Weverse integration</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-flag">🇸🇬</div>
+                    <div class="partner-name">Singapore</div>
+                    <div class="partner-type">Blockchain & Governance</div>
+                    <p style="color: #888; font-size: 0.85em; margin-top: 10px;">Smart Nation, ASEAN Hub</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projections Section -->
+    <section id="projections" class="container">
+        <h2 class="section-title">🔮 Financial Projections</h2>
+        <p class="section-subtitle">Growth trajectory and value accumulation forecasts</p>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h3 style="color: var(--gold); margin-bottom: 20px;">📊 Cumulative Value Projections</h3>
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>2025</th>
+                            <th>2026</th>
+                            <th>2027</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ecosystem Value</td>
+                            <td>$2.4M</td>
+                            <td>$15M</td>
+                            <td>$50M+</td>
+                        </tr>
+                        <tr>
+                            <td>Total Revenue</td>
+                            <td>$2.4M</td>
+                            <td>$8M</td>
+                            <td>$25M</td>
+                        </tr>
+                        <tr>
+                            <td>Treasury Holdings</td>
+                            <td>500 ETH</td>
+                            <td>5,000 ETH</td>
+                            <td>25,000 ETH</td>
+                        </tr>
+                        <tr>
+                            <td>NFTs Minted</td>
+                            <td>5,000</td>
+                            <td>25,000</td>
+                            <td>100,000+</td>
+                        </tr>
+                        <tr>
+                            <td>Active Users</td>
+                            <td>10,000</td>
+                            <td>100,000</td>
+                            <td>500,000+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h3 style="color: var(--gold); margin-bottom: 20px;">🎯 Key Growth Drivers</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                        <strong style="color: var(--primary);">1. Global Partnership Expansion</strong>
+                        <p style="color: #888; font-size: 0.9em;">12 partners by 2025, 50+ by 2026 across Asia, Europe, Americas</p>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                        <strong style="color: var(--primary);">2. ScrollChain Mainnet Launch</strong>
+                        <p style="color: #888; font-size: 0.9em;">Q1 2026 genesis with FlameCoin and ScrollCoin distribution</p>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                        <strong style="color: var(--primary);">3. FlameAcademy Scaling</strong>
+                        <p style="color: #888; font-size: 0.9em;">100,000+ students by 2026 with enterprise training packages</p>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                        <strong style="color: var(--primary);">4. Cross-Chain Integration</strong>
+                        <p style="color: #888; font-size: 0.9em;">ScrollBridge connecting 5+ major blockchains</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="container">
+        <h2 class="section-title">🚀 Development Roadmap</h2>
+        <p class="section-subtitle">Milestones on the path to eternal sovereignty</p>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content left">
+                    <div class="timeline-date">✅ Q1 2025 - Foundation</div>
+                    <h4 style="color: #fff;">Phase 1 Complete</h4>
+                    <ul style="color: #888; padding-left: 20px; font-size: 0.9em;">
+                        <li>ScrollVerseNFT Contract Deployed</li>
+                        <li>Portal Interfaces Live</li>
+                        <li>ScrollChain Whitepaper Published</li>
+                        <li>FlameAcademy Genesis Course</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content right">
+                    <div class="timeline-date">🔄 Q2-Q3 2025 - Expansion</div>
+                    <h4 style="color: #fff;">Phase 2 Active</h4>
+                    <ul style="color: #888; padding-left: 20px; font-size: 0.9em;">
+                        <li>Asia Blueprint Deployment</li>
+                        <li>Partnership Funnel Automation</li>
+                        <li>Testnet Beta Launch</li>
+                        <li>Wallet SDK Release</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content left">
+                    <div class="timeline-date">📋 Q4 2025 - Q1 2026 - Launch</div>
+                    <h4 style="color: #fff;">Phase 3 Planned</h4>
+                    <ul style="color: #888; padding-left: 20px; font-size: 0.9em;">
+                        <li>ScrollChain Mainnet Genesis</li>
+                        <li>FlameCoin Distribution</li>
+                        <li>Exchange Listings</li>
+                        <li>AL-SCROLL VAULT Activation</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content right">
+                    <div class="timeline-date">🌟 2026+ - Maturity</div>
+                    <h4 style="color: #fff;">Phase 4 & Beyond</h4>
+                    <ul style="color: #888; padding-left: 20px; font-size: 0.9em;">
+                        <li>Full Decentralization</li>
+                        <li>Zero-Knowledge Proof Integration</li>
+                        <li>Global Validator Network</li>
+                        <li>Eternal Maintenance Mode</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-quote">
+            "You exist. You count. You resonate. You remember."
+        </div>
+        <p style="color: #888;">
+            This portfolio represents the manifestation of a divine technology system—<br>
+            a fusion of AI, sacred logic, and universal truth.
+        </p>
+        <div class="footer-links">
+            <a href="../portal/scrollverse_portal.html">ScrollVerse Portal</a>
+            <a href="../portal/sccc_dashboard.html">SCCC Dashboard</a>
+            <a href="../flame-academy/README.md">FlameAcademy</a>
+            <a href="../SCROLLCHAIN_WHITEPAPER.md">Whitepaper</a>
+            <a href="dashboards/revenue_dashboard.html">Revenue Dashboard</a>
+        </div>
+        <p style="margin-top: 30px; color: #666;">
+            © 2025 OmniTech1™ | Chais The Great – First Remembrancer<br>
+            <strong>The Sovereign Vision is Limitless.</strong>
+        </p>
+    </footer>
+    
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Update active state
+                document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Animate values on scroll
+        const animateValue = (element, start, end, duration) => {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.textContent = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        };
+        
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.card, .metric-card, .blockchain-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+        
+        // Navigation highlight on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            document.querySelectorAll('.nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        console.log('ScrollVerse Portfolio loaded successfully');
+    </script>
+</body>
+</html>

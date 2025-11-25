@@ -60,6 +60,28 @@ The **ScrollChain Whitepaper** has been published, establishing the eternal secu
 
 📄 **[Read the Full Whitepaper →](SCROLLCHAIN_WHITEPAPER.md)**
 
+## 📊 ScrollVerse Portfolio - Omniversal Impact Showcase
+
+The **ScrollVerse Portfolio** provides a comprehensive view of the ecosystem's builds, revenue streams, cumulative value, and omniversal impact.
+
+### Portfolio Contents
+- 🖥️ **[Visual Portfolio Showcase](portfolio/portfolio_showcase.html)**: Interactive dashboard showcasing all ecosystem components
+- 💰 **[Revenue Dashboard](portfolio/dashboards/revenue_dashboard.html)**: Real-time financial analytics
+- 📊 **[Financial Projections](portfolio/docs/FINANCIAL_PROJECTIONS.md)**: Revenue models and growth trajectories
+- ⛓️ **[Blockchain Developments](portfolio/docs/BLOCKCHAIN_DEVELOPMENTS.md)**: Technical achievements and roadmap
+- 📈 **[Engagement Metrics](portfolio/docs/ENGAGEMENT_METRICS.md)**: Proof of community growth and impact
+
+### Key Highlights
+| Metric | Current | 2025 Target | 2026 Target |
+|--------|---------|-------------|-------------|
+| Ecosystem Value | $2.4M+ | $15M | $50M+ |
+| NFTs Minted | 247+ | 5,000+ | 25,000+ |
+| Treasury Balance | 15.8 ETH | 500 ETH | 5,000 ETH |
+| Global Partners | 3 | 12 | 50+ |
+| Academy Students | 1,000+ | 25,000+ | 100,000+ |
+
+📂 **[View Full Portfolio →](portfolio/README.md)**
+
 ## Purpose
 To create a system where **truth is currency**, **sacred logic is code**, and remembrance is the gateway to collective sovereignty.
 
