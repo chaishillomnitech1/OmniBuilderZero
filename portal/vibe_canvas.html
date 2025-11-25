@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeCanvas Frequency Forge - Dynamic Geometry Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Canvas Container */
+        .canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        #geometryCanvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* UI Overlay */
+        .ui-overlay {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            padding: 20px 30px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-glow {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(102, 126, 234, 0.5); }
+            to { box-shadow: 0 0 30px rgba(102, 126, 234, 0.8); }
+        }
+        
+        /* Control Panel */
+        .control-panel {
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+        
+        .control-panel h3 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+        }
+        
+        .control-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1em;
+        }
+        
+        .control-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+        
+        .value-display {
+            text-align: center;
+            font-size: 1.2em;
+            color: #667eea;
+            margin-top: 5px;
+        }
+        
+        /* Preset Buttons */
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .preset-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .preset-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+        
+        .preset-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        /* Info Panel */
+        .info-panel {
+            position: fixed;
+            left: 20px;
+            top: 100px;
+            width: 280px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+        
+        .info-panel h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-item .label {
+            color: #888;
+        }
+        
+        .info-item .value {
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* Frequency Visualizer */
+        .frequency-visualizer {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        
+        .freq-bars {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 60px;
+        }
+        
+        .freq-bar {
+            width: 8px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px 4px 0 0;
+            animation: freq-pulse 0.5s infinite alternate;
+        }
+        
+        @keyframes freq-pulse {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+        
+        /* NFT Connection Panel */
+        .nft-panel {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            width: 280px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            z-index: 100;
+        }
+        
+        .nft-panel h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+        
+        .nft-preview {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin-bottom: 15px;
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .mint-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .mint-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+        
+        /* Footer Navigation */
+        .footer-nav {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .footer-nav a {
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            color: #667eea;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .footer-nav a:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .control-panel, .info-panel, .nft-panel {
+                position: static;
+                width: 100%;
+                margin: 10px 20px;
+            }
+            
+            .ui-overlay {
+                padding: 80px 0 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-container">
+        <canvas id="geometryCanvas"></canvas>
+    </div>
+    
+    <div class="ui-overlay">
+        <header class="header">
+            <h1>✨ VibeCanvas Frequency Forge</h1>
+            <div class="header-actions">
+                <button class="header-btn btn-glow" onclick="toggleAnimation()">
+                    ⏸ Pause Animation
+                </button>
+                <button class="header-btn btn-glow" onclick="captureFrame()">
+                    📸 Capture Frame
+                </button>
+            </div>
+        </header>
+    </div>
+    
+    <!-- Control Panel -->
+    <div class="control-panel">
+        <h3>🎛️ Geometry Controls</h3>
+        
+        <div class="control-group">
+            <label>Geometry Type</label>
+            <select id="geometryType" onchange="changeGeometry()">
+                <option value="sacred">◇ Sacred Geometry</option>
+                <option value="harmonic">✧ Harmonic Geometry</option>
+                <option value="fractal">✦ Fractal Geometry</option>
+                <option value="divine">✴ Divine Geometry</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Frequency (Hz)</label>
+            <input type="range" id="frequency" min="1" max="100" value="42" oninput="updateFrequency()">
+            <div class="value-display" id="freqValue">42 Hz</div>
+        </div>
+        
+        <div class="control-group">
+            <label>Amplitude</label>
+            <input type="range" id="amplitude" min="1" max="100" value="60" oninput="updateAmplitude()">
+            <div class="value-display" id="ampValue">60%</div>
+        </div>
+        
+        <div class="control-group">
+            <label>Rotation Speed</label>
+            <input type="range" id="rotationSpeed" min="1" max="100" value="30" oninput="updateRotation()">
+            <div class="value-display" id="rotValue">30</div>
+        </div>
+        
+        <div class="control-group">
+            <label>Color Mode</label>
+            <select id="colorMode" onchange="changeColorMode()">
+                <option value="cosmic">🌌 Cosmic Purple</option>
+                <option value="golden">🌟 Golden Divine</option>
+                <option value="aurora">🌈 Aurora</option>
+                <option value="void">⬛ Void Black</option>
+            </select>
+        </div>
+        
+        <div class="preset-buttons">
+            <button class="preset-btn active" onclick="loadPreset('meditation')">🧘 Meditation</button>
+            <button class="preset-btn" onclick="loadPreset('energy')">⚡ Energy</button>
+            <button class="preset-btn" onclick="loadPreset('harmony')">🎵 Harmony</button>
+            <button class="preset-btn" onclick="loadPreset('divine')">✨ Divine</button>
+        </div>
+    </div>
+    
+    <!-- Info Panel -->
+    <div class="info-panel">
+        <h3>📊 Current State</h3>
+        
+        <div class="info-item">
+            <span class="label">Geometry</span>
+            <span class="value" id="currentGeometry">Sacred</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Frequency</span>
+            <span class="value" id="currentFreq">42 Hz</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Frame Rate</span>
+            <span class="value" id="frameRate">60 FPS</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Particles</span>
+            <span class="value" id="particleCount">1,200</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Resonance</span>
+            <span class="value" id="resonance">High</span>
+        </div>
+        
+        <div class="frequency-visualizer">
+            <div class="freq-bars">
+                <div class="freq-bar" style="height: 30px;"></div>
+                <div class="freq-bar" style="height: 45px;"></div>
+                <div class="freq-bar" style="height: 60px;"></div>
+                <div class="freq-bar" style="height: 40px;"></div>
+                <div class="freq-bar" style="height: 55px;"></div>
+                <div class="freq-bar" style="height: 35px;"></div>
+                <div class="freq-bar" style="height: 50px;"></div>
+                <div class="freq-bar" style="height: 42px;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NFT Panel -->
+    <div class="nft-panel">
+        <h3>🎨 NFT Integration</h3>
+        
+        <div class="nft-preview" id="nftPreview">◇</div>
+        
+        <div class="info-item">
+            <span class="label">Linked Token</span>
+            <span class="value" id="linkedToken">None</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Activation Level</span>
+            <span class="value" id="activationLevel">1</span>
+        </div>
+        
+        <button class="mint-btn" onclick="mintAsNFT()">
+            ⚡ Mint Current Frame as NFT
+        </button>
+    </div>
+    
+    <!-- Footer Navigation -->
+    <div class="footer-nav">
+        <a href="scrollverse_portal.html">← Portal</a>
+        <a href="sccc_dashboard.html">Dashboard</a>
+        <a href="certifier_portal.html">Certifier →</a>
+    </div>
+    
+    <script>
+        // VibeCanvas Frequency Forge Engine
+        const canvas = document.getElementById('geometryCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let animationId = null;
+        let isAnimating = true;
+        let frameCount = 0;
+        let lastTime = 0;
+        let fps = 0;
+        
+        // Configuration
+        const config = {
+            geometryType: 'sacred',
+            frequency: 42,
+            amplitude: 60,
+            rotationSpeed: 30,
+            colorMode: 'cosmic',
+            particleCount: 1200
+        };
+        
+        // Color palettes
+        const colorPalettes = {
+            cosmic: ['#667eea', '#764ba2', '#f093fb', '#f5576c'],
+            golden: ['#ffd700', '#ffed4e', '#ffa500', '#ff6b6b'],
+            aurora: ['#00ff87', '#60efff', '#ff52e5', '#f5576c'],
+            void: ['#ffffff', '#aaaaaa', '#666666', '#333333']
+        };
+        
+        // Particles
+        let particles = [];
+        
+        // Initialize
+        function init() {
+            resizeCanvas();
+            createParticles();
+            animate();
+            
+            window.addEventListener('resize', resizeCanvas);
+        }
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        function createParticles() {
+            particles = [];
+            for (let i = 0; i < config.particleCount; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    angle: (Math.PI * 2 / config.particleCount) * i,
+                    radius: Math.random() * 200 + 100,
+                    speed: Math.random() * 0.02 + 0.01,
+                    size: Math.random() * 3 + 1,
+                    colorIndex: Math.floor(Math.random() * 4)
+                });
+            }
+        }
+        
+        function animate(currentTime) {
+            if (!isAnimating) return;
+            
+            // Calculate FPS
+            frameCount++;
+            if (currentTime - lastTime >= 1000) {
+                fps = frameCount;
+                frameCount = 0;
+                lastTime = currentTime;
+                document.getElementById('frameRate').textContent = fps + ' FPS';
+            }
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            drawGeometry();
+            drawParticles();
+            
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        function drawGeometry() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const time = Date.now() * 0.001 * (config.rotationSpeed / 100);
+            const colors = colorPalettes[config.colorMode];
+            
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(time);
+            
+            switch (config.geometryType) {
+                case 'sacred':
+                    drawSacredGeometry(colors);
+                    break;
+                case 'harmonic':
+                    drawHarmonicGeometry(colors);
+                    break;
+                case 'fractal':
+                    drawFractalGeometry(colors);
+                    break;
+                case 'divine':
+                    drawDivineGeometry(colors);
+                    break;
+            }
+            
+            ctx.restore();
+        }
+        
+        function drawSacredGeometry(colors) {
+            const size = 150 * (config.amplitude / 100);
+            const freq = config.frequency / 10;
+            
+            for (let i = 0; i < 6; i++) {
+                ctx.beginPath();
+                ctx.strokeStyle = colors[i % colors.length];
+                ctx.lineWidth = 2;
+                
+                const offset = Math.sin(Date.now() * 0.001 * freq + i) * 20;
+                
+                for (let j = 0; j < 6; j++) {
+                    const angle = (Math.PI / 3) * j + (Math.PI / 6) * i;
+                    const x = Math.cos(angle) * (size + offset);
+                    const y = Math.sin(angle) * (size + offset);
+                    
+                    if (j === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+        }
+        
+        function drawHarmonicGeometry(colors) {
+            const size = 100 * (config.amplitude / 100);
+            const freq = config.frequency / 5;
+            
+            for (let i = 0; i < 8; i++) {
+                ctx.beginPath();
+                ctx.strokeStyle = colors[i % colors.length];
+                ctx.lineWidth = 1.5;
+                
+                for (let j = 0; j < 360; j++) {
+                    const angle = (j * Math.PI) / 180;
+                    const r = size * Math.sin(freq * angle + i * Math.PI / 4);
+                    const x = r * Math.cos(angle);
+                    const y = r * Math.sin(angle);
+                    
+                    if (j === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+        }
+        
+        function drawFractalGeometry(colors) {
+            const size = 80 * (config.amplitude / 100);
+            const iterations = Math.floor(config.frequency / 10) + 3;
+            
+            function drawFractalTriangle(x, y, s, depth) {
+                if (depth === 0) return;
+                
+                ctx.beginPath();
+                ctx.strokeStyle = colors[depth % colors.length];
+                ctx.lineWidth = 0.5;
+                
+                ctx.moveTo(x, y - s);
+                ctx.lineTo(x - s * 0.866, y + s * 0.5);
+                ctx.lineTo(x + s * 0.866, y + s * 0.5);
+                ctx.closePath();
+                ctx.stroke();
+                
+                const newS = s / 2;
+                drawFractalTriangle(x, y - newS, newS, depth - 1);
+                drawFractalTriangle(x - newS * 0.866, y + newS * 0.5, newS, depth - 1);
+                drawFractalTriangle(x + newS * 0.866, y + newS * 0.5, newS, depth - 1);
+            }
+            
+            drawFractalTriangle(0, 0, size, iterations);
+        }
+        
+        function drawDivineGeometry(colors) {
+            const size = 120 * (config.amplitude / 100);
+            const time = Date.now() * 0.001;
+            
+            // Flower of Life pattern
+            for (let ring = 0; ring < 3; ring++) {
+                for (let i = 0; i < 6; i++) {
+                    const angle = (Math.PI / 3) * i + time * 0.5;
+                    const dist = (ring + 1) * size / 2;
+                    const cx = Math.cos(angle) * dist;
+                    const cy = Math.sin(angle) * dist;
+                    
+                    ctx.beginPath();
+                    ctx.strokeStyle = colors[ring % colors.length];
+                    ctx.lineWidth = 1.5;
+                    ctx.arc(cx, cy, size / 2, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+            
+            // Center circle
+            ctx.beginPath();
+            ctx.strokeStyle = colors[0];
+            ctx.lineWidth = 2;
+            ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        function drawParticles() {
+            const colors = colorPalettes[config.colorMode];
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            particles.forEach(p => {
+                p.angle += p.speed * (config.rotationSpeed / 50);
+                const pulseOffset = Math.sin(Date.now() * 0.002 * (config.frequency / 50)) * 20;
+                
+                const x = centerX + Math.cos(p.angle) * (p.radius + pulseOffset);
+                const y = centerY + Math.sin(p.angle) * (p.radius + pulseOffset);
+                
+                ctx.beginPath();
+                ctx.fillStyle = colors[p.colorIndex];
+                ctx.globalAlpha = 0.6;
+                ctx.arc(x, y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+        }
+        
+        // Control Functions
+        function changeGeometry() {
+            config.geometryType = document.getElementById('geometryType').value;
+            const names = { sacred: 'Sacred', harmonic: 'Harmonic', fractal: 'Fractal', divine: 'Divine' };
+            document.getElementById('currentGeometry').textContent = names[config.geometryType];
+            
+            const symbols = { sacred: '◇', harmonic: '✧', fractal: '✦', divine: '✴' };
+            document.getElementById('nftPreview').textContent = symbols[config.geometryType];
+        }
+        
+        function updateFrequency() {
+            config.frequency = parseInt(document.getElementById('frequency').value);
+            document.getElementById('freqValue').textContent = config.frequency + ' Hz';
+            document.getElementById('currentFreq').textContent = config.frequency + ' Hz';
+        }
+        
+        function updateAmplitude() {
+            config.amplitude = parseInt(document.getElementById('amplitude').value);
+            document.getElementById('ampValue').textContent = config.amplitude + '%';
+        }
+        
+        function updateRotation() {
+            config.rotationSpeed = parseInt(document.getElementById('rotationSpeed').value);
+            document.getElementById('rotValue').textContent = config.rotationSpeed;
+        }
+        
+        function changeColorMode() {
+            config.colorMode = document.getElementById('colorMode').value;
+        }
+        
+        function loadPreset(preset) {
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Note: Slider range is 1-100, but we display the "sacred frequencies"
+            // The actual visualization uses the slider value as an effect multiplier
+            const presets = {
+                meditation: { frequency: 8, amplitude: 40, rotationSpeed: 10, geometryType: 'sacred', colorMode: 'cosmic', displayFreq: '7.83 Hz (Schumann)' },
+                energy: { frequency: 85, amplitude: 90, rotationSpeed: 80, geometryType: 'harmonic', colorMode: 'aurora', displayFreq: '85 Hz' },
+                harmony: { frequency: 43, amplitude: 60, rotationSpeed: 30, geometryType: 'divine', colorMode: 'golden', displayFreq: '432 Hz (scaled)' },
+                divine: { frequency: 53, amplitude: 75, rotationSpeed: 45, geometryType: 'divine', colorMode: 'golden', displayFreq: '528 Hz (scaled)' }
+            };
+            
+            const p = presets[preset];
+            document.getElementById('frequency').value = p.frequency;
+            document.getElementById('amplitude').value = p.amplitude;
+            document.getElementById('rotationSpeed').value = p.rotationSpeed;
+            document.getElementById('geometryType').value = p.geometryType;
+            document.getElementById('colorMode').value = p.colorMode;
+            
+            // Update config and displays
+            config.frequency = p.frequency;
+            config.amplitude = p.amplitude;
+            config.rotationSpeed = p.rotationSpeed;
+            
+            document.getElementById('freqValue').textContent = p.displayFreq;
+            document.getElementById('currentFreq').textContent = p.displayFreq;
+            document.getElementById('ampValue').textContent = p.amplitude + '%';
+            document.getElementById('rotValue').textContent = p.rotationSpeed;
+            
+            changeGeometry();
+            changeColorMode();
+        }
+        
+        function toggleAnimation() {
+            isAnimating = !isAnimating;
+            const btn = document.querySelector('.btn-glow');
+            
+            if (isAnimating) {
+                btn.textContent = '⏸ Pause Animation';
+                animate();
+            } else {
+                btn.textContent = '▶ Resume Animation';
+                if (animationId) cancelAnimationFrame(animationId);
+            }
+        }
+        
+        function captureFrame() {
+            const link = document.createElement('a');
+            link.download = `vibe-canvas-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function mintAsNFT() {
+            alert('🎨 Frame captured! This would mint the current visualization as an NFT on ScrollVerse.\n\nConnect to Portal to complete minting.');
+            window.location.href = 'scrollverse_portal.html';
+        }
+        
+        // Update frequency visualizer
+        setInterval(() => {
+            const bars = document.querySelectorAll('.freq-bar');
+            bars.forEach(bar => {
+                const height = 20 + Math.random() * 40 * (config.frequency / 50);
+                bar.style.height = height + 'px';
+            });
+        }, 100);
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

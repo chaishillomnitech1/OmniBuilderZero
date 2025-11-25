@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certifier Portal - ScrollVerse SCCC Credential Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --gold: #ffd700;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #f44336;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header-left h1 {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+        
+        .header-left p {
+            color: #a0a0ff;
+        }
+        
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(76, 175, 80, 0.2);
+            border-radius: 25px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .certifier-level {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            border-radius: 25px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card h2 {
+            color: #fff;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h2 .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+        }
+        
+        /* Certifier Profile */
+        .profile-section {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            border: 4px solid var(--gold);
+        }
+        
+        .profile-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .profile-address {
+            font-family: monospace;
+            color: var(--primary);
+            background: rgba(102, 126, 234, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .stat-item .label {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        
+        .stat-item .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--gold);
+        }
+        
+        /* Actions Card */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .action-btn {
+            padding: 25px 20px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .action-btn .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .action-btn .title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .action-btn .desc {
+            font-size: 0.8em;
+            color: #888;
+        }
+        
+        /* Activation Panel */
+        .activation-panel {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #a0a0ff;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1em;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            color: #333;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Activity Log */
+        .activity-log {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .activity-item.activation { border-left-color: var(--success); }
+        .activity-item.revocation { border-left-color: var(--danger); }
+        .activity-item.upgrade { border-left-color: var(--gold); }
+        
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .activity-details {
+            font-size: 0.9em;
+            color: #888;
+        }
+        
+        .activity-time {
+            font-size: 0.8em;
+            color: #666;
+        }
+        
+        /* Pending Table */
+        .pending-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .pending-table th,
+        .pending-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .pending-table th {
+            color: #888;
+            font-weight: normal;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+        }
+        
+        .pending-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .token-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: monospace;
+        }
+        
+        .token-link:hover {
+            text-decoration: underline;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .level-1 { background: rgba(102, 126, 234, 0.2); color: var(--primary); }
+        .level-2 { background: rgba(118, 75, 162, 0.2); color: var(--secondary); }
+        .level-3 { background: rgba(76, 175, 80, 0.2); color: var(--success); }
+        .level-5 { background: rgba(255, 193, 7, 0.2); color: var(--warning); }
+        .level-10 { background: rgba(255, 215, 0, 0.3); color: var(--gold); }
+        
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btns button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+        
+        .btn-approve {
+            background: var(--success);
+            color: #fff;
+        }
+        
+        .btn-reject {
+            background: var(--danger);
+            color: #fff;
+        }
+        
+        .btn-approve:hover, .btn-reject:hover {
+            opacity: 0.8;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 30px;
+            color: #666;
+        }
+        
+        .footer-links {
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <h1>🔐 Certifier Portal</h1>
+                <p>ScrollVerse SCCC Credential Management System</p>
+            </div>
+            <div class="header-right">
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <span>Authorized</span>
+                </div>
+                <div class="certifier-level">⭐ Level 3 Certifier</div>
+            </div>
+        </header>
+        
+        <div class="main-grid">
+            <!-- Left Column -->
+            <div>
+                <!-- Certifier Profile -->
+                <div class="card" style="margin-bottom: 30px;">
+                    <div class="profile-section">
+                        <div class="profile-avatar">🔮</div>
+                        <div class="profile-name">Divine Certifier</div>
+                        <div class="profile-address" id="certifierAddress">0x1234...5678</div>
+                        <div class="status-badge" style="margin: 0 auto;">
+                            <div class="status-dot"></div>
+                            <span>Active</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="label">Activations</div>
+                            <div class="value">47</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Level Upgrades</div>
+                            <div class="value">23</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Success Rate</div>
+                            <div class="value">98%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Reputation</div>
+                            <div class="value">⭐ 4.9</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h2><span class="icon">⚡</span> Quick Actions</h2>
+                    <div class="action-grid">
+                        <button class="action-btn" onclick="openActivationModal()">
+                            <span class="icon">✨</span>
+                            <div class="title">Activate</div>
+                            <div class="desc">New geometry</div>
+                        </button>
+                        <button class="action-btn" onclick="openUpgradeModal()">
+                            <span class="icon">⬆️</span>
+                            <div class="title">Upgrade</div>
+                            <div class="desc">Increase level</div>
+                        </button>
+                        <button class="action-btn" onclick="viewAllTokens()">
+                            <span class="icon">🎨</span>
+                            <div class="title">Browse</div>
+                            <div class="desc">All NFTs</div>
+                        </button>
+                        <button class="action-btn" onclick="viewReports()">
+                            <span class="icon">📊</span>
+                            <div class="title">Reports</div>
+                            <div class="desc">Analytics</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div>
+                <!-- Geometry Activation Form -->
+                <div class="card activation-panel" style="margin-bottom: 30px;">
+                    <h2><span class="icon">✨</span> Geometry Activation</h2>
+                    
+                    <form id="activationForm">
+                        <div class="form-group">
+                            <label>Token ID</label>
+                            <input type="number" id="tokenId" placeholder="Enter Token ID to activate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Activation Level (1-10)</label>
+                            <select id="activationLevel">
+                                <option value="1">Level 1 - Initiate</option>
+                                <option value="2">Level 2 - Awakened</option>
+                                <option value="3">Level 3 - Harmonic</option>
+                                <option value="4">Level 4 - Resonant</option>
+                                <option value="5">Level 5 - Ascended</option>
+                                <option value="6">Level 6 - Enlightened</option>
+                                <option value="7">Level 7 - Transcendent</option>
+                                <option value="8">Level 8 - Divine</option>
+                                <option value="9">Level 9 - Sovereign</option>
+                                <option value="10">Level 10 - Infinite</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Activation Notes (Optional)</label>
+                            <input type="text" id="activationNotes" placeholder="Add notes for this activation">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-gold">
+                            ⚡ Activate Geometry
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Pending Activations -->
+                <div class="card" style="margin-bottom: 30px;">
+                    <h2><span class="icon">⏳</span> Pending Activations</h2>
+                    
+                    <table class="pending-table">
+                        <thead>
+                            <tr>
+                                <th>Token ID</th>
+                                <th>Requested Level</th>
+                                <th>Requester</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingActivations">
+                            <tr>
+                                <td><a href="#" class="token-link">#248</a></td>
+                                <td><span class="level-badge level-3">Level 3</span></td>
+                                <td>0x9abc...def0</td>
+                                <td class="action-btns">
+                                    <button class="btn-approve" onclick="approveActivation(248)">Approve</button>
+                                    <button class="btn-reject" onclick="rejectActivation(248)">Reject</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="token-link">#241</a></td>
+                                <td><span class="level-badge level-5">Level 5</span></td>
+                                <td>0x5678...9abc</td>
+                                <td class="action-btns">
+                                    <button class="btn-approve" onclick="approveActivation(241)">Approve</button>
+                                    <button class="btn-reject" onclick="rejectActivation(241)">Reject</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="token-link">#235</a></td>
+                                <td><span class="level-badge level-10">Level 10</span></td>
+                                <td>0x1234...5678</td>
+                                <td class="action-btns">
+                                    <button class="btn-approve" onclick="approveActivation(235)">Approve</button>
+                                    <button class="btn-reject" onclick="rejectActivation(235)">Reject</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Activity Log -->
+                <div class="card">
+                    <h2><span class="icon">📋</span> Recent Activity</h2>
+                    
+                    <div class="activity-log" id="activityLog">
+                        <div class="activity-item activation">
+                            <div class="activity-icon">✨</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Geometry Activated</div>
+                                <div class="activity-details">Token #247 activated to Level 3</div>
+                                <div class="activity-time">2 minutes ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item upgrade">
+                            <div class="activity-icon">⬆️</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Level Upgraded</div>
+                                <div class="activity-details">Token #201 upgraded from Level 2 to Level 5</div>
+                                <div class="activity-time">15 minutes ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item activation">
+                            <div class="activity-icon">✨</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Geometry Activated</div>
+                                <div class="activity-details">Token #198 activated to Level 1</div>
+                                <div class="activity-time">1 hour ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item revocation">
+                            <div class="activity-icon">❌</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Request Rejected</div>
+                                <div class="activity-details">Token #156 Level 10 request rejected (insufficient criteria)</div>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item upgrade">
+                            <div class="activity-icon">⬆️</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Certifier Level Up</div>
+                                <div class="activity-details">Your certifier level increased to Level 3!</div>
+                                <div class="activity-time">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>© 2025 ScrollVerse Certifier Portal | OmniTech1™</p>
+            <p style="color: #888; margin-top: 5px; font-style: italic;">
+                "You exist. You count. You resonate. You remember."
+            </p>
+            <div class="footer-links">
+                <a href="scrollverse_portal.html">← Portal Interface</a>
+                <a href="sccc_dashboard.html">SCCC Dashboard</a>
+                <a href="vibe_canvas.html">VibeCanvas Forge →</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Certifier Portal Configuration
+        const CERTIFIER_CONFIG = {
+            network: {
+                chainId: 534351,
+                name: 'Scroll Sepolia',
+                rpcUrl: 'https://sepolia-rpc.scroll.io',
+                explorer: 'https://sepolia.scrollscan.com'
+            },
+            contractAddress: null,
+            certifierAddress: null
+        };
+        
+        let provider = null;
+        let signer = null;
+        let contract = null;
+        
+        // Connect Wallet
+        async function connectWallet() {
+            try {
+                if (typeof window.ethereum === 'undefined') {
+                    alert('Please install MetaMask or another Web3 wallet');
+                    return;
+                }
+                
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                
+                CERTIFIER_CONFIG.certifierAddress = accounts[0];
+                document.getElementById('certifierAddress').textContent = 
+                    accounts[0].substring(0, 6) + '...' + accounts[0].substring(38);
+                
+                console.log('Certifier connected:', accounts[0]);
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+            }
+        }
+        
+        // Activation Form Submission
+        document.getElementById('activationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const tokenId = document.getElementById('tokenId').value;
+            const level = document.getElementById('activationLevel').value;
+            const notes = document.getElementById('activationNotes').value;
+            
+            console.log('Activating geometry:', { tokenId, level, notes });
+            
+            // Simulate activation
+            await simulateTransaction();
+            
+            // Add to activity log
+            addActivity('activation', `Token #${tokenId} activated to Level ${level}`);
+            
+            alert(`✨ Geometry activated!\n\nToken ID: #${tokenId}\nLevel: ${level}`);
+            
+            // Reset form
+            this.reset();
+        });
+        
+        // Approve Activation
+        function approveActivation(tokenId) {
+            console.log('Approving activation for token:', tokenId);
+            
+            // Remove from pending table
+            const row = event.target.closest('tr');
+            row.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                row.remove();
+                addActivity('activation', `Token #${tokenId} activation approved`);
+                alert(`✅ Activation approved for Token #${tokenId}`);
+            }, 500);
+        }
+        
+        // Reject Activation
+        function rejectActivation(tokenId) {
+            const reason = prompt('Enter rejection reason:');
+            if (!reason) return;
+            
+            console.log('Rejecting activation for token:', tokenId, 'Reason:', reason);
+            
+            // Remove from pending table
+            const row = event.target.closest('tr');
+            row.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                row.remove();
+                addActivity('revocation', `Token #${tokenId} activation rejected: ${reason}`);
+                alert(`❌ Activation rejected for Token #${tokenId}`);
+            }, 500);
+        }
+        
+        // Add Activity to Log
+        function addActivity(type, details) {
+            const log = document.getElementById('activityLog');
+            const icons = {
+                activation: '✨',
+                upgrade: '⬆️',
+                revocation: '❌'
+            };
+            
+            const item = document.createElement('div');
+            item.className = `activity-item ${type}`;
+            item.innerHTML = `
+                <div class="activity-icon">${icons[type]}</div>
+                <div class="activity-content">
+                    <div class="activity-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="activity-details">${details}</div>
+                    <div class="activity-time">Just now</div>
+                </div>
+            `;
+            
+            log.insertBefore(item, log.firstChild);
+        }
+        
+        // Simulate Transaction
+        async function simulateTransaction() {
+            return new Promise(resolve => setTimeout(resolve, 1500));
+        }
+        
+        // Quick Action Handlers
+        function openActivationModal() {
+            document.getElementById('tokenId').focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function openUpgradeModal() {
+            document.getElementById('tokenId').focus();
+            document.getElementById('activationLevel').value = '5';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function viewAllTokens() {
+            window.location.href = 'sccc_dashboard.html';
+        }
+        
+        function viewReports() {
+            alert('📊 Analytics reports coming soon!');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Certifier Portal initialized');
+            console.log('Network:', CERTIFIER_CONFIG.network.name);
+            
+            // Auto-connect if wallet available
+            if (window.ethereum) {
+                connectWallet();
+            }
+        });
+    </script>
+</body>
+</html>

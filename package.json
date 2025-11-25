@@ -10,6 +10,8 @@
     "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
     "deploy:mainnet": "hardhat run scripts/deploy.js --network mainnet",
     "deploy:polygon": "hardhat run scripts/deploy.js --network polygon",
+    "deploy:scroll-sepolia": "hardhat run scripts/deployScrollVerse.js --network scrollSepolia",
+    "deploy:scroll": "hardhat run scripts/deployScrollVerse.js --network scroll",
     "verify": "hardhat verify",
     "clean": "hardhat clean"
   },
@@ -23,7 +25,10 @@
     "Arweave",
     "KUN Coin",
     "OTCP",
-    "ARCHITEX"
+    "ARCHITEX",
+    "ScrollVerse",
+    "Scroll",
+    "Geometry"
   ],
   "author": "Chais The Great - OmniTech1",
   "license": "MIT",
