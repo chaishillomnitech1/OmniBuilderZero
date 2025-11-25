@@ -515,6 +515,16 @@
                 padding: 6px 12px;
                 font-size: 0.8em;
             }
+            
+            /* Canvas fullscreen optimization for mobile */
+            .canvas-container {
+                position: fixed;
+                z-index: 0;
+            }
+            
+            .ui-overlay {
+                background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.7) 100%);
+            }
         }
         
         /* Touch-friendly interactions */
@@ -548,18 +558,6 @@
             .control-panel, .info-panel, .nft-panel {
                 padding: 12px;
                 margin: 5px;
-            }
-        }
-        
-        /* Canvas fullscreen optimization */
-        @media (max-width: 480px) {
-            .canvas-container {
-                position: fixed;
-                z-index: 0;
-            }
-            
-            .ui-overlay {
-                background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.7) 100%);
             }
         }
     </style>
