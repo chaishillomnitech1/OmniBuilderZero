@@ -414,9 +414,9 @@ class ConceptArtGenerator:
                         time_of_day=time_of_day
                     )
                 else:
-                    prompt = self.generate_environment_prompt(
-                        location_id="loc_001",
-                        time_of_day=time_of_day
+                    # Fallback to mood board when no locations configured
+                    prompt = self.generate_mood_board_prompt(
+                        theme=f"Mays Landing Environment {i + 1}"
                     )
             elif category == AssetCategory.ACTION:
                 prompt = self.generate_action_sequence_prompt(
