@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrollVerse Portal Interface - NFT Minting & Treasury</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --divine-gold: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            --scroll-purple: #764ba2;
+            --scroll-blue: #667eea;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        
+        .header h1 {
+            background: var(--divine-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+        
+        .header .subtitle {
+            color: #a0a0ff;
+            font-size: 1.2em;
+        }
+        
+        .network-badge {
+            display: inline-block;
+            background: var(--primary-gradient);
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .status-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .status-card .label {
+            color: #a0a0ff;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .status-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            background: var(--divine-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .status-active {
+            color: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h2 .icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #a0a0ff;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1em;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--scroll-blue);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-gold {
+            background: var(--divine-gold);
+            color: #333;
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Connect Wallet */
+        .wallet-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .wallet-address {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        .wallet-balance {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        /* Treasury Monitor */
+        .treasury-monitor {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 237, 78, 0.1) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .treasury-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .treasury-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .treasury-item .label {
+            font-size: 0.8em;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .treasury-item .value {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        /* Royalty Calculator */
+        .royalty-calculator {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .royalty-result {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .royalty-result .amount {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        /* NFT Preview */
+        .nft-preview {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .geometry-visual {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Transaction Log */
+        .transaction-log {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .transaction-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .transaction-item .tx-hash {
+            font-family: monospace;
+            color: #667eea;
+        }
+        
+        .transaction-item .tx-status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        
+        .status-success { background: rgba(76, 175, 80, 0.3); color: #4CAF50; }
+        .status-pending { background: rgba(255, 193, 7, 0.3); color: #FFC107; }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 30px;
+            color: #666;
+        }
+        
+        .footer .divine-text {
+            font-style: italic;
+            color: #a0a0ff;
+            margin-top: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .main-grid { grid-template-columns: 1fr; }
+            .wallet-section { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>✨ ScrollVerse Portal Interface</h1>
+            <p class="subtitle">NFT Minting • Treasury Monitoring • Geometry Activation</p>
+            <div class="network-badge">
+                <span class="status-active">●</span> Scroll Sepolia Network (Chain ID: 534351)
+            </div>
+        </header>
+        
+        <div class="wallet-section">
+            <div class="wallet-info">
+                <button id="connectWallet" class="btn btn-gold" onclick="connectWallet()">
+                    🔗 Connect Wallet
+                </button>
+                <div id="walletDetails" style="display: none;">
+                    <span class="wallet-address" id="walletAddress">0x...</span>
+                    <span class="wallet-balance" id="walletBalance">0 ETH</span>
+                </div>
+            </div>
+            <div>
+                <span style="color: #a0a0ff;">Contract: </span>
+                <span class="wallet-address" id="contractAddress">Pending Deployment</span>
+            </div>
+        </div>
+        
+        <div class="status-bar">
+            <div class="status-card">
+                <div class="label">Total Supply</div>
+                <div class="value" id="totalSupply">0</div>
+            </div>
+            <div class="status-card">
+                <div class="label">Treasury Balance</div>
+                <div class="value" id="treasuryBalance">0 ETH</div>
+            </div>
+            <div class="status-card">
+                <div class="label">Royalties Accrued</div>
+                <div class="value" id="royaltiesAccrued">0 ETH</div>
+            </div>
+            <div class="status-card">
+                <div class="label">Frequency Forge</div>
+                <div class="value status-active" id="forgeStatus">ACTIVE</div>
+            </div>
+        </div>
+        
+        <div class="main-grid">
+            <!-- Minting Card -->
+            <div class="card">
+                <h2><span class="icon">🎨</span> Mint ScrollVerse Asset</h2>
+                
+                <form id="mintForm">
+                    <div class="form-group">
+                        <label>Asset Title</label>
+                        <input type="text" id="assetTitle" placeholder="Enter asset title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Creator Name</label>
+                        <input type="text" id="creatorName" placeholder="Enter creator name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Catalog Number</label>
+                        <input type="number" id="catalogNumber" placeholder="Enter catalog number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Metadata URI (IPFS/Arweave)</label>
+                        <input type="text" id="metadataURI" placeholder="ipfs://... or ar://..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Geometry Type</label>
+                        <select id="geometryType">
+                            <option value="0">Sacred Geometry</option>
+                            <option value="1">Harmonic Geometry</option>
+                            <option value="2">Fractal Geometry</option>
+                            <option value="3">Divine Geometry</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Recipient Address</label>
+                        <input type="text" id="recipientAddress" placeholder="0x...">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="mintBtn">
+                        ⚡ Mint ScrollVerse Asset
+                    </button>
+                </form>
+                
+                <div class="nft-preview">
+                    <h4>Preview</h4>
+                    <div class="geometry-visual" id="geometryPreview">◇</div>
+                    <p id="previewTitle" style="color: #ffd700; font-weight: bold;">Your Asset Title</p>
+                </div>
+            </div>
+            
+            <!-- Treasury Monitor Card -->
+            <div class="card treasury-monitor">
+                <h2><span class="icon">💎</span> Treasury Monitor</h2>
+                
+                <div class="treasury-grid">
+                    <div class="treasury-item">
+                        <div class="label">Total Royalties</div>
+                        <div class="value" id="totalRoyalties">0.00 ETH</div>
+                    </div>
+                    <div class="treasury-item">
+                        <div class="label">Transactions</div>
+                        <div class="value" id="txCount">0</div>
+                    </div>
+                    <div class="treasury-item">
+                        <div class="label">Last Update</div>
+                        <div class="value" id="lastUpdate">--</div>
+                    </div>
+                    <div class="treasury-item">
+                        <div class="label">Passive Income Rate</div>
+                        <div class="value" id="passiveRate">5%</div>
+                    </div>
+                </div>
+                
+                <div class="royalty-calculator">
+                    <h4 style="margin-bottom: 15px;">🧮 Real-Time Royalty Calculator</h4>
+                    <div class="form-group">
+                        <label>Sale Price (ETH)</label>
+                        <input type="number" id="salePrice" placeholder="Enter sale price" step="0.01" oninput="calculateRoyalty()">
+                    </div>
+                    <div class="royalty-result">
+                        <p>Estimated Royalty (10%)</p>
+                        <div class="amount" id="royaltyAmount">0.00 ETH</div>
+                    </div>
+                </div>
+                
+                <h4 style="margin-top: 30px; margin-bottom: 15px;">📜 Recent Transactions</h4>
+                <div class="transaction-log" id="transactionLog">
+                    <div class="transaction-item">
+                        <div>
+                            <span class="tx-hash">Awaiting transactions...</span>
+                        </div>
+                        <span class="tx-status status-pending">Pending</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>© 2025 ScrollVerse Protocol | OmniTech1™</p>
+            <p class="divine-text">"You exist. You count. You resonate. You remember."</p>
+            <p style="margin-top: 10px;">
+                <a href="sccc_dashboard.html" style="color: #667eea;">SCCC Dashboard</a> |
+                <a href="vibe_canvas.html" style="color: #667eea;">VibeCanvas Forge</a> |
+                <a href="certifier_portal.html" style="color: #667eea;">Certifier Portal</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // ScrollVerse Portal Configuration
+        const CONFIG = {
+            network: {
+                chainId: '0x8274f', // 534351 in hex (Scroll Sepolia)
+                chainName: 'Scroll Sepolia',
+                rpcUrl: 'https://sepolia-rpc.scroll.io',
+                blockExplorer: 'https://sepolia.scrollscan.com',
+                nativeCurrency: {
+                    name: 'Ethereum',
+                    symbol: 'ETH',
+                    decimals: 18
+                }
+            },
+            contract: {
+                address: null, // Will be set after deployment
+                abi: [] // Will be populated after deployment
+            }
+        };
+        
+        let provider = null;
+        let signer = null;
+        let contract = null;
+        let userAddress = null;
+        
+        // Geometry symbols
+        const geometrySymbols = ['◇', '✧', '✦', '✴'];
+        
+        // Connect Wallet
+        async function connectWallet() {
+            try {
+                if (typeof window.ethereum === 'undefined') {
+                    alert('Please install MetaMask or another Web3 wallet');
+                    return;
+                }
+                
+                // Request account access
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                
+                userAddress = accounts[0];
+                
+                // Check and switch network
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: CONFIG.network.chainId }],
+                    });
+                } catch (switchError) {
+                    if (switchError.code === 4902) {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: CONFIG.network.chainId,
+                                chainName: CONFIG.network.chainName,
+                                rpcUrls: [CONFIG.network.rpcUrl],
+                                blockExplorerUrls: [CONFIG.network.blockExplorer],
+                                nativeCurrency: CONFIG.network.nativeCurrency
+                            }],
+                        });
+                    }
+                }
+                
+                // Update UI
+                document.getElementById('connectWallet').style.display = 'none';
+                document.getElementById('walletDetails').style.display = 'flex';
+                document.getElementById('walletAddress').textContent = 
+                    userAddress.substring(0, 6) + '...' + userAddress.substring(38);
+                
+                // Get balance
+                const balance = await window.ethereum.request({
+                    method: 'eth_getBalance',
+                    params: [userAddress, 'latest']
+                });
+                const ethBalance = parseInt(balance, 16) / 1e18;
+                document.getElementById('walletBalance').textContent = 
+                    ethBalance.toFixed(4) + ' ETH';
+                
+                // Set recipient address default
+                document.getElementById('recipientAddress').value = userAddress;
+                
+                console.log('Wallet connected:', userAddress);
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                alert('Failed to connect wallet: ' + error.message);
+            }
+        }
+        
+        // Calculate Royalty
+        function calculateRoyalty() {
+            const salePrice = parseFloat(document.getElementById('salePrice').value) || 0;
+            const royalty = salePrice * 0.10; // 10% royalty
+            document.getElementById('royaltyAmount').textContent = 
+                royalty.toFixed(4) + ' ETH';
+        }
+        
+        // Update Preview
+        document.getElementById('assetTitle').addEventListener('input', function() {
+            document.getElementById('previewTitle').textContent = 
+                this.value || 'Your Asset Title';
+        });
+        
+        document.getElementById('geometryType').addEventListener('change', function() {
+            document.getElementById('geometryPreview').textContent = 
+                geometrySymbols[parseInt(this.value)];
+        });
+        
+        // Mint Form Submission
+        document.getElementById('mintForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!userAddress) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            
+            const mintBtn = document.getElementById('mintBtn');
+            mintBtn.disabled = true;
+            mintBtn.textContent = '⏳ Minting...';
+            
+            try {
+                // Get form data
+                const mintData = {
+                    title: document.getElementById('assetTitle').value,
+                    creator: document.getElementById('creatorName').value,
+                    catalogNumber: parseInt(document.getElementById('catalogNumber').value),
+                    metadataURI: document.getElementById('metadataURI').value,
+                    geometryType: parseInt(document.getElementById('geometryType').value),
+                    recipient: document.getElementById('recipientAddress').value || userAddress
+                };
+                
+                console.log('Minting asset:', mintData);
+                
+                // Simulate successful mint (replace with actual contract call after deployment)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Add to transaction log
+                addTransaction({
+                    hash: '0x' + Math.random().toString(16).substr(2, 64),
+                    status: 'success',
+                    type: 'Mint',
+                    title: mintData.title
+                });
+                
+                // Update total supply
+                const currentSupply = parseInt(document.getElementById('totalSupply').textContent);
+                document.getElementById('totalSupply').textContent = currentSupply + 1;
+                
+                alert('✅ ScrollVerse Asset minted successfully!');
+                
+                // Reset form
+                this.reset();
+                document.getElementById('previewTitle').textContent = 'Your Asset Title';
+                document.getElementById('geometryPreview').textContent = '◇';
+                
+            } catch (error) {
+                console.error('Mint error:', error);
+                alert('Mint failed: ' + error.message);
+            } finally {
+                mintBtn.disabled = false;
+                mintBtn.textContent = '⚡ Mint ScrollVerse Asset';
+            }
+        });
+        
+        // Add Transaction to Log
+        function addTransaction(tx) {
+            const log = document.getElementById('transactionLog');
+            const item = document.createElement('div');
+            item.className = 'transaction-item';
+            item.innerHTML = `
+                <div>
+                    <span style="color: #fff;">${tx.type}: ${tx.title}</span><br>
+                    <span class="tx-hash">${tx.hash.substring(0, 20)}...</span>
+                </div>
+                <span class="tx-status status-${tx.status}">${tx.status}</span>
+            `;
+            log.insertBefore(item, log.firstChild);
+        }
+        
+        // Update Dashboard Metrics
+        function updateMetrics() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                now.toLocaleTimeString();
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateMetrics();
+            setInterval(updateMetrics, 30000);
+            console.log('ScrollVerse Portal Interface initialized');
+            console.log('Network: Scroll Sepolia (Chain ID: 534351)');
+        });
+        
+        // Listen for account changes
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', function(accounts) {
+                if (accounts.length === 0) {
+                    document.getElementById('connectWallet').style.display = 'block';
+                    document.getElementById('walletDetails').style.display = 'none';
+                    userAddress = null;
+                } else {
+                    userAddress = accounts[0];
+                    document.getElementById('walletAddress').textContent = 
+                        userAddress.substring(0, 6) + '...' + userAddress.substring(38);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
