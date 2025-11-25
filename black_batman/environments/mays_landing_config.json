@@ -1,0 +1,150 @@
+{
+  "project": "Black Batman Motion Cartoon",
+  "version": "1.0.0",
+  "environment": {
+    "name": "Mays Landing",
+    "state": "New Jersey",
+    "county": "Atlantic County",
+    "description": "A township with a unique blend of suburban charm and coastal proximity, providing the perfect backdrop for a grounded hero narrative"
+  },
+  "locations": [
+    {
+      "id": "loc_001",
+      "name": "Downtown Mays Landing",
+      "type": "urban",
+      "description": "Historic downtown area with Victorian-era buildings and modern storefronts",
+      "visual_themes": ["brick facades", "street lamps", "small-town atmosphere"],
+      "lighting_presets": ["golden_hour", "night_patrol", "stormy_day"]
+    },
+    {
+      "id": "loc_002",
+      "name": "Lake Lenape",
+      "type": "natural",
+      "description": "Serene lake surrounded by forests, offering reflective water surfaces for dramatic scenes",
+      "visual_themes": ["water reflections", "misty mornings", "moonlit waters"],
+      "lighting_presets": ["dawn_mist", "moonrise", "sunset_glow"]
+    },
+    {
+      "id": "loc_003",
+      "name": "Hamilton Township Park",
+      "type": "parkland",
+      "description": "Wooded parkland providing cover for covert hero operations",
+      "visual_themes": ["dense foliage", "shadow play", "autumn colors"],
+      "lighting_presets": ["dappled_sunlight", "twilight_shadows", "night_stealth"]
+    },
+    {
+      "id": "loc_004",
+      "name": "Atlantic City Skyline View",
+      "type": "vista",
+      "description": "Distant view of Atlantic City's lights from Mays Landing heights",
+      "visual_themes": ["city glow", "distant lights", "contrast urban/suburban"],
+      "lighting_presets": ["night_cityscape", "storm_approaching", "dawn_silhouette"]
+    },
+    {
+      "id": "loc_005",
+      "name": "Great Egg Harbor River",
+      "type": "waterway",
+      "description": "The river running through the township, perfect for dramatic chase scenes",
+      "visual_themes": ["flowing water", "bridge crossings", "industrial edges"],
+      "lighting_presets": ["moonlit_waters", "foggy_morning", "sunset_reflection"]
+    },
+    {
+      "id": "loc_006",
+      "name": "Historic Courthouse",
+      "type": "landmark",
+      "description": "The Atlantic County courthouse, symbol of justice in the narrative",
+      "visual_themes": ["classical architecture", "columns", "symbolic justice"],
+      "lighting_presets": ["dramatic_spotlight", "storm_lit", "golden_sunrise"]
+    }
+  ],
+  "time_periods": {
+    "night_patrol": {
+      "time_range": "22:00-04:00",
+      "atmosphere": "dark and mysterious",
+      "color_palette": ["#0a0a1a", "#1a1a3a", "#3a3a5a", "#ffd700"]
+    },
+    "golden_hour": {
+      "time_range": "06:00-07:30, 17:30-19:00",
+      "atmosphere": "warm and hopeful",
+      "color_palette": ["#ff6b35", "#f7c59f", "#efa00b", "#1a1a2e"]
+    },
+    "midday": {
+      "time_range": "11:00-15:00",
+      "atmosphere": "bright and clear",
+      "color_palette": ["#87ceeb", "#ffffff", "#2e3a4e", "#1a1a2e"]
+    },
+    "stormy": {
+      "time_range": "any",
+      "atmosphere": "dramatic and tense",
+      "color_palette": ["#2c3e50", "#34495e", "#95a5a6", "#e74c3c"]
+    }
+  },
+  "seasonal_variations": {
+    "summer": {
+      "description": "Beach proximity, green foliage, longer patrol nights",
+      "visual_elements": ["lush greenery", "humidity haze", "beach crowds distant"]
+    },
+    "autumn": {
+      "description": "Fall colors provide rich visual palette, earlier darkness",
+      "visual_elements": ["orange/red leaves", "harvest atmosphere", "fog"]
+    },
+    "winter": {
+      "description": "Snow-covered scenes, stark contrasts, holiday atmosphere",
+      "visual_elements": ["snow", "bare trees", "cold breath", "holiday lights"]
+    },
+    "spring": {
+      "description": "Renewal themes, rain, new beginnings",
+      "visual_elements": ["rain", "blooming flowers", "fresh growth", "puddles"]
+    }
+  },
+  "hero_integration": {
+    "character": "Black Batman",
+    "visual_identity": {
+      "primary_colors": ["#0a0a0a", "#1a1a2e", "#ffd700"],
+      "cape_dynamics": "flowing, dramatic silhouettes",
+      "pose_themes": ["vigilant watch", "dynamic action", "silent protector"]
+    },
+    "signature_scenes": [
+      {
+        "name": "Rooftop Vigil",
+        "description": "Black Batman overlooking Mays Landing from elevated position",
+        "key_elements": ["cape silhouette", "city lights below", "moonlit sky"]
+      },
+      {
+        "name": "Lake Reflection",
+        "description": "Hero reflected in Lake Lenape's still waters",
+        "key_elements": ["mirror image", "mist", "solitary figure"]
+      },
+      {
+        "name": "Courthouse Guardian",
+        "description": "Symbolic stance before the courthouse",
+        "key_elements": ["justice symbolism", "dramatic lighting", "columns"]
+      }
+    ]
+  },
+  "ai_generation_settings": {
+    "style_presets": {
+      "comic_book": {
+        "description": "Bold lines, dramatic shadows, comic art style",
+        "keywords": ["comic book art", "bold inking", "dynamic composition"]
+      },
+      "cinematic": {
+        "description": "Film-like quality for motion cartoon style",
+        "keywords": ["cinematic lighting", "widescreen composition", "movie poster"]
+      },
+      "concept_art": {
+        "description": "Professional concept art style for development",
+        "keywords": ["concept art", "character design", "environment art"]
+      },
+      "storyboard": {
+        "description": "Clean storyboard frames for sequence planning",
+        "keywords": ["storyboard panel", "sequential art", "clean lines"]
+      }
+    },
+    "quality_settings": {
+      "draft": { "resolution": "512x512", "detail": "low" },
+      "standard": { "resolution": "1024x1024", "detail": "medium" },
+      "hero_shot": { "resolution": "2048x2048", "detail": "high" }
+    }
+  }
+}

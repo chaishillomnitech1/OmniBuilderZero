@@ -66,3 +66,11 @@ typechain-types/
 coverage/
 coverage.json
 deployments/
+
+# Black Batman Generated Assets #
+#################################
+black_batman/assets/*.png
+black_batman/assets/*.jpg
+black_batman/assets/*.json
+!black_batman/assets/.gitkeep
+black_batman/storyboards/*_storyboard.json
