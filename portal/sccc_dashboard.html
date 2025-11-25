@@ -369,7 +369,8 @@
             margin-top: 30px;
         }
         
-        /* Responsive */
+        /* Responsive - Desktop First Approach */
+        /* Large tablets and small desktops */
         @media (max-width: 1024px) {
             .dashboard {
                 grid-template-columns: 1fr;
@@ -380,6 +381,117 @@
             .charts-section {
                 grid-template-columns: 1fr;
             }
+            .main-content {
+                padding: 20px;
+            }
+        }
+        
+        /* Tablets */
+        @media (max-width: 768px) {
+            .main-content { padding: 15px; }
+            .header-bar { 
+                flex-direction: column; 
+                gap: 15px; 
+                text-align: center;
+                padding: 15px;
+            }
+            .header-bar h1 { font-size: 1.4em; }
+            .header-actions { 
+                flex-wrap: wrap; 
+                justify-content: center;
+            }
+            .metrics-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 12px;
+            }
+            .metric-card { padding: 15px; }
+            .metric-card .value { font-size: 1.8em; }
+            .charts-section { gap: 15px; }
+            .chart-card { padding: 15px; }
+            .chart-card h3 { font-size: 1.1em; }
+            .tables-section { grid-template-columns: 1fr; gap: 15px; }
+            .table-card { padding: 15px; }
+            th, td { padding: 10px 8px; font-size: 0.9em; }
+            .realtime-feed { max-height: 250px; }
+            .feed-item { 
+                flex-direction: column; 
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+        
+        /* Mobile phones */
+        @media (max-width: 480px) {
+            .main-content { padding: 10px; }
+            .header-bar { padding: 12px; border-radius: 10px; }
+            .header-bar h1 { font-size: 1.2em; }
+            .status-indicator { 
+                padding: 6px 12px; 
+                font-size: 0.85em;
+            }
+            .metrics-grid { 
+                grid-template-columns: 1fr; 
+                gap: 10px;
+            }
+            .metric-card { 
+                padding: 12px;
+                border-radius: 10px;
+            }
+            .metric-card .label { font-size: 0.75em; }
+            .metric-card .value { font-size: 1.5em; }
+            .metric-card .change { font-size: 0.8em; }
+            .chart-card { 
+                padding: 12px; 
+                border-radius: 10px;
+            }
+            .chart-card h3 { 
+                flex-direction: column; 
+                gap: 5px;
+                font-size: 1em;
+            }
+            .chart-placeholder { height: 180px; }
+            .chart-bars { height: 150px; padding: 0 10px; }
+            .chart-bar { width: 20px; }
+            .royalty-list { max-height: 150px; }
+            .royalty-item { 
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px;
+            }
+            .table-card { padding: 12px; }
+            .table-card h3 { font-size: 1em; }
+            table { font-size: 0.85em; }
+            th, td { padding: 8px 5px; }
+            .badge, .geometry-badge { 
+                padding: 3px 8px; 
+                font-size: 0.7em;
+            }
+            .realtime-feed { max-height: 200px; }
+            .feed-item { padding: 8px 10px; font-size: 0.85em; }
+            .footer { padding: 20px 10px; font-size: 0.85em; }
+        }
+        
+        /* Touch-friendly interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .nav-item { min-height: 48px; }
+            .metric-card:active { transform: scale(0.98); }
+            .feed-item:active { background: rgba(255, 255, 255, 0.1); }
+            tr:active { background: rgba(255, 255, 255, 0.08); }
+        }
+        
+        /* Landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .main-content { padding: 10px; }
+            .header-bar { padding: 10px; margin-bottom: 15px; }
+            .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        
+        /* Print styles */
+        @media print {
+            body { background: white; color: black; }
+            .sidebar { display: none; }
+            .status-indicator { display: none; }
         }
     </style>
 </head>
