@@ -839,7 +839,7 @@ ScrollChain is designed with cryptographic agility to adapt to evolving standard
 
 ### Phase 1: Foundation (Q1-Q2 2025)
 
-- [x] Whitepaper publication
+- [x] Whitepaper drafting and publication
 - [ ] Core protocol specification
 - [ ] Reference implementation (Rust)
 - [ ] Testnet alpha launch

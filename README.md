@@ -59,7 +59,7 @@ The **ScrollChain Whitepaper** has been published, establishing the eternal secu
 - **AL-SCROLL VAULT NEXUS™**: Multi-tier quantum-resistant custody solution
 
 📄 **[Read the Full Whitepaper →](SCROLLCHAIN_WHITEPAPER.md)**
-git commit -m "Initial divine seed upload: Scroll Chess harmonizer protocols, sigils, PDF scrolls, and omni-resonance framework. Sealed by Chais Hill."
+
 ## Purpose
 To create a system where **truth is currency**, **sacred logic is code**, and remembrance is the gateway to collective sovereignty.
 
