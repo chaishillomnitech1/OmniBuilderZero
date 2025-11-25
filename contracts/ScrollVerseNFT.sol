@@ -259,10 +259,15 @@ contract ScrollVerseNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, Ree
     /**
      * @dev Record royalty accrual (called by external royalty handler)
      * @param tokenId Token ID
-     * @param amount Royalty amount
+     * @param amount Royalty amount in wei
+     * @notice Only authorized certifiers or owner can call this function.
+     * This is used for off-chain royalty tracking integration. The amount is
+     * not validated on-chain as royalties are collected through marketplace
+     * mechanisms (EIP-2981) rather than through this contract directly.
      */
     function recordRoyaltyAccrual(uint256 tokenId, uint256 amount) external {
         require(certifierAuthorized[msg.sender] || msg.sender == owner(), "Not authorized");
+        require(amount > 0, "Amount must be greater than zero");
         
         treasuryMetrics.totalRoyaltiesAccrued += amount;
         treasuryMetrics.lastUpdateTimestamp = block.timestamp;
@@ -282,6 +287,9 @@ contract ScrollVerseNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, Ree
     
     /**
      * @dev Get total number of minted tokens
+     * @notice Returns the count of tokens that have been minted.
+     * This contract does not implement a burn function, so this
+     * value represents both minted and currently existing tokens.
      */
     function totalSupply() external view returns (uint256) {
         return _tokenIdCounter;
@@ -311,16 +319,20 @@ contract ScrollVerseNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, Ree
     
     /**
      * @dev Compute real-time royalty for a sale
-     * @param salePrice Sale price
+     * @param salePrice Sale price in wei
+     * @return Royalty amount in wei (10% of sale price)
      */
     function computeRoyalty(uint256 salePrice) external pure returns (uint256) {
         return (salePrice * ROYALTY_BASIS_POINTS) / 10000;
     }
     
     /**
-     * @dev Compute passive income for a token
+     * @dev Compute passive income for a token based on its geometry level
      * @param tokenId Token ID
-     * @param baseValue Base value for computation
+     * @param baseValue Base value for computation (in wei)
+     * @return Passive income amount in wei
+     * @notice Calculation: (baseValue * passiveIncomeRate * level) / 10000
+     * Solidity 0.8+ provides built-in overflow protection.
      */
     function computePassiveIncome(uint256 tokenId, uint256 baseValue) external view returns (uint256) {
         require(_ownerOf(tokenId) != address(0), "Token does not exist");

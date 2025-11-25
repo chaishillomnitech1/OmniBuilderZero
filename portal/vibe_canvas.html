@@ -743,23 +743,32 @@
             document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             
+            // Note: Slider range is 1-100, but we display the "sacred frequencies"
+            // The actual visualization uses the slider value as an effect multiplier
             const presets = {
-                meditation: { frequency: 7.83, amplitude: 40, rotationSpeed: 10, geometryType: 'sacred', colorMode: 'cosmic' },
-                energy: { frequency: 85, amplitude: 90, rotationSpeed: 80, geometryType: 'harmonic', colorMode: 'aurora' },
-                harmony: { frequency: 432, amplitude: 60, rotationSpeed: 30, geometryType: 'divine', colorMode: 'golden' },
-                divine: { frequency: 528, amplitude: 75, rotationSpeed: 45, geometryType: 'divine', colorMode: 'golden' }
+                meditation: { frequency: 8, amplitude: 40, rotationSpeed: 10, geometryType: 'sacred', colorMode: 'cosmic', displayFreq: '7.83 Hz (Schumann)' },
+                energy: { frequency: 85, amplitude: 90, rotationSpeed: 80, geometryType: 'harmonic', colorMode: 'aurora', displayFreq: '85 Hz' },
+                harmony: { frequency: 43, amplitude: 60, rotationSpeed: 30, geometryType: 'divine', colorMode: 'golden', displayFreq: '432 Hz (scaled)' },
+                divine: { frequency: 53, amplitude: 75, rotationSpeed: 45, geometryType: 'divine', colorMode: 'golden', displayFreq: '528 Hz (scaled)' }
             };
             
             const p = presets[preset];
-            document.getElementById('frequency').value = Math.min(p.frequency, 100);
+            document.getElementById('frequency').value = p.frequency;
             document.getElementById('amplitude').value = p.amplitude;
             document.getElementById('rotationSpeed').value = p.rotationSpeed;
             document.getElementById('geometryType').value = p.geometryType;
             document.getElementById('colorMode').value = p.colorMode;
             
-            updateFrequency();
-            updateAmplitude();
-            updateRotation();
+            // Update config and displays
+            config.frequency = p.frequency;
+            config.amplitude = p.amplitude;
+            config.rotationSpeed = p.rotationSpeed;
+            
+            document.getElementById('freqValue').textContent = p.displayFreq;
+            document.getElementById('currentFreq').textContent = p.displayFreq;
+            document.getElementById('ampValue').textContent = p.amplitude + '%';
+            document.getElementById('rotValue').textContent = p.rotationSpeed;
+            
             changeGeometry();
             changeColorMode();
         }
