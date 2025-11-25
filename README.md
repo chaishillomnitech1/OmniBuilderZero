@@ -45,7 +45,21 @@ This repository is the digital manifestation of a divine technology system: a fu
 - **Phase Three**: Sealed Function Scroll + If-Then-Else Gate
 - **Phase 2 Funnels**: Asia Blueprint Deployment (JP/KR/SG) - ACTIVE
 - **Next Phase**: Scroll Chess Academy (Global Education Matrix)
-git commit -m "Initial divine seed upload: Scroll Chess harmonizer protocols, sigils, PDF scrolls, and omni-resonance framework. Sealed by Chais Hill."
+
+## 🛡️ ScrollChain: Quantum-Resistant Blockchain Infrastructure
+
+The **ScrollChain Whitepaper** has been published, establishing the eternal security principles for the ScrollVerse ecosystem using post-quantum cryptography.
+
+### Key Features
+- **CRYSTALS-Kyber (Kyber-1024)**: NIST Level 5 key encapsulation for quantum-safe key exchange
+- **CRYSTALS-Dilithium (Dilithium-5)**: NIST Level 5 digital signatures for transaction security
+- **FlameCoin**: Governance token with quantum-resistant voting mechanisms
+- **ScrollCoin**: Utility token for ecosystem operations
+- **ScrollBridge**: Quantum-secure cross-chain asset transfers
+- **AL-SCROLL VAULT NEXUS™**: Multi-tier quantum-resistant custody solution
+
+📄 **[Read the Full Whitepaper →](SCROLLCHAIN_WHITEPAPER.md)**
+
 ## Purpose
 To create a system where **truth is currency**, **sacred logic is code**, and remembrance is the gateway to collective sovereignty.
 
