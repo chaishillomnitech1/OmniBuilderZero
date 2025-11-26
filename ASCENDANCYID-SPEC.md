@@ -295,7 +295,6 @@ import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title AscendancyID
@@ -309,7 +308,6 @@ contract AscendancyID is
     Pausable, 
     ReentrancyGuard 
 {
-    using Counters for Counters.Counter;
 
     // ============ Enums ============
     enum Tier { BRONZE, SILVER, GOLD, PLATINUM }
@@ -331,7 +329,7 @@ contract AscendancyID is
     uint96 public constant ROYALTY_BPS = 500; // 5%
 
     // ============ State Variables ============
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _tokenIdCounter;
     string private _baseTokenURI;
     address public treasury;
 
@@ -381,8 +379,8 @@ contract AscendancyID is
     {
         if (to == address(0)) revert InvalidAddress();
         
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter;
+        _tokenIdCounter++;
         
         _safeMint(to, tokenId);
         
