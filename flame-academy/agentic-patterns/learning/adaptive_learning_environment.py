@@ -17,6 +17,7 @@ from enum import Enum
 import json
 import sys
 import os
+import random
 
 # Handle imports for both package and standalone usage
 try:
@@ -661,8 +662,6 @@ You're doing amazing! 💪
     
     def _get_encouragement(self, state: LearnerState) -> str:
         """Get context-appropriate encouragement"""
-        import random
-        
         if state.performance_ratio > 0.8:
             messages = [
                 "You're on fire! 🔥",

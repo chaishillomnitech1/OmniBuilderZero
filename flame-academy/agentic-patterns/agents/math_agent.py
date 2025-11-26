@@ -670,7 +670,12 @@ Math is like a superpower - it helps us understand the world!
         return "\n\n".join(problems)
     
     def _evaluate_problem(self, problem: str) -> float:
-        """Safely evaluate a simple math problem"""
+        """
+        Safely evaluate a simple math problem.
+        
+        Uses a parser-based approach instead of eval() for security.
+        Only supports basic arithmetic: +, -, *, /
+        """
         # Clean and parse the problem
         problem = problem.replace("×", "*").replace("÷", "/").replace("x", "*")
         problem = problem.replace("=", "").replace("?", "").strip()
@@ -680,7 +685,86 @@ Math is like a superpower - it helps us understand the world!
         if not all(c in allowed for c in problem):
             raise ValueError("Invalid characters in problem")
         
-        return eval(problem)
+        # Parse and evaluate safely without using eval
+        return self._safe_math_eval(problem)
+    
+    def _safe_math_eval(self, expression: str) -> float:
+        """
+        Safely evaluate a math expression without using eval().
+        
+        Supports only basic arithmetic operations: +, -, *, /
+        """
+        import re
+        
+        # Remove all whitespace
+        expression = expression.replace(" ", "")
+        
+        # Handle empty expression
+        if not expression:
+            raise ValueError("Empty expression")
+        
+        # Simple recursive descent parser for basic arithmetic
+        def parse_expression(expr: str) -> float:
+            """Parse addition and subtraction"""
+            # Find the rightmost + or - at the top level (not inside parentheses)
+            paren_depth = 0
+            for i in range(len(expr) - 1, -1, -1):
+                c = expr[i]
+                if c == ')':
+                    paren_depth += 1
+                elif c == '(':
+                    paren_depth -= 1
+                elif paren_depth == 0 and c in '+-' and i > 0:
+                    # Don't split on leading negative sign
+                    left = expr[:i]
+                    right = expr[i+1:]
+                    if left:  # Only if we have a left operand
+                        if c == '+':
+                            return parse_expression(left) + parse_term(right)
+                        else:
+                            return parse_expression(left) - parse_term(right)
+            return parse_term(expr)
+        
+        def parse_term(expr: str) -> float:
+            """Parse multiplication and division"""
+            paren_depth = 0
+            for i in range(len(expr) - 1, -1, -1):
+                c = expr[i]
+                if c == ')':
+                    paren_depth += 1
+                elif c == '(':
+                    paren_depth -= 1
+                elif paren_depth == 0 and c in '*/':
+                    left = expr[:i]
+                    right = expr[i+1:]
+                    if c == '*':
+                        return parse_term(left) * parse_factor(right)
+                    else:
+                        divisor = parse_factor(right)
+                        if divisor == 0:
+                            raise ValueError("Division by zero")
+                        return parse_term(left) / divisor
+            return parse_factor(expr)
+        
+        def parse_factor(expr: str) -> float:
+            """Parse numbers and parenthesized expressions"""
+            expr = expr.strip()
+            
+            # Handle parentheses
+            if expr.startswith('(') and expr.endswith(')'):
+                return parse_expression(expr[1:-1])
+            
+            # Handle negative numbers
+            if expr.startswith('-'):
+                return -parse_factor(expr[1:])
+            
+            # Parse number
+            try:
+                return float(expr)
+            except ValueError:
+                raise ValueError(f"Invalid expression: {expr}")
+        
+        return parse_expression(expression)
     
     def _generate_hint(self, problem: str, expected: float, given: float, context: LearnerContext) -> str:
         """Generate a helpful hint for an incorrect answer"""

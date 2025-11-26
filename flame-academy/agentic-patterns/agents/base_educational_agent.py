@@ -11,6 +11,7 @@ from typing import List, Dict, Optional, Any, Callable
 from datetime import datetime
 from enum import Enum
 import json
+import random
 
 
 class AgentCapability(Enum):
@@ -210,8 +211,6 @@ class BaseEducationalAgent(ABC):
         Returns:
             Encouragement message
         """
-        import random
-        
         if situation == "struggle":
             messages = [
                 f"🌱 It's okay, {context.name}! Learning takes time. Let's try again together.",
