@@ -16,6 +16,10 @@ on:
     branches:
       - main
 
+# Minimal permissions for security
+permissions:
+  contents: read
+
 jobs:
   # Smart Contract Tests
   contracts:
