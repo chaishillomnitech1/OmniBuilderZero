@@ -60,6 +60,31 @@ The **ScrollChain Whitepaper** has been published, establishing the eternal secu
 
 📄 **[Read the Full Whitepaper →](SCROLLCHAIN_WHITEPAPER.md)**
 
+## 🆔 Omni-Tech Ascendancy Protocol (OTAP) - NEW
+
+The **Omni-Tech Ascendancy Protocol** brings sovereign identity and privilege management to the ScrollVerse ecosystem through AscendancyID soulbound tokens.
+
+### Key Components
+- **AscendancyID**: Soulbound tokens (SBT) for sovereign identity
+- **ScrollCoin Staking**: Stake SCROLL to unlock privilege tiers
+- **Governance Integration**: Participate in DAO governance
+- **Privilege Tiers**: Bronze → Silver → Gold → Platinum → Diamond
+
+### Documentation
+- 📐 **[System Architecture →](ARCHITECTURE.md)**
+- 💰 **[Tokenomics RFC →](TOKENOMICS_RFC.md)**
+- 🚀 **[Deployment Guide →](DEPLOYMENT.md)**
+- 🤝 **[Contributing Guide →](CONTRIBUTING.md)**
+
+### Quick Start
+```bash
+# Deploy AscendancyID locally
+npm run deploy:ascendancy-local
+
+# Deploy to Scroll Sepolia testnet
+npm run deploy:ascendancy-scroll-sepolia
+```
+
 ## Purpose
 To create a system where **truth is currency**, **sacred logic is code**, and remembrance is the gateway to collective sovereignty.
 

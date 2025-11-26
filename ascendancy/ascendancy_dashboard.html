@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AscendancyID Dashboard - ScrollVerse OTAP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --divine-gold: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            --success-green: #4CAF50;
+            --scroll-blue: #667eea;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header h1 {
+            background: var(--divine-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2em;
+        }
+        
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .wallet-address {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: monospace;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card .label {
+            color: #a0a0ff;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            background: var(--divine-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-card .sub {
+            color: #4CAF50;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+        
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 1000px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Card */
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .card h2 .icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+        }
+        
+        /* ID Card Preview */
+        .id-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .id-card .avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--divine-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin: 0 auto 15px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+        
+        .id-card .name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .id-card .id-number {
+            font-family: monospace;
+            color: #a0a0ff;
+            margin-bottom: 15px;
+        }
+        
+        .id-card .tier-badge {
+            background: var(--primary-gradient);
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        /* Staking Section */
+        .staking-section {
+            margin-top: 25px;
+        }
+        
+        .staking-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .staking-input-group input {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1em;
+        }
+        
+        .staking-input-group input:focus {
+            outline: none;
+            border-color: var(--scroll-blue);
+        }
+        
+        .staking-input-group select {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        
+        .staking-input-group select option {
+            background: #1a1a2e;
+        }
+        
+        /* Button */
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-gold {
+            background: var(--divine-gold);
+            color: #333;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Progress Bar */
+        .progress-section {
+            margin-top: 25px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: var(--primary-gradient);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 10px;
+            color: #a0a0ff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+        
+        .tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Privileges List */
+        .privileges-list {
+            list-style: none;
+        }
+        
+        .privileges-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .privileges-list .status {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+        
+        .status-active {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .status-locked {
+            background: rgba(255, 255, 255, 0.1);
+            color: #666;
+        }
+        
+        /* Governance Section */
+        .proposal-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .proposal-card h4 {
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        
+        .proposal-card p {
+            color: #a0a0ff;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .vote-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .vote-buttons button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .vote-for {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .vote-against {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+        
+        /* Transaction History */
+        .tx-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .tx-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .tx-item .tx-type {
+            color: #a0a0ff;
+        }
+        
+        .tx-item .tx-amount {
+            font-weight: bold;
+        }
+        
+        .tx-item .tx-amount.positive {
+            color: #4CAF50;
+        }
+        
+        .tx-item .tx-amount.negative {
+            color: #f44336;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 30px;
+            color: #666;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .footer .divine-text {
+            font-style: italic;
+            color: #a0a0ff;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📊 AscendancyID Dashboard</h1>
+            <div class="wallet-info">
+                <span class="wallet-address" id="walletAddress">Not Connected</span>
+                <button class="btn btn-gold" onclick="connectWallet()" id="connectBtn">Connect</button>
+            </div>
+        </header>
+        
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="label">Staked SCROLL</div>
+                <div class="value" id="stakedAmount">0</div>
+                <div class="sub">+0 rewards pending</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Voting Power</div>
+                <div class="value" id="votingPower">1x</div>
+                <div class="sub">Bronze tier</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Time Locked</div>
+                <div class="value" id="timeLocked">0d</div>
+                <div class="sub">Until unlock</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Privilege Level</div>
+                <div class="value" id="privilegeLevel">1</div>
+                <div class="sub">of 10 max</div>
+            </div>
+        </div>
+        
+        <div class="main-grid">
+            <!-- Left Column - ID Card -->
+            <div>
+                <div class="card">
+                    <h2><span class="icon">🆔</span> Your AscendancyID</h2>
+                    
+                    <div class="id-card">
+                        <div class="avatar">👤</div>
+                        <div class="name" id="userName">Guest User</div>
+                        <div class="id-number" id="userId">#0000</div>
+                        <div class="tier-badge" id="userTier">🥉 Bronze</div>
+                    </div>
+                    
+                    <div class="progress-section">
+                        <div class="progress-label">
+                            <span>Progress to Silver</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                        <p style="color: #a0a0ff; font-size: 0.85em; margin-top: 10px;">
+                            Stake 10,000 SCROLL for 90 days to upgrade
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="card" style="margin-top: 20px;">
+                    <h2><span class="icon">⚡</span> Quick Actions</h2>
+                    <button class="btn btn-primary" style="margin-bottom: 10px;" onclick="showStakeModal()">
+                        🔒 Stake SCROLL
+                    </button>
+                    <button class="btn btn-secondary" style="margin-bottom: 10px;" onclick="claimRewards()">
+                        💰 Claim Rewards
+                    </button>
+                    <button class="btn btn-secondary" onclick="viewOnExplorer()">
+                        🔍 View on Explorer
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right Column - Main Content -->
+            <div class="card">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('staking')">🔒 Staking</button>
+                    <button class="tab" onclick="switchTab('privileges')">🎯 Privileges</button>
+                    <button class="tab" onclick="switchTab('governance')">🗳️ Governance</button>
+                    <button class="tab" onclick="switchTab('history')">📜 History</button>
+                </div>
+                
+                <!-- Staking Tab -->
+                <div class="tab-content active" id="staking-tab">
+                    <h3 style="margin-bottom: 20px;">Stake SCROLL for Privileges</h3>
+                    
+                    <div class="staking-section">
+                        <div class="staking-input-group">
+                            <input type="number" id="stakeAmount" placeholder="Amount to stake" min="0">
+                            <select id="lockDuration">
+                                <option value="30">30 Days</option>
+                                <option value="90">90 Days</option>
+                                <option value="180">180 Days</option>
+                                <option value="365">365 Days</option>
+                            </select>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span style="color: #a0a0ff;">Estimated Tier:</span>
+                                <span id="estimatedTier" style="color: #ffd700;">Bronze</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span style="color: #a0a0ff;">Voting Power Boost:</span>
+                                <span id="estimatedPower" style="color: #4CAF50;">1x</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #a0a0ff;">APY:</span>
+                                <span id="estimatedApy" style="color: #4CAF50;">5%</span>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="stakeTokens()">
+                            🔒 Stake SCROLL
+                        </button>
+                    </div>
+                    
+                    <h4 style="margin-top: 30px; margin-bottom: 15px;">Staking Tiers</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 2em;">🥉</div>
+                            <div style="font-weight: bold; margin: 10px 0;">Bronze</div>
+                            <div style="color: #a0a0ff; font-size: 0.9em;">1,000 SCROLL</div>
+                            <div style="color: #a0a0ff; font-size: 0.9em;">30 days</div>
+                            <div style="color: #4CAF50; margin-top: 10px;">1x voting</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 2em;">🥈</div>
+                            <div style="font-weight: bold; margin: 10px 0;">Silver</div>
+                            <div style="color: #a0a0ff; font-size: 0.9em;">10,000 SCROLL</div>
+                            <div style="color: #a0a0ff; font-size: 0.9em;">90 days</div>
+                            <div style="color: #4CAF50; margin-top: 10px;">2x voting</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 2em;">🥇</div>
+                            <div style="font-weight: bold; margin: 10px 0;">Gold</div>
+                            <div style="color: #a0a0ff; font-size: 0.9em;">50,000 SCROLL</div>
+                            <div style="color: #a0a0ff; font-size: 0.9em;">180 days</div>
+                            <div style="color: #4CAF50; margin-top: 10px;">5x voting</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 2em;">💎</div>
+                            <div style="font-weight: bold; margin: 10px 0;">Platinum</div>
+                            <div style="color: #a0a0ff; font-size: 0.9em;">100,000 SCROLL</div>
+                            <div style="color: #a0a0ff; font-size: 0.9em;">365 days</div>
+                            <div style="color: #4CAF50; margin-top: 10px;">10x voting</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Privileges Tab -->
+                <div class="tab-content" id="privileges-tab">
+                    <h3 style="margin-bottom: 20px;">Your Privileges</h3>
+                    
+                    <ul class="privileges-list">
+                        <li>
+                            <span>Basic Ecosystem Access</span>
+                            <span class="status status-active">✓ Active</span>
+                        </li>
+                        <li>
+                            <span>Community Forum Access</span>
+                            <span class="status status-active">✓ Active</span>
+                        </li>
+                        <li>
+                            <span>Event Notifications</span>
+                            <span class="status status-active">✓ Active</span>
+                        </li>
+                        <li>
+                            <span>Enhanced Features</span>
+                            <span class="status status-locked">🔒 Silver Required</span>
+                        </li>
+                        <li>
+                            <span>Priority Support</span>
+                            <span class="status status-locked">🔒 Silver Required</span>
+                        </li>
+                        <li>
+                            <span>Premium Content</span>
+                            <span class="status status-locked">🔒 Gold Required</span>
+                        </li>
+                        <li>
+                            <span>VIP Discord Access</span>
+                            <span class="status status-locked">🔒 Gold Required</span>
+                        </li>
+                        <li>
+                            <span>Governance Proposals</span>
+                            <span class="status status-locked">🔒 Platinum Required</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Governance Tab -->
+                <div class="tab-content" id="governance-tab">
+                    <h3 style="margin-bottom: 20px;">Active Proposals</h3>
+                    
+                    <div class="proposal-card">
+                        <h4>SIP-001: Increase Staking Rewards</h4>
+                        <p>Proposal to increase base staking rewards from 5% to 7% APY for all tiers.</p>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9em;">
+                            <span style="color: #4CAF50;">For: 65%</span>
+                            <span style="color: #f44336;">Against: 35%</span>
+                        </div>
+                        <div class="progress-bar" style="margin-bottom: 15px;">
+                            <div class="progress-fill" style="width: 65%; background: linear-gradient(90deg, #4CAF50, #667eea);"></div>
+                        </div>
+                        <div class="vote-buttons">
+                            <button class="vote-for" onclick="vote('SIP-001', 'for')">✓ Vote For</button>
+                            <button class="vote-against" onclick="vote('SIP-001', 'against')">✗ Vote Against</button>
+                        </div>
+                    </div>
+                    
+                    <div class="proposal-card">
+                        <h4>SIP-002: New NFT Collection Launch</h4>
+                        <p>Approve the launch of "Cosmic Guardians" NFT collection with 10% royalties to treasury.</p>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9em;">
+                            <span style="color: #4CAF50;">For: 82%</span>
+                            <span style="color: #f44336;">Against: 18%</span>
+                        </div>
+                        <div class="progress-bar" style="margin-bottom: 15px;">
+                            <div class="progress-fill" style="width: 82%; background: linear-gradient(90deg, #4CAF50, #667eea);"></div>
+                        </div>
+                        <div class="vote-buttons">
+                            <button class="vote-for" onclick="vote('SIP-002', 'for')">✓ Vote For</button>
+                            <button class="vote-against" onclick="vote('SIP-002', 'against')">✗ Vote Against</button>
+                        </div>
+                    </div>
+                    
+                    <p style="color: #a0a0ff; margin-top: 20px; font-size: 0.9em;">
+                        💡 Your voting power: <strong>1x</strong> (Bronze tier). Upgrade to increase influence.
+                    </p>
+                </div>
+                
+                <!-- History Tab -->
+                <div class="tab-content" id="history-tab">
+                    <h3 style="margin-bottom: 20px;">Transaction History</h3>
+                    
+                    <div class="tx-list">
+                        <div class="tx-item">
+                            <div>
+                                <div class="tx-type">AscendancyID Mint</div>
+                                <div style="font-size: 0.8em; color: #666;">2 days ago</div>
+                            </div>
+                            <div class="tx-amount">-0.00 ETH</div>
+                        </div>
+                        <div class="tx-item">
+                            <div>
+                                <div class="tx-type">Staking Reward</div>
+                                <div style="font-size: 0.8em; color: #666;">1 day ago</div>
+                            </div>
+                            <div class="tx-amount positive">+5.2 SCROLL</div>
+                        </div>
+                        <div class="tx-item">
+                            <div>
+                                <div class="tx-type">Vote Cast: SIP-001</div>
+                                <div style="font-size: 0.8em; color: #666;">12 hours ago</div>
+                            </div>
+                            <div class="tx-amount">-0.001 ETH</div>
+                        </div>
+                    </div>
+                    
+                    <p style="color: #a0a0ff; margin-top: 20px; text-align: center; font-size: 0.9em;">
+                        Connect wallet to see full history
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>© 2025 ScrollVerse Protocol | OmniTech1™</p>
+            <p class="divine-text">"You exist. You count. You resonate. You remember."</p>
+            <p style="margin-top: 15px;">
+                <a href="index.html">Home</a> |
+                <a href="ascendancy_mint.html">Mint ID</a> |
+                <a href="scrollverse_portal.html">Portal</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        let userAddress = null;
+        
+        // Connect Wallet
+        async function connectWallet() {
+            try {
+                if (typeof window.ethereum === 'undefined') {
+                    alert('Please install MetaMask or another Web3 wallet');
+                    return;
+                }
+                
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                userAddress = accounts[0];
+                
+                document.getElementById('walletAddress').textContent = 
+                    userAddress.substring(0, 6) + '...' + userAddress.substring(38);
+                document.getElementById('connectBtn').textContent = 'Connected';
+                document.getElementById('connectBtn').disabled = true;
+                
+                // Simulate loading user data
+                loadUserData();
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+            }
+        }
+        
+        // Load User Data (simulated)
+        function loadUserData() {
+            document.getElementById('userName').textContent = 'Scroll Pioneer';
+            document.getElementById('userId').textContent = '#' + Math.floor(Math.random() * 9999).toString().padStart(4, '0');
+            document.getElementById('stakedAmount').textContent = '1,250';
+            document.getElementById('progressPercent').textContent = '12.5%';
+            document.getElementById('progressFill').style.width = '12.5%';
+        }
+        
+        // Switch Tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+        
+        // Stake Amount Change
+        document.getElementById('stakeAmount').addEventListener('input', function() {
+            const amount = parseInt(this.value) || 0;
+            const duration = parseInt(document.getElementById('lockDuration').value);
+            
+            let tier = 'Bronze';
+            let power = '1x';
+            let apy = '5%';
+            
+            if (amount >= 100000 && duration >= 365) {
+                tier = 'Platinum'; power = '10x'; apy = '12%';
+            } else if (amount >= 50000 && duration >= 180) {
+                tier = 'Gold'; power = '5x'; apy = '10%';
+            } else if (amount >= 10000 && duration >= 90) {
+                tier = 'Silver'; power = '2x'; apy = '7%';
+            }
+            
+            document.getElementById('estimatedTier').textContent = tier;
+            document.getElementById('estimatedPower').textContent = power;
+            document.getElementById('estimatedApy').textContent = apy;
+        });
+        
+        document.getElementById('lockDuration').addEventListener('change', function() {
+            document.getElementById('stakeAmount').dispatchEvent(new Event('input'));
+        });
+        
+        // Stake Tokens
+        function stakeTokens() {
+            if (!userAddress) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            
+            const amount = document.getElementById('stakeAmount').value;
+            const duration = document.getElementById('lockDuration').value;
+            
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            alert(`Staking ${amount} SCROLL for ${duration} days (Demo Mode)`);
+        }
+        
+        // Claim Rewards
+        function claimRewards() {
+            if (!userAddress) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            alert('Claiming rewards... (Demo Mode)');
+        }
+        
+        // View on Explorer
+        function viewOnExplorer() {
+            window.open('https://sepolia.scrollscan.com', '_blank');
+        }
+        
+        // Vote
+        function vote(proposalId, choice) {
+            if (!userAddress) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            alert(`Voted ${choice} on ${proposalId} (Demo Mode)`);
+        }
+        
+        // Show Stake Modal
+        function showStakeModal() {
+            switchTab('staking');
+            document.getElementById('stakeAmount').focus();
+        }
+    </script>
+</body>
+</html>

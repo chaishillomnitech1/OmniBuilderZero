@@ -15,6 +15,9 @@
     "deploy:bridge-local": "hardhat run scripts/deployPreciousMetalBridge.js --network hardhat",
     "deploy:bridge-scroll-sepolia": "hardhat run scripts/deployPreciousMetalBridge.js --network scrollSepolia",
     "deploy:bridge-scroll": "hardhat run scripts/deployPreciousMetalBridge.js --network scroll",
+    "deploy:ascendancy-local": "hardhat run scripts/deployAscendancy.js --network hardhat",
+    "deploy:ascendancy-scroll-sepolia": "hardhat run scripts/deployAscendancy.js --network scrollSepolia",
+    "deploy:ascendancy-scroll": "hardhat run scripts/deployAscendancy.js --network scroll",
     "verify": "hardhat verify",
     "clean": "hardhat clean"
   },
@@ -35,7 +38,12 @@
     "PreciousMetals",
     "AssetBridge",
     "Gold",
-    "RWA"
+    "RWA",
+    "AscendancyID",
+    "SBT",
+    "Soulbound",
+    "Staking",
+    "Governance"
   ],
   "author": "Chais The Great - OmniTech1",
   "license": "MIT",

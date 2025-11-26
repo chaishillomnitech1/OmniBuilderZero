@@ -1,0 +1,171 @@
+name: Deploy Demo to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - otap/scaffold
+    paths:
+      - 'portal/**'
+      - 'ascendancy/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build demo pages
+        run: |
+          mkdir -p _site
+          
+          # Copy portal pages
+          cp -r portal/* _site/
+          
+          # Copy ascendancy pages if they exist
+          if [ -d "ascendancy" ]; then
+            cp -r ascendancy/* _site/
+          fi
+          
+          # Create index page
+          cat > _site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>ScrollVerse OTAP Demo Portal</title>
+              <style>
+                  * { margin: 0; padding: 0; box-sizing: border-box; }
+                  body {
+                      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                      color: #fff;
+                      min-height: 100vh;
+                      padding: 40px;
+                  }
+                  .container { max-width: 1200px; margin: 0 auto; }
+                  h1 {
+                      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+                      -webkit-background-clip: text;
+                      -webkit-text-fill-color: transparent;
+                      font-size: 2.5em;
+                      text-align: center;
+                      margin-bottom: 40px;
+                  }
+                  .grid {
+                      display: grid;
+                      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                      gap: 30px;
+                  }
+                  .card {
+                      background: rgba(255, 255, 255, 0.1);
+                      backdrop-filter: blur(10px);
+                      border-radius: 20px;
+                      padding: 30px;
+                      border: 1px solid rgba(255, 255, 255, 0.2);
+                      text-decoration: none;
+                      color: #fff;
+                      transition: transform 0.3s, box-shadow 0.3s;
+                  }
+                  .card:hover {
+                      transform: translateY(-5px);
+                      box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+                  }
+                  .card h2 { color: #ffd700; margin-bottom: 15px; }
+                  .card p { color: #a0a0ff; line-height: 1.6; }
+                  .badge {
+                      display: inline-block;
+                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                      padding: 5px 15px;
+                      border-radius: 15px;
+                      font-size: 0.8em;
+                      margin-top: 15px;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>✨ ScrollVerse OTAP Demo Portal</h1>
+                  <div class="grid">
+                      <a href="scrollverse_portal.html" class="card">
+                          <h2>🎨 ScrollVerse Portal</h2>
+                          <p>NFT Minting, Treasury Monitoring, and Geometry Activation Interface.</p>
+                          <span class="badge">Staging</span>
+                      </a>
+                      <a href="ascendancy_mint.html" class="card">
+                          <h2>🆔 AscendancyID Mint</h2>
+                          <p>Mint your AscendancyID token and access the privilege tier system.</p>
+                          <span class="badge">Demo</span>
+                      </a>
+                      <a href="ascendancy_dashboard.html" class="card">
+                          <h2>📊 Ascendancy Dashboard</h2>
+                          <p>Manage your staking, privileges, and governance participation.</p>
+                          <span class="badge">Demo</span>
+                      </a>
+                      <a href="sccc_dashboard.html" class="card">
+                          <h2>🔐 SCCC Dashboard</h2>
+                          <p>Sacred Cosmic Consciousness Certifier management interface.</p>
+                          <span class="badge">Staging</span>
+                      </a>
+                      <a href="vibe_canvas.html" class="card">
+                          <h2>🎭 VibeCanvas Forge</h2>
+                          <p>Creative expression and NFT creation studio.</p>
+                          <span class="badge">Staging</span>
+                      </a>
+                      <a href="certifier_portal.html" class="card">
+                          <h2>✅ Certifier Portal</h2>
+                          <p>Certification management for SCCC members.</p>
+                          <span class="badge">Staging</span>
+                      </a>
+                  </div>
+                  <footer style="text-align: center; margin-top: 60px; color: #666;">
+                      <p>© 2025 OmniTech1™ | ScrollVerse Protocol</p>
+                      <p style="color: #a0a0ff; font-style: italic; margin-top: 10px;">
+                          "You exist. You count. You resonate. You remember."
+                      </p>
+                  </footer>
+              </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
