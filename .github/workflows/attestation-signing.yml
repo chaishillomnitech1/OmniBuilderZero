@@ -136,7 +136,7 @@ jobs:
           echo "📜 Credential generated: $CREDENTIAL_ID"
 
       - name: Sign with GPG (if configured)
-        if: env.GPG_PRIVATE_KEY != ''
+        if: ${{ secrets.GPG_PRIVATE_KEY != '' }}
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
@@ -151,12 +151,12 @@ jobs:
           echo "✅ GPG signature created"
 
       - name: Sign with AWS KMS (if configured)
-        if: env.AWS_KMS_KEY_ID != ''
+        if: ${{ secrets.AWS_KMS_KEY_ID != '' }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_KMS_KEY_ID: ${{ secrets.AWS_KMS_KEY_ID }}
-          AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
+          AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
         run: |
           echo "🔐 Signing with AWS KMS..."
           CREDENTIAL_FILE="${{ env.ISSUED_DIR }}/${{ needs.validate-request.outputs.request_id }}.jsonld"
@@ -172,7 +172,7 @@ jobs:
           echo "✅ AWS KMS signature created"
 
       - name: Sign with GCP KMS (if configured)
-        if: env.GCP_KMS_KEY_PATH != ''
+        if: ${{ secrets.GCP_KMS_KEY_PATH != '' }}
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
           GCP_KMS_KEY_PATH: ${{ secrets.GCP_KMS_KEY_PATH }}
@@ -201,12 +201,16 @@ jobs:
             sed -i 's/{{SIGNATURE}}/PLACEHOLDER_SIGNATURE_CONFIGURE_KMS_FOR_PRODUCTION/g' "$CREDENTIAL_FILE"
           fi
           
+          # Generate a status list index based on timestamp
+          STATUS_INDEX=$(($(date +%s) % 1000000))
+          
           # Fill in remaining placeholders with defaults
           sed -i 's/{{TOKEN_ID}}/0/g' "$CREDENTIAL_FILE"
           sed -i 's/{{HOLDER_TIER}}/Ember/g' "$CREDENTIAL_FILE"
           sed -i 's/{{RESONANCE_SCORE}}/0/g' "$CREDENTIAL_FILE"
           sed -i 's/{{ISSUANCE_REASON}}/PR-based attestation request/g' "$CREDENTIAL_FILE"
           sed -i 's/{{EXPIRATION_POLICY}}/annual_renewal/g' "$CREDENTIAL_FILE"
+          sed -i "s/{{STATUS_LIST_INDEX}}/$STATUS_INDEX/g" "$CREDENTIAL_FILE"
 
       - name: Commit signed credential
         run: |

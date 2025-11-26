@@ -57,9 +57,19 @@ The GitHub Actions workflow will:
 
 ### Step 4: Review and Approval
 
-- A ScrollVerse maintainer reviews the request
-- Upon approval, the attestation workflow triggers
-- The credential is signed and added to the `attestations/issued/` directory
+**Who Can Approve:**
+- Repository maintainers with `write` access or higher
+- Members of the `@chaishillomnitech1/attestation-reviewers` team (if configured)
+
+**Approval Process:**
+1. A ScrollVerse maintainer reviews the request for validity
+2. The maintainer verifies the evidence provided
+3. If approved, the maintainer applies the `attestation-approved` label to the PR
+4. The PR is then merged by a maintainer
+5. Upon merge with the `attestation-approved` label, the signing workflow triggers automatically
+6. The credential is signed and added to the `attestations/issued/` directory
+
+**Note:** Only users with repository write access can apply labels. The `attestation-approved` label should be protected and only applied after thorough review.
 
 ### Step 5: Receive Credential
 
