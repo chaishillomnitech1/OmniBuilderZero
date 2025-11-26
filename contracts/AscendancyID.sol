@@ -8,6 +8,15 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
 /**
+ * @title IScrollCoinStaking
+ * @dev Interface for ScrollCoinStaking contract
+ */
+interface IScrollCoinStaking {
+    function getCurrentTier(address user) external view returns (uint8);
+    function getStakedAmount(address user) external view returns (uint256);
+}
+
+/**
  * @title AscendancyID
  * @dev Soulbound Token (SBT) for ScrollVerse identity and privilege management
  * @notice AscendancyID is non-transferable and represents user identity in the ecosystem
@@ -18,6 +27,14 @@ contract AscendancyID is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard, Pau
 
     // Staking contract reference for privilege verification
     address public stakingContract;
+
+    // Default mint fees (in wei) - defined as constants for gas efficiency
+    uint256 public constant DEFAULT_FEE_INITIATE = 0;
+    uint256 public constant DEFAULT_FEE_BRONZE = 0.01 ether;
+    uint256 public constant DEFAULT_FEE_SILVER = 0.05 ether;
+    uint256 public constant DEFAULT_FEE_GOLD = 0.1 ether;
+    uint256 public constant DEFAULT_FEE_PLATINUM = 0.2 ether;
+    uint256 public constant DEFAULT_FEE_DIAMOND = 0.5 ether;
 
     // Metadata structure
     struct AscendancyMetadata {
@@ -103,13 +120,13 @@ contract AscendancyID is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard, Pau
         require(_treasury != address(0), "Invalid treasury");
         treasury = _treasury;
 
-        // Set default mint fees (can be updated by owner)
-        mintFees[0] = 0;                    // Initiate: Free
-        mintFees[1] = 0.01 ether;           // Bronze
-        mintFees[2] = 0.05 ether;           // Silver
-        mintFees[3] = 0.1 ether;            // Gold
-        mintFees[4] = 0.2 ether;            // Platinum
-        mintFees[5] = 0.5 ether;            // Diamond
+        // Set default mint fees using defined constants
+        mintFees[0] = DEFAULT_FEE_INITIATE;
+        mintFees[1] = DEFAULT_FEE_BRONZE;
+        mintFees[2] = DEFAULT_FEE_SILVER;
+        mintFees[3] = DEFAULT_FEE_GOLD;
+        mintFees[4] = DEFAULT_FEE_PLATINUM;
+        mintFees[5] = DEFAULT_FEE_DIAMOND;
     }
 
     /**
@@ -336,14 +353,12 @@ contract AscendancyID is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard, Pau
         if (stakingContract == address(0)) {
             return 0;
         }
-        // Call staking contract to get tier
-        (bool success, bytes memory data) = stakingContract.staticcall(
-            abi.encodeWithSignature("getCurrentTier(address)", user)
-        );
-        if (success && data.length >= 32) {
-            return uint8(abi.decode(data, (uint256)));
+        // Use interface for type-safe call
+        try IScrollCoinStaking(stakingContract).getCurrentTier(user) returns (uint8 tier) {
+            return tier;
+        } catch {
+            return 0;
         }
-        return 0;
     }
 
     // ========== SOULBOUND RESTRICTIONS ==========

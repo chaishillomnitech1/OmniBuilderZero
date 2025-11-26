@@ -8,6 +8,17 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
 /**
+ * @title IAscendancyID
+ * @dev Interface for AscendancyID contract
+ */
+interface IAscendancyID {
+    function upgradePrivilege(uint256 tokenId, uint8 newTier) external;
+    function downgradePrivilege(uint256 tokenId, uint8 newTier) external;
+    function getTokenId(address user) external view returns (uint256);
+    function hasAscendancyId(address user) external view returns (bool);
+}
+
+/**
  * @title ScrollCoinStaking
  * @dev Staking contract for ScrollCoin with time-lock privilege escalation
  * @notice Enables ScrollCoin holders to stake tokens and unlock AscendancyID privileges
@@ -395,9 +406,47 @@ contract ScrollCoinStaking is Ownable, ReentrancyGuard, Pausable {
      * @param newTier New privilege tier
      */
     function _notifyPrivilegeChange(address user, uint8 newTier) internal {
-        // This will call the AscendancyID contract when integrated
-        // For now, emit an event that can be listened to
-        emit TierUpgraded(user, stakingPositions[user].tierAtStake, newTier);
+        // Call AscendancyID contract to update privilege if set
+        if (ascendancyIdContract != address(0)) {
+            IAscendancyID ascendancy = IAscendancyID(ascendancyIdContract);
+            
+            // Check if user has an AscendancyID
+            try ascendancy.hasAscendancyId(user) returns (bool hasId) {
+                if (!hasId) {
+                    return; // User doesn't have an ID, nothing to update
+                }
+            } catch {
+                return;
+            }
+            
+            // Get current tier from staking position
+            uint8 currentTier = stakingPositions[user].tierAtStake;
+            
+            // Get token ID
+            uint256 tokenId;
+            try ascendancy.getTokenId(user) returns (uint256 id) {
+                tokenId = id;
+            } catch {
+                emit TierUpgraded(user, currentTier, newTier);
+                return;
+            }
+            
+            // Call the appropriate function based on tier change direction
+            if (newTier > currentTier) {
+                try ascendancy.upgradePrivilege(tokenId, newTier) {
+                    // Success - event emitted by AscendancyID contract
+                } catch {
+                    // Emit event as fallback notification
+                    emit TierUpgraded(user, currentTier, newTier);
+                }
+            } else if (newTier < currentTier) {
+                try ascendancy.downgradePrivilege(tokenId, newTier) {
+                    // Success
+                } catch {
+                    emit TierUpgraded(user, currentTier, newTier);
+                }
+            }
+        }
     }
 
     // Admin functions
@@ -462,7 +511,11 @@ contract ScrollCoinStaking is Ownable, ReentrancyGuard, Pausable {
      * @param amount Amount to withdraw
      */
     function emergencyWithdraw(address token, uint256 amount) external onlyOwner {
-        require(token != address(scrollCoin) || amount <= scrollCoin.balanceOf(address(this)) - totalStaked, "Cannot withdraw staked tokens");
+        // Only allow withdrawing non-staked tokens
+        if (token == address(scrollCoin)) {
+            uint256 availableBalance = scrollCoin.balanceOf(address(this)) - totalStaked;
+            require(amount <= availableBalance, "Cannot withdraw staked tokens");
+        }
         IERC20(token).safeTransfer(owner(), amount);
     }
 }

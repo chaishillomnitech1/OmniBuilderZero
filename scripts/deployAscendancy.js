@@ -48,7 +48,8 @@ async function main() {
   // Deploy ScrollCoinStaking
   console.log("\n📝 Deploying ScrollCoinStaking...");
   
-  // Reward rate: 0.0001 tokens per second per staked token (approximately 3.15% APY)
+  // Reward rate: approximately 0.0001 tokens per second per staked token
+  // Using a smaller precision value for calculation accuracy
   const rewardRatePerSecond = ethers.parseUnits("0.0000001", 18);
   
   const ScrollCoinStaking = await ethers.getContractFactory("ScrollCoinStaking");
