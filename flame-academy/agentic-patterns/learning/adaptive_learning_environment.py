@@ -24,7 +24,7 @@ try:
     from ..core.prompt_chaining import PromptChain, ChainStep
     from ..core.memory_management import MemoryManager, LearnerMemory, LearnerProfile, LearningStyle
     from ..core.goal_setting import GoalSetter, LearningGoal, GoalType
-    from ..core.knowledge_retrieval import KnowledgeRetriever, RetrievalContext, DifficultyLevel
+    from ..core.knowledge_retrieval import KnowledgeRetriever, RetrievalContext, DifficultyLevel, LearningModality
     from ..agents.base_educational_agent import LearnerContext, AgentResponse, ResponseType
     from ..agents.agent_router import AgentRouter, TaskType, create_default_router
     from ..orchestration.multi_agent_orchestrator import MultiAgentOrchestrator, OrchestrationMode
@@ -34,7 +34,7 @@ except ImportError:
     from core.prompt_chaining import PromptChain, ChainStep
     from core.memory_management import MemoryManager, LearnerMemory, LearnerProfile, LearningStyle
     from core.goal_setting import GoalSetter, LearningGoal, GoalType
-    from core.knowledge_retrieval import KnowledgeRetriever, RetrievalContext, DifficultyLevel
+    from core.knowledge_retrieval import KnowledgeRetriever, RetrievalContext, DifficultyLevel, LearningModality
     from agents.base_educational_agent import LearnerContext, AgentResponse, ResponseType
     from agents.agent_router import AgentRouter, TaskType, create_default_router
     from orchestration.multi_agent_orchestrator import MultiAgentOrchestrator, OrchestrationMode
@@ -539,8 +539,6 @@ Would you like to try again or get some help?
     
     def _style_to_modality(self, style: LearningStyle):
         """Convert learning style to modality"""
-        from ..core.knowledge_retrieval import LearningModality
-        
         mapping = {
             LearningStyle.VISUAL: LearningModality.VISUAL,
             LearningStyle.AUDITORY: LearningModality.AUDITORY,
