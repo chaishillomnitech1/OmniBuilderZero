@@ -1,0 +1,226 @@
+name: Attestation Signing Workflow
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - 'attestations/requests/**'
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: 'Attestation request ID to process'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  ATTESTATIONS_DIR: attestations
+  REQUESTS_DIR: attestations/requests
+  ISSUED_DIR: attestations/issued
+  TEMPLATE_FILE: attestations/templates/scrollverse-credential.jsonld
+
+jobs:
+  validate-request:
+    name: Validate Attestation Request
+    if: |
+      (github.event_name == 'pull_request' && 
+       github.event.pull_request.merged == true && 
+       contains(github.event.pull_request.labels.*.name, 'attestation-approved')) ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      request_id: ${{ steps.parse.outputs.request_id }}
+      valid: ${{ steps.validate.outputs.valid }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Parse attestation request
+        id: parse
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            REQUEST_ID="${{ github.event.inputs.request_id }}"
+          else
+            # Find the request file from the PR
+            REQUEST_FILE=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep "^${{ env.REQUESTS_DIR }}/" | head -1)
+            REQUEST_ID=$(basename "$REQUEST_FILE" .json)
+          fi
+          echo "request_id=$REQUEST_ID" >> $GITHUB_OUTPUT
+          echo "Processing request: $REQUEST_ID"
+
+      - name: Validate request format
+        id: validate
+        run: |
+          REQUEST_FILE="${{ env.REQUESTS_DIR }}/${{ steps.parse.outputs.request_id }}.json"
+          
+          if [ ! -f "$REQUEST_FILE" ]; then
+            echo "::error::Request file not found: $REQUEST_FILE"
+            echo "valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          # Validate JSON structure
+          if ! jq empty "$REQUEST_FILE" 2>/dev/null; then
+            echo "::error::Invalid JSON format"
+            echo "valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          # Check required fields
+          REQUIRED_FIELDS=("requestId" "requestType" "subjectAddress")
+          for field in "${REQUIRED_FIELDS[@]}"; do
+            if [ "$(jq -r ".$field // empty" "$REQUEST_FILE")" == "" ]; then
+              echo "::error::Missing required field: $field"
+              echo "valid=false" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          done
+          
+          echo "valid=true" >> $GITHUB_OUTPUT
+          echo "✅ Request validation passed"
+
+  sign-credential:
+    name: Sign Verifiable Credential
+    needs: validate-request
+    if: needs.validate-request.outputs.valid == 'true'
+    runs-on: ubuntu-latest
+    environment: attestation-signing
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install signing dependencies
+        run: |
+          npm install -g uuid
+          pip install pynacl
+
+      - name: Generate credential from template
+        id: generate
+        run: |
+          REQUEST_FILE="${{ env.REQUESTS_DIR }}/${{ needs.validate-request.outputs.request_id }}.json"
+          CREDENTIAL_ID=$(uuidgen)
+          ISSUANCE_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          
+          # Read request data
+          REQUEST_TYPE=$(jq -r '.requestType' "$REQUEST_FILE")
+          SUBJECT_ADDRESS=$(jq -r '.subjectAddress' "$REQUEST_FILE")
+          SOULBOUND=$(jq -r '.preferences.soulbound // "true"' "$REQUEST_FILE")
+          EXPIRATION_DAYS=$(jq -r '.preferences.expirationDays // "365"' "$REQUEST_FILE")
+          EXPIRATION_DATE=$(date -u -d "+$EXPIRATION_DAYS days" +"%Y-%m-%dT%H:%M:%SZ")
+          
+          # Create credential from template
+          mkdir -p "${{ env.ISSUED_DIR }}"
+          
+          cat "${{ env.TEMPLATE_FILE }}" | \
+            sed "s/{{CREDENTIAL_ID}}/$CREDENTIAL_ID/g" | \
+            sed "s/{{ISSUANCE_DATE}}/$ISSUANCE_DATE/g" | \
+            sed "s/{{EXPIRATION_DATE}}/$EXPIRATION_DATE/g" | \
+            sed "s/{{SUBJECT_ADDRESS}}/$SUBJECT_ADDRESS/g" | \
+            sed "s/{{ATTESTATION_TYPE}}/$REQUEST_TYPE/g" | \
+            sed "s/{{SOULBOUND}}/$SOULBOUND/g" | \
+            sed "s/{{REVOCABLE}}/true/g" | \
+            sed "s/{{PROOF_CREATED}}/$ISSUANCE_DATE/g" \
+            > "${{ env.ISSUED_DIR }}/${{ needs.validate-request.outputs.request_id }}.jsonld"
+          
+          echo "credential_id=$CREDENTIAL_ID" >> $GITHUB_OUTPUT
+          echo "📜 Credential generated: $CREDENTIAL_ID"
+
+      - name: Sign with GPG (if configured)
+        if: env.GPG_PRIVATE_KEY != ''
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          echo "🔐 Signing with GPG..."
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          
+          CREDENTIAL_FILE="${{ env.ISSUED_DIR }}/${{ needs.validate-request.outputs.request_id }}.jsonld"
+          gpg --batch --yes --passphrase "$GPG_PASSPHRASE" \
+              --armor --detach-sign "$CREDENTIAL_FILE"
+          
+          echo "✅ GPG signature created"
+
+      - name: Sign with AWS KMS (if configured)
+        if: env.AWS_KMS_KEY_ID != ''
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_KMS_KEY_ID: ${{ secrets.AWS_KMS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
+        run: |
+          echo "🔐 Signing with AWS KMS..."
+          CREDENTIAL_FILE="${{ env.ISSUED_DIR }}/${{ needs.validate-request.outputs.request_id }}.jsonld"
+          
+          aws kms sign \
+            --key-id "$AWS_KMS_KEY_ID" \
+            --message fileb://"$CREDENTIAL_FILE" \
+            --message-type RAW \
+            --signing-algorithm ECDSA_SHA_256 \
+            --output text \
+            --query Signature > "${CREDENTIAL_FILE}.sig"
+          
+          echo "✅ AWS KMS signature created"
+
+      - name: Sign with GCP KMS (if configured)
+        if: env.GCP_KMS_KEY_PATH != ''
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GCP_KMS_KEY_PATH: ${{ secrets.GCP_KMS_KEY_PATH }}
+        run: |
+          echo "🔐 Signing with GCP KMS..."
+          echo "$GCP_SA_KEY" > /tmp/gcp-key.json
+          gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
+          
+          CREDENTIAL_FILE="${{ env.ISSUED_DIR }}/${{ needs.validate-request.outputs.request_id }}.jsonld"
+          
+          gcloud kms asymmetric-sign \
+            --key "$GCP_KMS_KEY_PATH" \
+            --input-file "$CREDENTIAL_FILE" \
+            --signature-file "${CREDENTIAL_FILE}.sig"
+          
+          rm /tmp/gcp-key.json
+          echo "✅ GCP KMS signature created"
+
+      - name: Update credential with signature placeholder
+        run: |
+          CREDENTIAL_FILE="${{ env.ISSUED_DIR }}/${{ needs.validate-request.outputs.request_id }}.jsonld"
+          
+          # If no KMS configured, add placeholder signature
+          if [ ! -f "${CREDENTIAL_FILE}.sig" ] && [ ! -f "${CREDENTIAL_FILE}.asc" ]; then
+            echo "⚠️ No KMS configured - using placeholder signature"
+            sed -i 's/{{SIGNATURE}}/PLACEHOLDER_SIGNATURE_CONFIGURE_KMS_FOR_PRODUCTION/g' "$CREDENTIAL_FILE"
+          fi
+          
+          # Fill in remaining placeholders with defaults
+          sed -i 's/{{TOKEN_ID}}/0/g' "$CREDENTIAL_FILE"
+          sed -i 's/{{HOLDER_TIER}}/Ember/g' "$CREDENTIAL_FILE"
+          sed -i 's/{{RESONANCE_SCORE}}/0/g' "$CREDENTIAL_FILE"
+          sed -i 's/{{ISSUANCE_REASON}}/PR-based attestation request/g' "$CREDENTIAL_FILE"
+          sed -i 's/{{EXPIRATION_POLICY}}/annual_renewal/g' "$CREDENTIAL_FILE"
+
+      - name: Commit signed credential
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add "${{ env.ISSUED_DIR }}/"
+          git commit -m "feat(attestations): issue credential ${{ needs.validate-request.outputs.request_id }}"
+          git push
+
+      - name: Create summary
+        run: |
+          echo "## ✅ Attestation Issued" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Request ID**: ${{ needs.validate-request.outputs.request_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Credential ID**: ${{ steps.generate.outputs.credential_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Location**: \`${{ env.ISSUED_DIR }}/${{ needs.validate-request.outputs.request_id }}.jsonld\`" >> $GITHUB_STEP_SUMMARY

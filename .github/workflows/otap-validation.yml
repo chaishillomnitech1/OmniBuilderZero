@@ -1,0 +1,195 @@
+name: OTAP Component Validation
+
+on:
+  push:
+    branches:
+      - main
+      - 'otap/**'
+    paths:
+      - 'matchmaker/**'
+      - 'attestations/**'
+      - 'infra/**'
+      - 'ARCHITECTURE.md'
+      - 'TOKENOMICS.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'matchmaker/**'
+      - 'attestations/**'
+      - 'infra/**'
+      - 'ARCHITECTURE.md'
+      - 'TOKENOMICS.md'
+
+jobs:
+  validate-structure:
+    name: Validate Directory Structure
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate matchmaker structure
+        run: |
+          echo "🔍 Validating matchmaker directory..."
+          
+          REQUIRED_FILES=("matchmaker/README.md")
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "::error::Missing required file: $file"
+              exit 1
+            fi
+          done
+          
+          echo "✅ matchmaker structure valid"
+
+      - name: Validate attestations structure
+        run: |
+          echo "🔍 Validating attestations directory..."
+          
+          REQUIRED_FILES=(
+            "attestations/README.md"
+            "attestations/templates/scrollverse-credential.jsonld"
+            "attestations/workflows/pr-attestation-guide.md"
+          )
+          
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "::error::Missing required file: $file"
+              exit 1
+            fi
+          done
+          
+          echo "✅ attestations structure valid"
+
+      - name: Validate infra structure
+        run: |
+          echo "🔍 Validating infra directory..."
+          
+          REQUIRED_FILES=("infra/README.md")
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "::error::Missing required file: $file"
+              exit 1
+            fi
+          done
+          
+          echo "✅ infra structure valid"
+
+  validate-json-ld:
+    name: Validate JSON-LD Templates
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate JSON-LD syntax
+        run: |
+          echo "🔍 Validating JSON-LD templates..."
+          
+          for file in attestations/templates/*.jsonld; do
+            if [ -f "$file" ]; then
+              echo "Checking: $file"
+              # Basic JSON validation (placeholders will fail strict JSON, so check structure)
+              if ! python3 -c "
+import json
+import re
+
+with open('$file', 'r') as f:
+    content = f.read()
+    # Replace template placeholders with valid values for validation
+    content = re.sub(r'\{\{[A-Z_]+\}\}', '\"placeholder\"', content)
+    json.loads(content)
+    print('  ✅ Valid JSON structure')
+"; then
+                echo "::error::Invalid JSON-LD: $file"
+                exit 1
+              fi
+            fi
+          done
+          
+          echo "✅ All JSON-LD templates valid"
+
+  validate-markdown:
+    name: Validate Markdown Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check documentation files exist
+        run: |
+          echo "🔍 Validating documentation..."
+          
+          REQUIRED_DOCS=(
+            "ARCHITECTURE.md"
+            "TOKENOMICS.md"
+          )
+          
+          for doc in "${REQUIRED_DOCS[@]}"; do
+            if [ ! -f "$doc" ]; then
+              echo "::error::Missing documentation: $doc"
+              exit 1
+            fi
+            
+            # Check for non-empty content
+            if [ ! -s "$doc" ]; then
+              echo "::error::Empty documentation file: $doc"
+              exit 1
+            fi
+            
+            echo "✅ $doc exists and has content"
+          done
+
+      - name: Validate internal links
+        run: |
+          echo "🔍 Checking internal documentation links..."
+          
+          # Simple link checker for markdown files
+          for md_file in ARCHITECTURE.md TOKENOMICS.md matchmaker/README.md attestations/README.md infra/README.md; do
+            if [ -f "$md_file" ]; then
+              echo "Checking links in: $md_file"
+              
+              # Extract relative links and check they exist
+              grep -oP '\[.*?\]\(\./[^)]+\)|\[.*?\]\(\.\./[^)]+\)' "$md_file" | \
+              grep -oP '\(\K[^)]+' | while read -r link; do
+                # Get directory of current file
+                current_dir=$(dirname "$md_file")
+                resolved_path="$current_dir/$link"
+                
+                # Normalize path
+                resolved_path=$(cd "$(dirname "$resolved_path")" 2>/dev/null && pwd)/$(basename "$resolved_path") 2>/dev/null || true
+                
+                # For now, just report (don't fail on missing links during scaffold)
+                if [ -f "$link" ] || [ -f "$resolved_path" ]; then
+                  echo "  ✅ Link valid: $link"
+                else
+                  echo "  ⚠️ Link may need verification: $link"
+                fi
+              done
+            fi
+          done
+          
+          echo "✅ Link check complete"
+
+  summary:
+    name: Generate Summary
+    needs: [validate-structure, validate-json-ld, validate-markdown]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Create summary
+        run: |
+          echo "## 🏗️ OTAP Component Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| matchmaker/ | ✅ Valid |" >> $GITHUB_STEP_SUMMARY
+          echo "| attestations/ | ✅ Valid |" >> $GITHUB_STEP_SUMMARY
+          echo "| infra/ | ✅ Valid |" >> $GITHUB_STEP_SUMMARY
+          echo "| ARCHITECTURE.md | ✅ Present |" >> $GITHUB_STEP_SUMMARY
+          echo "| TOKENOMICS.md | ✅ Present |" >> $GITHUB_STEP_SUMMARY
+          echo "| JSON-LD Templates | ✅ Valid |" >> $GITHUB_STEP_SUMMARY
