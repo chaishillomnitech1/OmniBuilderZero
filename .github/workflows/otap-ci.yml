@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main, develop]
 
+# Restrict permissions for security
+permissions:
+  contents: read
+  security-events: write
+
 env:
   FOUNDRY_PROFILE: ci
   NODE_VERSION: '18'
