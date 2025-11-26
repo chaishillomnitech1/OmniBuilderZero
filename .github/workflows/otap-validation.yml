@@ -21,6 +21,9 @@ on:
       - 'ARCHITECTURE.md'
       - 'TOKENOMICS.md'
 
+permissions:
+  contents: read
+
 jobs:
   validate-structure:
     name: Validate Directory Structure
