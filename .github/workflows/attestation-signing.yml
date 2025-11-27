@@ -105,8 +105,8 @@ jobs:
 
       - name: Install signing dependencies
         run: |
-          npm install -g uuid
-          pip install pynacl
+          # Dependencies installed as needed by specific signing methods
+          echo "Ready for signing operations"
 
       - name: Generate credential from template
         id: generate
