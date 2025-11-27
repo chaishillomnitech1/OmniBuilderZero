@@ -103,7 +103,7 @@ import re
 with open('$file', 'r') as f:
     content = f.read()
     # Replace template placeholders with valid values for validation
-    content = re.sub(r'\{\{[A-Z_]+\}\}', '\"placeholder\"', content)
+    content = re.sub(r'\{\{[A-Z_]+\}\}', 'null', content)
     json.loads(content)
     print('  ✅ Valid JSON structure')
 "; then
