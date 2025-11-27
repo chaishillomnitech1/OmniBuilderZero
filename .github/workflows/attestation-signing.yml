@@ -47,6 +47,10 @@ jobs:
           else
             # Find the request file from the PR
             REQUEST_FILE=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep "^${{ env.REQUESTS_DIR }}/" | head -1)
+            if [ -z "$REQUEST_FILE" ]; then
+              echo "::error::No attestation request file found in PR"
+              exit 1
+            fi
             REQUEST_ID=$(basename "$REQUEST_FILE" .json)
           fi
           echo "request_id=$REQUEST_ID" >> $GITHUB_OUTPUT
