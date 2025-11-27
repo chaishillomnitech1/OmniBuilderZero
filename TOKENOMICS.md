@@ -207,6 +207,10 @@ contract SoulboundFlameDNA is ERC721, IERC5192 {
         _locked[tokenId] = true;
         emit Locked(tokenId);
     }
+
+    function locked(uint256 tokenId) external view override returns (bool) {
+        return _locked[tokenId];
+    }
 }
 ```
 
