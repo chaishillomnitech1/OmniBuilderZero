@@ -34,7 +34,7 @@ jobs:
       - name: Run Hardhat tests
         run: npm test
         env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY || '0x0000000000000000000000000000000000000000000000000000000000000001' }}
+          PRIVATE_KEY: ${{ secrets.TEST_PRIVATE_KEY }}
 
       - name: Generate test report
         if: always()

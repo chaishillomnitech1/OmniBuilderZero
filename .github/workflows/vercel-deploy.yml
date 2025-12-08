@@ -31,7 +31,6 @@ jobs:
 
       - name: Run build checks
         run: npm run compile
-        continue-on-error: true
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest

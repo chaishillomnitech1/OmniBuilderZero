@@ -32,8 +32,8 @@ jobs:
         run: |
           git fetch origin ${{ github.base_ref }}
           DIFF=$(git diff origin/${{ github.base_ref }}...HEAD)
-          # Truncate diff to avoid token limits (conservative: 4000 chars)
-          DIFF_TRUNCATED=$(echo "$DIFF" | head -c 4000)
+          # Truncate diff to avoid token limits (conservative: 100 lines)
+          DIFF_TRUNCATED=$(echo "$DIFF" | head -n 100)
           echo "diff<<EOF" >> $GITHUB_OUTPUT
           echo "$DIFF_TRUNCATED" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT

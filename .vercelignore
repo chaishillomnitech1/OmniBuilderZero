@@ -37,8 +37,8 @@ hardhat.config.js
 .gitignore
 
 # Documentation (optional - include if you want docs in deployment)
-*.md
-!README.md
+# *.md
+# !README.md
 
 # Hardhat specific
 contracts
