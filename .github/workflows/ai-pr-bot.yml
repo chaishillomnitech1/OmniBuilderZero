@@ -1,0 +1,135 @@
+name: AI PR Bot
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Get PR diff
+        id: pr-diff
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          DIFF=$(git diff origin/${{ github.base_ref }}...HEAD)
+          # Truncate diff to avoid token limits (conservative: 100 lines)
+          DIFF_TRUNCATED=$(echo "$DIFF" | head -n 100)
+          echo "diff<<EOF" >> $GITHUB_OUTPUT
+          echo "$DIFF_TRUNCATED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: AI Code Review with OpenAI
+        id: ai-review
+        uses: actions/github-script@v7
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const https = require('https');
+            
+            // Conservative AI settings
+            const aiPrompt = `You are a code reviewer. Review this pull request diff and provide constructive feedback. Be concise and focus on: 1) Security issues, 2) Bug risks, 3) Code quality improvements. Limit response to 500 words.
+            
+            PR Title: ${{ github.event.pull_request.title }}
+            PR Description: ${{ github.event.pull_request.body }}
+            
+            Diff:
+            ${{ steps.pr-diff.outputs.diff }}`;
+            
+            const apiKey = process.env.OPENAI_API_KEY;
+            
+            if (!apiKey || apiKey === '') {
+              console.log('No OpenAI API key configured, skipping AI review');
+              return { review: '⚠️ AI review skipped: OpenAI API key not configured' };
+            }
+            
+            const data = JSON.stringify({
+              model: 'gpt-3.5-turbo',
+              messages: [
+                { role: 'system', content: 'You are a helpful code reviewer.' },
+                { role: 'user', content: aiPrompt }
+              ],
+              max_tokens: 500,
+              temperature: 0.3
+            });
+            
+            const options = {
+              hostname: 'api.openai.com',
+              path: '/v1/chat/completions',
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Length': data.length
+              }
+            };
+            
+            return new Promise((resolve, reject) => {
+              const req = https.request(options, (res) => {
+                let body = '';
+                res.on('data', (chunk) => { body += chunk; });
+                res.on('end', () => {
+                  try {
+                    const response = JSON.parse(body);
+                    if (response.choices && response.choices[0]) {
+                      resolve({ review: response.choices[0].message.content });
+                    } else {
+                      resolve({ review: '⚠️ AI review completed but no response received' });
+                    }
+                  } catch (error) {
+                    resolve({ review: `⚠️ AI review error: ${error.message}` });
+                  }
+                });
+              });
+              
+              req.on('error', (error) => {
+                resolve({ review: `⚠️ AI review failed: ${error.message}` });
+              });
+              
+              req.write(data);
+              req.end();
+            });
+
+      - name: Post AI review as comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const review = ${{ steps.ai-review.outputs.result }};
+            const reviewText = review.review || 'No review generated';
+            
+            const comment = `## 🤖 AI Code Review
+            
+${reviewText}
+
+---
+*This is an automated review. Please use your judgment and verify suggestions.*
+*Model: GPT-3.5-turbo | Temperature: 0.3 | Max tokens: 500*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
