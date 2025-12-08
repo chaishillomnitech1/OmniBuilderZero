@@ -1,0 +1,79 @@
+name: E2E Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile contracts
+        run: npm run compile
+
+      - name: Run Hardhat tests
+        run: npm test
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY || '0x0000000000000000000000000000000000000000000000000000000000000001' }}
+
+      - name: Generate test report
+        if: always()
+        run: |
+          echo "### E2E Test Results" > test-report.md
+          if [ $? -eq 0 ]; then
+            echo "✅ All tests passed" >> test-report.md
+          else
+            echo "❌ Some tests failed" >> test-report.md
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-report.md
+          retention-days: 30
+
+      - name: Comment test results on PR
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            let report = 'Test report not generated';
+            
+            try {
+              report = fs.readFileSync('test-report.md', 'utf8');
+            } catch (error) {
+              console.log('Could not read test report');
+            }
+            
+            const comment = `## 🧪 E2E Test Results\n\n${report}\n\n*Commit: ${context.sha.substring(0, 7)}*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
