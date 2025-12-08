@@ -1,0 +1,125 @@
+name: Reward and Mint
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  reward-contributor:
+    # Only run if PR was merged
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate contributor wallet
+        id: validate-wallet
+        run: |
+          CONTRIBUTOR="${{ github.event.pull_request.user.login }}"
+          echo "contributor=$CONTRIBUTOR" >> $GITHUB_OUTPUT
+          
+          # Check if test wallet is configured
+          if [ -z "${{ secrets.PILOT_TEST_WALLET }}" ]; then
+            echo "wallet_valid=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Test wallet not configured"
+          else
+            echo "wallet_valid=true" >> $GITHUB_OUTPUT
+            echo "wallet=${{ secrets.PILOT_TEST_WALLET }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Calculate reward points
+        id: calculate-reward
+        run: |
+          # Calculate reward based on PR metrics
+          ADDITIONS=$(jq -r '.pull_request.additions' $GITHUB_EVENT_PATH)
+          DELETIONS=$(jq -r '.pull_request.deletions' $GITHUB_EVENT_PATH)
+          CHANGED_FILES=$(jq -r '.pull_request.changed_files' $GITHUB_EVENT_PATH)
+          
+          # Conservative reward calculation (lines changed / 10)
+          POINTS=$((($ADDITIONS + $DELETIONS) / 10))
+          
+          # Cap maximum points
+          if [ $POINTS -gt 100 ]; then
+            POINTS=100
+          fi
+          
+          # Minimum points
+          if [ $POINTS -lt 1 ]; then
+            POINTS=1
+          fi
+          
+          echo "points=$POINTS" >> $GITHUB_OUTPUT
+          echo "additions=$ADDITIONS" >> $GITHUB_OUTPUT
+          echo "deletions=$DELETIONS" >> $GITHUB_OUTPUT
+          echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+
+      - name: Test reward distribution (Mumbai testnet)
+        if: steps.validate-wallet.outputs.wallet_valid == 'true'
+        run: |
+          echo "🧪 TEST MODE: Simulating reward distribution"
+          echo "Contributor: ${{ steps.validate-wallet.outputs.contributor }}"
+          echo "Wallet: ${{ steps.validate-wallet.outputs.wallet }}"
+          echo "Points: ${{ steps.calculate-reward.outputs.points }}"
+          echo "Network: Mumbai Testnet"
+          
+          # In a real implementation, this would call a rewards contract
+          # For now, we just log the action
+          echo "✅ Test reward simulation completed"
+        env:
+          REWARDS_PRIVATE_KEY: ${{ secrets.REWARDS_PRIVATE_KEY }}
+          ALCHEMY_MUMBAI_URL: ${{ secrets.ALCHEMY_MUMBAI_URL }}
+          REWARDS_API_KEY: ${{ secrets.REWARDS_API_KEY }}
+          REWARDS_CONTRACT_ADDRESS: ${{ secrets.REWARDS_CONTRACT_ADDRESS }}
+
+      - name: Post reward notification
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const contributor = '${{ steps.validate-wallet.outputs.contributor }}';
+            const points = '${{ steps.calculate-reward.outputs.points }}';
+            const additions = '${{ steps.calculate-reward.outputs.additions }}';
+            const deletions = '${{ steps.calculate-reward.outputs.deletions }}';
+            const changedFiles = '${{ steps.calculate-reward.outputs.changed_files }}';
+            const walletValid = '${{ steps.validate-wallet.outputs.wallet_valid }}' === 'true';
+            
+            let comment = `## 🎉 Contribution Merged!\n\n`;
+            comment += `Thank you @${contributor} for your contribution!\n\n`;
+            comment += `### 📊 PR Metrics\n`;
+            comment += `- **Lines added:** ${additions}\n`;
+            comment += `- **Lines deleted:** ${deletions}\n`;
+            comment += `- **Files changed:** ${changedFiles}\n\n`;
+            
+            if (walletValid) {
+              comment += `### 🏆 Reward Points\n`;
+              comment += `**${points} points** earned for this contribution!\n\n`;
+              comment += `*Test Mode: Points calculated but not distributed to testnet*\n`;
+            } else {
+              comment += `### ⚠️ Rewards Not Configured\n`;
+              comment += `Reward system is in pilot mode. Contact maintainer to participate.\n`;
+            }
+            
+            comment += `\n---\n*Pilot Program • Mumbai Testnet • No mainnet funds*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

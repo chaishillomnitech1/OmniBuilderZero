@@ -1,0 +1,125 @@
+name: Repo Sync
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # Allow manual trigger
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Check for upstream repository
+        id: check-upstream
+        run: |
+          # Check if upstream remote exists
+          if git remote | grep -q upstream; then
+            echo "upstream_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "upstream_exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No upstream remote configured"
+          fi
+
+      - name: Fetch upstream changes
+        if: steps.check-upstream.outputs.upstream_exists == 'true'
+        run: |
+          git fetch upstream
+          git fetch origin
+
+      - name: Merge upstream changes
+        if: steps.check-upstream.outputs.upstream_exists == 'true'
+        id: merge
+        run: |
+          # Try to merge upstream/main into main
+          git checkout main
+          
+          if git merge upstream/main --no-edit; then
+            echo "merge_status=success" >> $GITHUB_OUTPUT
+            echo "✅ Successfully merged upstream changes"
+          else
+            echo "merge_status=conflict" >> $GITHUB_OUTPUT
+            echo "⚠️ Merge conflicts detected"
+            git merge --abort
+          fi
+
+      - name: Push changes
+        if: steps.check-upstream.outputs.upstream_exists == 'true' && steps.merge.outputs.merge_status == 'success'
+        run: |
+          git push origin main
+
+      - name: Create issue for conflicts
+        if: steps.check-upstream.outputs.upstream_exists == 'true' && steps.merge.outputs.merge_status == 'conflict'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = '🔄 Upstream sync failed - merge conflicts';
+            const body = `## Upstream Sync Conflict
+            
+The automated repository sync detected merge conflicts when attempting to merge changes from the upstream repository.
+
+### Action Required
+Please manually resolve the conflicts:
+
+\`\`\`bash
+git fetch upstream
+git checkout main
+git merge upstream/main
+# Resolve conflicts
+git push origin main
+\`\`\`
+
+### Details
+- **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+- **Triggered:** ${{ github.event_name }}
+- **Date:** ${new Date().toISOString()}
+
+This issue was automatically created by the repo-sync workflow.`;
+
+            // Check if a similar issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: ['sync-conflict']
+            });
+            
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['sync-conflict', 'automation']
+              });
+            }
+
+      - name: Report sync status
+        if: always()
+        run: |
+          if [ "${{ steps.check-upstream.outputs.upstream_exists }}" != "true" ]; then
+            echo "ℹ️ No upstream repository configured for syncing"
+            echo "To enable sync, add an upstream remote:"
+            echo "git remote add upstream <upstream-repo-url>"
+          elif [ "${{ steps.merge.outputs.merge_status }}" == "success" ]; then
+            echo "✅ Repository successfully synced with upstream"
+          elif [ "${{ steps.merge.outputs.merge_status }}" == "conflict" ]; then
+            echo "⚠️ Sync failed due to merge conflicts - issue created"
+          fi
