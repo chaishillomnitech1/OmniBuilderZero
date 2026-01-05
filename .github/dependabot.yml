@@ -1,0 +1,59 @@
+# Dependabot configuration for automated dependency updates
+# See: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Enable version updates for npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "chaishillomnitech1"
+    assignees:
+      - "chaishillomnitech1"
+    labels:
+      - "dependencies"
+      - "automated"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    # Group all patch updates together
+    groups:
+      patch-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+    # Ignore major version updates for stability
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    # Only security updates for these critical packages
+    allow:
+      - dependency-name: "hardhat"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+      - dependency-name: "@openzeppelin/contracts"
+        update-types: ["version-update:semver-patch"]
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    reviewers:
+      - "chaishillomnitech1"
+    assignees:
+      - "chaishillomnitech1"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "automated"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
