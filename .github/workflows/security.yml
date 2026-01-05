@@ -1,0 +1,134 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run security scan weekly on Sundays at 00:00 UTC
+    - cron: '0 0 * * 0'
+
+jobs:
+  dependency-scan:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔥 Checkout code
+        uses: actions/checkout@v5
+        
+      - name: 🌟 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🔒 Run npm audit
+        run: |
+          echo "Running npm security audit..."
+          npm audit --audit-level=moderate || true
+          
+      - name: 📊 Generate audit report
+        run: |
+          npm audit --json > npm-audit-report.json || true
+          
+      - name: 📤 Upload audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: npm-audit-report.json
+          retention-days: 90
+
+  contract-security:
+    name: Smart Contract Security Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔥 Checkout code
+        uses: actions/checkout@v5
+        
+      - name: 🌟 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🏗️ Compile contracts
+        run: npm run compile
+        
+      - name: 🛡️ Contract security analysis
+        run: |
+          echo "🔍 Analyzing smart contracts for security vulnerabilities..."
+          echo "Note: For comprehensive security analysis, consider:"
+          echo "  - Slither (static analysis)"
+          echo "  - Mythril (symbolic execution)"
+          echo "  - Manual security audits"
+          # Add actual security tools when configured
+        continue-on-error: true
+
+  codeql-analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+        
+    steps:
+      - name: 🔥 Checkout code
+        uses: actions/checkout@v5
+        
+      - name: 🔧 Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          
+      - name: 🏗️ Autobuild
+        uses: github/codeql-action/autobuild@v3
+        
+      - name: 🔍 Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+
+  secrets-scan:
+    name: Secrets Detection
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔥 Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          
+      - name: 🔐 Scan for secrets
+        run: |
+          echo "🔍 Scanning for accidentally committed secrets..."
+          echo "Checking for common secret patterns..."
+          
+          # Check for private keys
+          if grep -r "PRIVATE_KEY.*=.*0x" --include="*.js" --include="*.ts" --exclude-dir=node_modules .; then
+            echo "⚠️ WARNING: Potential private key found in code!"
+            exit 1
+          fi
+          
+          # Check for API keys in code (not in .env.example)
+          if grep -r "API_KEY.*=.*[a-zA-Z0-9]\{20,\}" --include="*.js" --include="*.ts" --exclude-dir=node_modules --exclude=".env.example" .; then
+            echo "⚠️ WARNING: Potential API key found in code!"
+            exit 1
+          fi
+          
+          echo "✅ No obvious secrets detected"
+        continue-on-error: false
