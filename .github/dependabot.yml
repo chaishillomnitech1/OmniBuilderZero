@@ -28,10 +28,8 @@ updates:
           - "*"
         update-types:
           - "patch"
-    # Ignore major version updates for stability
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+    # Review major version updates manually for critical dependencies
+    # Major updates are created but not auto-merged to allow review
     # Only security updates for these critical packages
     allow:
       - dependency-name: "hardhat"

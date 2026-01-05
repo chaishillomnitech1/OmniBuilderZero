@@ -2,7 +2,7 @@ name: CI - Build, Test, and Lint
 
 on:
   push:
-    branches: [ main, develop, copilot/** ]
+    branches: [ main, develop, feature/**, fix/** ]
   pull_request:
     branches: [ main, develop ]
 

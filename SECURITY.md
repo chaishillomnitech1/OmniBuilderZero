@@ -76,9 +76,11 @@ We actively maintain and provide security updates for the following versions:
 
 OmniBuilderZero implements quantum-resistant security measures:
 
-- **CRYSTALS-Kyber (Kyber-1024)**: NIST Level 5 key encapsulation
-- **CRYSTALS-Dilithium (Dilithium-5)**: NIST Level 5 digital signatures
+- **CRYSTALS-Kyber (Kyber-1024)**: NIST standardized key encapsulation mechanism
+- **CRYSTALS-Dilithium**: NIST standardized digital signature algorithm
 - **Post-Quantum Cryptography**: Future-proof security protocols
+
+*Note: Specific parameter sets and security levels are detailed in the ScrollChain Whitepaper.*
 
 See [SCROLLCHAIN_WHITEPAPER.md](SCROLLCHAIN_WHITEPAPER.md) for details.
 

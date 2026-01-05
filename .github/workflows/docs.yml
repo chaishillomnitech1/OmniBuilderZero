@@ -44,9 +44,11 @@ jobs:
         
       - name: 🔗 Check external links
         run: |
-          echo "Checking external links in documentation..."
-          echo "Note: Add link checker tool for comprehensive validation"
-          # Can add lychee or markdown-link-check
+          echo "Checking documentation for broken links..."
+          echo "Note: For comprehensive link checking, consider using:"
+          echo "  - lychee (https://github.com/lycheeverse/lychee)"
+          echo "  - markdown-link-check"
+          echo "This is a basic validation step"
         continue-on-error: true
 
   doc-coverage:

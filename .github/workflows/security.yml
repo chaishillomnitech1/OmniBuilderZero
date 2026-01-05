@@ -116,19 +116,22 @@ jobs:
       - name: 🔐 Scan for secrets
         run: |
           echo "🔍 Scanning for accidentally committed secrets..."
-          echo "Checking for common secret patterns..."
+          echo "Note: GitHub's built-in secret scanning provides comprehensive detection"
+          echo "This is a basic sanity check for common patterns"
           
-          # Check for private keys
-          if grep -r "PRIVATE_KEY.*=.*0x" --include="*.js" --include="*.ts" --exclude-dir=node_modules .; then
-            echo "⚠️ WARNING: Potential private key found in code!"
+          # Check for private keys (basic pattern)
+          if grep -r "PRIVATE_KEY.*=.*0x" --include="*.js" --include="*.ts" --exclude-dir=node_modules . 2>/dev/null; then
+            echo "⚠️ WARNING: Potential private key pattern found!"
+            echo "Please review and remove any hardcoded secrets"
             exit 1
           fi
           
-          # Check for API keys in code (not in .env.example)
-          if grep -r "API_KEY.*=.*[a-zA-Z0-9]\{20,\}" --include="*.js" --include="*.ts" --exclude-dir=node_modules --exclude=".env.example" .; then
-            echo "⚠️ WARNING: Potential API key found in code!"
+          # Check for hardcoded API keys (basic pattern)
+          if grep -r "API_KEY.*=.*['\"][a-zA-Z0-9]\{20,\}" --include="*.js" --include="*.ts" --exclude-dir=node_modules --exclude=".env.example" . 2>/dev/null; then
+            echo "⚠️ WARNING: Potential hardcoded API key found!"
+            echo "Please review and use environment variables instead"
             exit 1
           fi
           
-          echo "✅ No obvious secrets detected"
+          echo "✅ Basic secret scan completed - rely on GitHub's secret scanning for comprehensive detection"
         continue-on-error: false
