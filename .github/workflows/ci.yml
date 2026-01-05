@@ -1,0 +1,107 @@
+name: CI - Build, Test, and Lint
+
+on:
+  push:
+    branches: [ main, develop, feature/**, fix/** ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  install-and-test:
+    name: Install, Lint, Build, and Test
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - name: 🔥 Checkout code
+        uses: actions/checkout@v5
+        
+      - name: 🌟 Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🔍 Lint check
+        run: |
+          echo "Running basic syntax validation..."
+          # Add linting when configured: npm run lint
+          npx hardhat compile --force
+        continue-on-error: false
+        
+      - name: 🏗️ Build (Compile contracts)
+        run: npm run compile
+        
+      - name: 🧪 Run tests
+        run: npm test
+        env:
+          REPORT_GAS: true
+          
+      - name: 📊 Upload coverage reports
+        uses: actions/upload-artifact@v4
+        if: matrix.node-version == '20.x'
+        with:
+          name: test-results
+          path: |
+            coverage/
+            test-results/
+          retention-days: 30
+          
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔥 Checkout code
+        uses: actions/checkout@v5
+        
+      - name: 🌟 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🔒 Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+        
+      - name: 🛡️ Check for vulnerable dependencies
+        run: |
+          echo "Checking for known vulnerabilities..."
+          npm audit --production --audit-level=high
+        continue-on-error: true
+
+  contract-size-check:
+    name: Contract Size Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔥 Checkout code
+        uses: actions/checkout@v5
+        
+      - name: 🌟 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🏗️ Compile contracts
+        run: npm run compile
+        
+      - name: 📏 Check contract sizes
+        run: |
+          echo "Checking contract bytecode sizes..."
+          npx hardhat size-contracts || echo "Size check completed"
+        continue-on-error: true

@@ -1,0 +1,37 @@
+# CODEOWNERS - OmniBuilderZero
+# This file defines the code ownership structure for the repository
+# Primary maintainer: chaishillomnitech1
+
+# Default owners for everything in the repo
+* @chaishillomnitech1
+
+# Smart Contracts - require review from primary owner
+/contracts/ @chaishillomnitech1
+/scripts/ @chaishillomnitech1
+/test/ @chaishillomnitech1
+
+# Configuration files
+hardhat.config.js @chaishillomnitech1
+package.json @chaishillomnitech1
+.env.example @chaishillomnitech1
+
+# Documentation
+*.md @chaishillomnitech1
+/docs/ @chaishillomnitech1
+
+# GitHub workflows and templates
+/.github/ @chaishillomnitech1
+
+# Phase 2 - Strategic partnerships and automation
+/phase2/ @chaishillomnitech1
+
+# FlameAcademy - Educational content
+/flame-academy/ @chaishillomnitech1
+
+# Portal and Black Batman projects
+/portal/ @chaishillomnitech1
+/black_batman/ @chaishillomnitech1
+
+# Attestations and metadata
+/attestations/ @chaishillomnitech1
+/metadata/ @chaishillomnitech1
