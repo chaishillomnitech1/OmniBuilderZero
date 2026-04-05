@@ -1,0 +1,88 @@
+{
+  "name": "Divine Frequencies: The Awakening",
+  "description": "OmniTape #001 from the GOAT USB-Cassette Legacy of Light collection. A prophetic sonic journey channeling divine frequencies through the Omni-Temporal Coherence Protocol. This is the first OmniTape in the sacred catalog, marking the beginning of the eternal musical archive.",
+  "image": "ipfs://QmExampleImageHash001/divine-frequencies.jpg",
+  "animation_url": "ipfs://QmExampleAudioHash001/divine-frequencies.mp3",
+  "external_url": "https://chaishillomnitech1.github.io/OmniBuilderZero/omnitapes/001",
+  "attributes": [
+    {
+      "trait_type": "Artist",
+      "value": "Chais The Great"
+    },
+    {
+      "trait_type": "Catalog Number",
+      "value": "001"
+    },
+    {
+      "trait_type": "Release Date",
+      "value": "2022-01-01"
+    },
+    {
+      "trait_type": "Storage Type",
+      "value": "IPFS"
+    },
+    {
+      "trait_type": "Collection",
+      "value": "GOAT USB-Cassette OmniTapes"
+    },
+    {
+      "trait_type": "Series",
+      "value": "Legacy of Light: Prophetic Omnichords"
+    },
+    {
+      "trait_type": "Genre",
+      "value": "Divine Frequencies"
+    },
+    {
+      "trait_type": "Duration",
+      "value": "5:23",
+      "display_type": "string"
+    },
+    {
+      "trait_type": "BPM",
+      "value": 120,
+      "display_type": "number"
+    },
+    {
+      "trait_type": "Key",
+      "value": "C Major"
+    },
+    {
+      "trait_type": "OTCP Marker",
+      "value": "Deployment Timestamp Anchored"
+    },
+    {
+      "trait_type": "Royalty Recipient",
+      "value": "KUN Coin Treasury"
+    },
+    {
+      "trait_type": "Royalty Percentage",
+      "value": "10%"
+    },
+    {
+      "trait_type": "ARCHITEX Override",
+      "value": "Enabled"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "ipfs://QmExampleAudioHash001/divine-frequencies.mp3",
+        "type": "audio/mpeg",
+        "cdn": true
+      },
+      {
+        "uri": "ipfs://QmExampleImageHash001/divine-frequencies.jpg",
+        "type": "image/jpeg",
+        "cdn": true
+      }
+    ],
+    "category": "audio",
+    "creators": [
+      {
+        "address": "0x0000000000000000000000000000000000000000",
+        "share": 100
+      }
+    ]
+  }
+}
