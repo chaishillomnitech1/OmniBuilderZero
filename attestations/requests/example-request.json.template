@@ -1,0 +1,16 @@
+{
+  "requestId": "example-request-001",
+  "requestType": "FlameDNA_Holder",
+  "subjectAddress": "0x1234567890abcdef1234567890abcdef12345678",
+  "evidence": {
+    "description": "Example attestation request for documentation purposes",
+    "links": [
+      "https://scrollscan.io/tx/0xexample"
+    ]
+  },
+  "preferences": {
+    "soulbound": true,
+    "expirationDays": 365
+  },
+  "_comment": "This is an example request file. Copy this template and modify for your attestation request."
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Guardian NFT: Sony Corporation",
+  "description": "ScrollVerse Partnership Guardian for Sony Corporation - Japan Region. This NFT represents a verified strategic partnership focused on gaming integration, music NFTs, and metaverse collaboration.",
+  "image": "ipfs://QmSonyGuardianImageHash/sony-guardian.png",
+  "external_url": "https://scrollverse.com/partners/sony",
+  "background_color": "1A1A2E",
+  "attributes": [
+    {
+      "trait_type": "Partner",
+      "value": "Sony Corporation"
+    },
+    {
+      "trait_type": "Region",
+      "value": "Japan"
+    },
+    {
+      "trait_type": "Industry",
+      "value": "Technology & Entertainment"
+    },
+    {
+      "trait_type": "Resonance Score",
+      "value": 8.77,
+      "display_type": "number"
+    },
+    {
+      "trait_type": "Partnership Tier",
+      "value": "Platinum"
+    },
+    {
+      "trait_type": "Activated Date",
+      "value": 1732425600,
+      "display_type": "date"
+    },
+    {
+      "trait_type": "Milestones Completed",
+      "value": 5,
+      "display_type": "number"
+    }
+  ]
+}

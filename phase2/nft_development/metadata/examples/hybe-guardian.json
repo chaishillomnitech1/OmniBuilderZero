@@ -1,0 +1,40 @@
+{
+  "name": "Guardian NFT: HYBE Corporation",
+  "description": "ScrollVerse Partnership Guardian for HYBE Corporation - Korea Region. This NFT represents a verified strategic partnership focused on K-Pop artist NFTs, fan engagement platforms, and Weverse integration.",
+  "image": "ipfs://QmHYBEGuardianImageHash/hybe-guardian.png",
+  "external_url": "https://scrollverse.com/partners/hybe",
+  "background_color": "FF0066",
+  "attributes": [
+    {
+      "trait_type": "Partner",
+      "value": "HYBE Corporation"
+    },
+    {
+      "trait_type": "Region",
+      "value": "Korea"
+    },
+    {
+      "trait_type": "Industry",
+      "value": "K-Pop Entertainment"
+    },
+    {
+      "trait_type": "Resonance Score",
+      "value": 9.11,
+      "display_type": "number"
+    },
+    {
+      "trait_type": "Partnership Tier",
+      "value": "Platinum"
+    },
+    {
+      "trait_type": "Activated Date",
+      "value": 1732512000,
+      "display_type": "date"
+    },
+    {
+      "trait_type": "Milestones Completed",
+      "value": 3,
+      "display_type": "number"
+    }
+  ]
+}

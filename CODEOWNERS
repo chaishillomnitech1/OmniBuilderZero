@@ -1,0 +1,28 @@
+# CODEOWNERS file for OmniBuilderZero
+# This file defines the default reviewers for pull requests
+
+# Default owner for everything in the repo
+* @chaishillomnitech1
+
+# Contracts and deployment scripts
+/contracts/ @chaishillomnitech1
+/scripts/ @chaishillomnitech1
+hardhat.config.js @chaishillomnitech1
+
+# GitHub workflows and CI/CD
+/.github/workflows/ @chaishillomnitech1
+/.github/ISSUE_TEMPLATE/ @chaishillomnitech1
+
+# Configuration files
+.vercel.json @chaishillomnitech1
+.vercelignore @chaishillomnitech1
+.env.example @chaishillomnitech1
+
+# Documentation
+*.md @chaishillomnitech1
+/metadata/ @chaishillomnitech1
+
+# Phase 2 components
+/phase2/ @chaishillomnitech1
+/portal/ @chaishillomnitech1
+/attestations/ @chaishillomnitech1

@@ -1,0 +1,44 @@
+{
+  "chain_id": 137,
+  "name": "Polygon PoS",
+  "network": "polygon",
+  "rpc_url": "https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}",
+  "explorer": "https://polygonscan.com",
+  "native_currency": {
+    "name": "MATIC",
+    "symbol": "MATIC",
+    "decimals": 18
+  },
+  "contracts": {
+    "guardian_batch": "${GUARDIAN_BATCH_ADDRESS}",
+    "certification_nft": "${CERTIFICATION_NFT_ADDRESS}",
+    "milestone_tracker": "${MILESTONE_TRACKER_ADDRESS}"
+  },
+  "deployment": {
+    "gas_price_strategy": "fast",
+    "max_priority_fee": "30 gwei",
+    "max_fee": "200 gwei",
+    "gas_limit": 3000000
+  },
+  "security": {
+    "multi_sig_address": "${MULTI_SIG_ADDRESS}",
+    "required_confirmations": 2,
+    "timelock_delay": 86400
+  },
+  "integrations": {
+    "chainlink": {
+      "link_token": "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39",
+      "vrf_coordinator": "0xAE975071Be8F8eE67addBC1A82488F1C24858067",
+      "oracle": "${CHAINLINK_ORACLE_ADDRESS}"
+    },
+    "ipfs": {
+      "gateway": "https://scrollverse.mypinata.cloud/ipfs/",
+      "pinning_service": "pinata"
+    },
+    "bridge": {
+      "layerzero_endpoint": "0x3c2269811836af69497E5F486A85D7316753cf62",
+      "polygon_bridge": "0xA0c68C638235ee32657e8f720a23ceC1bFc77C77"
+    }
+  },
+  "notes": "Use Polygon for high-frequency operations and community engagement. Lower costs enable more frequent milestone updates and broader NFT distribution."
+}
