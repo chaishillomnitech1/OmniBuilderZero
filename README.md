@@ -569,6 +569,7 @@ Security is paramount in the ScrollVerse. Please review our [Security Policy](SE
 
 ---
 
+&copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 **Maintainer**: @chaishillomnitech1  
 **Organization**: OmniTech1™  
 **Last Updated**: 2026-01-05
