@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AscendancyID Mint - ScrollVerse OTAP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --divine-gold: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            --scroll-purple: #764ba2;
+            --scroll-blue: #667eea;
+            --success-green: #4CAF50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        
+        .header h1 {
+            background: var(--divine-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #a0a0ff;
+            font-size: 1.2em;
+        }
+        
+        .network-badge {
+            display: inline-block;
+            background: var(--primary-gradient);
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        
+        /* Wallet Section */
+        .wallet-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* Main Content */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h2 .icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        
+        /* ID Preview Card */
+        .id-preview {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+        }
+        
+        .id-visual {
+            width: 200px;
+            height: 280px;
+            margin: 20px auto;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            border: 3px solid #667eea;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        }
+        
+        .id-visual .avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--divine-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .id-visual .id-number {
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #a0a0ff;
+        }
+        
+        .id-visual .privilege-badge {
+            background: var(--primary-gradient);
+            padding: 8px 20px;
+            border-radius: 15px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        /* Tier Selection */
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .tier-option {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .tier-option:hover {
+            border-color: var(--scroll-blue);
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .tier-option.selected {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .tier-option .tier-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .tier-option .tier-name {
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .tier-option .tier-cost {
+            color: #4CAF50;
+            font-size: 0.9em;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #a0a0ff;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1em;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--scroll-blue);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-gold {
+            background: var(--divine-gold);
+            color: #333;
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Features List */
+        .features-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .features-list .check {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        /* Steps */
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: -1;
+        }
+        
+        .step:last-child::after {
+            display: none;
+        }
+        
+        .step .step-number {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 auto 10px;
+            border: 2px solid transparent;
+        }
+        
+        .step.active .step-number {
+            background: var(--primary-gradient);
+            border-color: #fff;
+        }
+        
+        .step.completed .step-number {
+            background: var(--success-green);
+        }
+        
+        .step .step-label {
+            color: #a0a0ff;
+            font-size: 0.9em;
+        }
+        
+        .step.active .step-label {
+            color: #fff;
+        }
+        
+        /* SBT Info */
+        .sbt-info {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .sbt-info h4 {
+            color: #ffc107;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sbt-info p {
+            color: #a0a0ff;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 30px;
+            color: #666;
+        }
+        
+        .footer .divine-text {
+            font-style: italic;
+            color: #a0a0ff;
+            margin-top: 10px;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            border: 2px solid #667eea;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-content .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-content h2 {
+            background: var(--divine-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🆔 AscendancyID Mint</h1>
+            <p class="subtitle">Claim Your Soulbound Identity in the ScrollVerse</p>
+            <div class="network-badge">
+                <span style="color: #4CAF50;">●</span> Scroll Sepolia (Demo Mode)
+            </div>
+        </header>
+        
+        <div class="wallet-section">
+            <button id="connectWallet" class="btn btn-gold" onclick="connectWallet()">
+                🔗 Connect Wallet
+            </button>
+            <div id="walletDetails" style="display: none;">
+                <span style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 25px; font-family: monospace;" id="walletAddress">0x...</span>
+                <span style="color: #4CAF50; font-weight: bold;" id="walletBalance">0 ETH</span>
+            </div>
+        </div>
+        
+        <!-- Progress Steps -->
+        <div class="steps">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <div class="step-label">Connect</div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <div class="step-label">Choose Tier</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <div class="step-label">Mint</div>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-number">4</div>
+                <div class="step-label">Complete</div>
+            </div>
+        </div>
+        
+        <div class="main-grid">
+            <!-- Mint Form Card -->
+            <div class="card">
+                <h2><span class="icon">✨</span> Mint Your AscendancyID</h2>
+                
+                <p style="color: #a0a0ff; margin-bottom: 25px;">
+                    AscendancyID is your soulbound token (SBT) granting access to privileges, 
+                    governance rights, and exclusive features in the ScrollVerse ecosystem.
+                </p>
+                
+                <h4 style="margin-bottom: 15px;">Select Privilege Tier</h4>
+                <div class="tier-grid">
+                    <div class="tier-option selected" data-tier="bronze" onclick="selectTier(this)">
+                        <div class="tier-icon">🥉</div>
+                        <div class="tier-name">Bronze</div>
+                        <div class="tier-cost">Free Mint</div>
+                    </div>
+                    <div class="tier-option" data-tier="silver" onclick="selectTier(this)">
+                        <div class="tier-icon">🥈</div>
+                        <div class="tier-name">Silver</div>
+                        <div class="tier-cost">0.01 ETH</div>
+                    </div>
+                    <div class="tier-option" data-tier="gold" onclick="selectTier(this)">
+                        <div class="tier-icon">🥇</div>
+                        <div class="tier-name">Gold</div>
+                        <div class="tier-cost">0.05 ETH</div>
+                    </div>
+                    <div class="tier-option" data-tier="platinum" onclick="selectTier(this)">
+                        <div class="tier-icon">💎</div>
+                        <div class="tier-name">Platinum</div>
+                        <div class="tier-cost">0.1 ETH</div>
+                    </div>
+                </div>
+                
+                <form id="mintForm">
+                    <div class="form-group">
+                        <label>Display Name (Optional)</label>
+                        <input type="text" id="displayName" placeholder="Enter your display name" maxlength="32">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="mintBtn" disabled>
+                        ⚡ Mint AscendancyID
+                    </button>
+                </form>
+                
+                <div class="sbt-info">
+                    <h4>🔒 Soulbound Token (SBT)</h4>
+                    <p>
+                        Your AscendancyID is a non-transferable soulbound token. It represents your 
+                        unique identity and cannot be sold or transferred. Privileges can be upgraded 
+                        through staking ScrollCoin.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Preview Card -->
+            <div class="card">
+                <h2><span class="icon">👤</span> ID Preview</h2>
+                
+                <div class="id-preview">
+                    <div class="id-visual">
+                        <div class="avatar">👤</div>
+                        <div style="font-weight: bold; color: #ffd700;" id="previewName">Your Name</div>
+                        <div class="id-number" id="previewId">#PENDING</div>
+                        <div class="privilege-badge" id="previewTier">🥉 Bronze</div>
+                    </div>
+                </div>
+                
+                <h4 style="margin-top: 25px; margin-bottom: 15px;">Tier Benefits</h4>
+                <ul class="features-list" id="benefitsList">
+                    <li><span class="check">✓</span> Basic ecosystem access</li>
+                    <li><span class="check">✓</span> 1x voting power</li>
+                    <li><span class="check">✓</span> Community forums</li>
+                    <li><span class="check">✓</span> Event notifications</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>© 2025 ScrollVerse Protocol | OmniTech1™</p>
+            <p class="divine-text">"You exist. You count. You resonate. You remember."</p>
+            <p style="margin-top: 15px;">
+                <a href="index.html">Home</a> |
+                <a href="ascendancy_dashboard.html">Dashboard</a> |
+                <a href="scrollverse_portal.html">Portal</a>
+            </p>
+        </footer>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon">🎉</div>
+            <h2>AscendancyID Minted!</h2>
+            <p style="color: #a0a0ff; margin-bottom: 20px;">
+                Your soulbound identity has been created. Welcome to the ScrollVerse!
+            </p>
+            <p style="margin-bottom: 20px;">
+                <span style="color: #ffd700;">Token ID:</span> 
+                <span id="mintedTokenId" style="font-family: monospace;">#0001</span>
+            </p>
+            <button class="btn btn-gold" onclick="closeModal()">View Dashboard →</button>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration
+        const CONFIG = {
+            network: {
+                chainId: '0x8274f', // 534351 in hex (Scroll Sepolia)
+                chainName: 'Scroll Sepolia',
+                rpcUrl: 'https://sepolia-rpc.scroll.io',
+                blockExplorer: 'https://sepolia.scrollscan.com'
+            },
+            tiers: {
+                bronze: { name: 'Bronze', icon: '🥉', cost: 0, benefits: ['Basic ecosystem access', '1x voting power', 'Community forums', 'Event notifications'] },
+                silver: { name: 'Silver', icon: '🥈', cost: 0.01, benefits: ['Enhanced features', '2x voting power', 'Priority support', 'Early access to drops', 'Community forums', 'Event notifications'] },
+                gold: { name: 'Gold', icon: '🥇', cost: 0.05, benefits: ['Premium content', '5x voting power', 'VIP Discord access', 'Exclusive NFT drops', 'Revenue sharing', 'All Silver benefits'] },
+                platinum: { name: 'Platinum', icon: '💎', cost: 0.1, benefits: ['Ultimate access', '10x voting power', 'Governance proposals', 'Private events', 'Personal advisor', 'All Gold benefits'] }
+            }
+        };
+        
+        let userAddress = null;
+        let selectedTier = 'bronze';
+        
+        // Connect Wallet
+        async function connectWallet() {
+            try {
+                if (typeof window.ethereum === 'undefined') {
+                    alert('Please install MetaMask or another Web3 wallet');
+                    return;
+                }
+                
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                userAddress = accounts[0];
+                
+                // Update UI
+                document.getElementById('connectWallet').style.display = 'none';
+                document.getElementById('walletDetails').style.display = 'flex';
+                document.getElementById('walletAddress').textContent = 
+                    userAddress.substring(0, 6) + '...' + userAddress.substring(38);
+                
+                // Get balance
+                const balance = await window.ethereum.request({
+                    method: 'eth_getBalance',
+                    params: [userAddress, 'latest']
+                });
+                const ethBalance = parseInt(balance, 16) / 1e18;
+                document.getElementById('walletBalance').textContent = ethBalance.toFixed(4) + ' ETH';
+                
+                // Enable mint button
+                document.getElementById('mintBtn').disabled = false;
+                
+                // Update steps
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('step2').classList.add('active');
+                
+                console.log('Wallet connected:', userAddress);
+            } catch (error) {
+                console.error('Connection error:', error);
+                alert('Failed to connect wallet: ' + error.message);
+            }
+        }
+        
+        // Select Tier
+        function selectTier(element) {
+            document.querySelectorAll('.tier-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTier = element.dataset.tier;
+            
+            // Update preview
+            const tier = CONFIG.tiers[selectedTier];
+            document.getElementById('previewTier').textContent = tier.icon + ' ' + tier.name;
+            
+            // Update benefits list
+            const benefitsList = document.getElementById('benefitsList');
+            benefitsList.innerHTML = tier.benefits.map(b => 
+                `<li><span class="check">✓</span> ${b}</li>`
+            ).join('');
+            
+            // Update step
+            document.getElementById('step2').classList.add('completed');
+            document.getElementById('step3').classList.add('active');
+        }
+        
+        // Update Preview Name
+        document.getElementById('displayName').addEventListener('input', function() {
+            document.getElementById('previewName').textContent = this.value || 'Your Name';
+        });
+        
+        // Mint Form
+        document.getElementById('mintForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!userAddress) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            
+            const mintBtn = document.getElementById('mintBtn');
+            mintBtn.disabled = true;
+            mintBtn.textContent = '⏳ Minting...';
+            
+            try {
+                // Simulate mint (demo mode)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Generate token ID
+                const tokenId = Math.floor(Math.random() * 9999) + 1;
+                document.getElementById('mintedTokenId').textContent = '#' + tokenId.toString().padStart(4, '0');
+                
+                // Update steps
+                document.getElementById('step3').classList.add('completed');
+                document.getElementById('step4').classList.add('active');
+                document.getElementById('step4').classList.add('completed');
+                
+                // Show success modal
+                document.getElementById('successModal').classList.add('active');
+                
+            } catch (error) {
+                console.error('Mint error:', error);
+                alert('Mint failed: ' + error.message);
+            } finally {
+                mintBtn.disabled = false;
+                mintBtn.textContent = '⚡ Mint AscendancyID';
+            }
+        });
+        
+        // Close Modal
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+            window.location.href = 'ascendancy_dashboard.html';
+        }
+        
+        // Account change listener
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', function(accounts) {
+                if (accounts.length === 0) {
+                    document.getElementById('connectWallet').style.display = 'block';
+                    document.getElementById('walletDetails').style.display = 'none';
+                    userAddress = null;
+                    document.getElementById('mintBtn').disabled = true;
+                } else {
+                    userAddress = accounts[0];
+                    document.getElementById('walletAddress').textContent = 
+                        userAddress.substring(0, 6) + '...' + userAddress.substring(38);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
