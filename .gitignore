@@ -55,3 +55,22 @@ npm-debug.log
 ##########################
 phase2/funnels/funnel_data.json
 phase2/funnels/*_funnel_data.json
+
+# Smart Contract Development #
+##############################
+.env
+cache/
+artifacts/
+typechain/
+typechain-types/
+coverage/
+coverage.json
+deployments/
+
+# Black Batman Generated Assets #
+#################################
+black_batman/assets/*.png
+black_batman/assets/*.jpg
+black_batman/assets/*.json
+!black_batman/assets/.gitkeep
+black_batman/storyboards/*_storyboard.json
