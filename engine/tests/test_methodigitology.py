@@ -1,4 +1,6 @@
+import json
 import unittest
+from pathlib import Path
 from methodigitology import validate
 
 
@@ -16,6 +18,12 @@ def valid_record():
 
 
 class MethodigitologyValidationTests(unittest.TestCase):
+    def test_machine_readable_artifacts_are_valid_json(self):
+        root = Path(__file__).resolve().parents[2]
+        for relative in ("methodigitology/ontology.jsonld", "methodigitology/lexicon.json", "methodigitology/intent.schema.json"):
+            with self.subTest(artifact=relative):
+                json.loads((root / relative).read_text(encoding="utf-8"))
+
     def test_valid_blueprint_record(self):
         self.assertEqual(validate(valid_record()), [])
 
