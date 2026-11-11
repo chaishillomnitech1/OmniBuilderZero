@@ -1,0 +1,40 @@
+{
+  "@context":{"@vocab":"https://scrollverse.co/ontology/methodigitology#","schema":"https://schema.org/","prov":"http://www.w3.org/ns/prov#","rdfs":"http://www.w3.org/2000/01/rdf-schema#"},
+  "@id":"https://scrollverse.co/ontology/methodigitology",
+  "@type":"schema:DefinedTermSet",
+  "name":"ScrollVerse Methodigitology Ontology",
+  "version":"1.0.0-draft",
+  "description":"A provenance-preserving controlled language linking verbatim expression to semantic intent, nodes, artifacts, authorization, and evidence.",
+  "terms":[
+    {"@id":"Intent","@type":"rdfs:Class","rdfs:label":"Intention","rdfs:comment":"Desired outcome; does not independently authorize execution."},
+    {"@id":"Purpose","@type":"rdfs:Class","rdfs:comment":"Reason the intended outcome matters, linked to beneficiary and harm boundary."},
+    {"@id":"Conviction","@type":"rdfs:Class","rdfs:comment":"Declared strength of commitment; not an authorization credential or evidence."},
+    {"@id":"ImpactClass","@type":"rdfs:Class","rdfs:comment":"Potential scope of change: DRAFT, PROPOSAL, MERGE, RUNTIME, PRODUCTION."},
+    {"@id":"Authorization","@type":"rdfs:Class","rdfs:comment":"Separate permission record identifying actor, scope, validity window, and permitted action."},
+    {"@id":"OriginalExpression","@type":"rdfs:Class","rdfs:subClassOf":"prov:Entity","rdfs:comment":"Immutable verbatim source statement."},
+    {"@id":"SemanticRecord","@type":"rdfs:Class","rdfs:subClassOf":"prov:Entity"},
+    {"@id":"IntentNode","@type":"rdfs:Class"},
+    {"@id":"CodeArtifact","@type":"rdfs:Class","rdfs:subClassOf":"prov:Entity"},
+    {"@id":"EvidenceReceipt","@type":"rdfs:Class","rdfs:subClassOf":"prov:Entity"},
+    {"@id":"AgentWorld","@type":"rdfs:Class","rdfs:comment":"Independent intelligence/world identity; federation links do not imply ownership."},
+    {"@id":"hasOriginalExpression","@type":"rdf:Property","rdfs:domain":"SemanticRecord","rdfs:range":"OriginalExpression"},
+    {"@id":"hasIntent","@type":"rdf:Property","rdfs:domain":"SemanticRecord","rdfs:range":"Intent"},
+    {"@id":"hasPurpose","@type":"rdf:Property","rdfs:domain":"SemanticRecord","rdfs:range":"Purpose"},
+    {"@id":"hasConviction","@type":"rdf:Property","rdfs:domain":"SemanticRecord","rdfs:range":"Conviction"},
+    {"@id":"hasImpactClass","@type":"rdf:Property","rdfs:domain":"SemanticRecord","rdfs:range":"ImpactClass"},
+    {"@id":"requiresAuthorization","@type":"rdf:Property","rdfs:domain":"SemanticRecord","rdfs:range":"Authorization"},
+    {"@id":"translatesTo","@type":"rdf:Property","rdfs:domain":"IntentNode","rdfs:range":"CodeArtifact"},
+    {"@id":"verifiedBy","@type":"rdf:Property","rdfs:domain":"CodeArtifact","rdfs:range":"EvidenceReceipt"},
+    {"@id":"coordinatesWith","@type":"rdf:Property","rdfs:domain":"AgentWorld","rdfs:range":"AgentWorld"},
+    {"@id":"hasMaturityState","@type":"rdf:Property","rdfs:comment":"DOCUMENTED, IMPLEMENTED, VERIFIED, or ACTIVE."}
+  ],
+  "integrityRules":[
+    "OriginalExpression is append-only and never overwritten by paraphrase.",
+    "Conviction MUST NOT be interpreted as Authorization.",
+    "ImpactClass MUST NOT be inferred from rhetorical intensity.",
+    "MERGED does not imply VERIFIED; VERIFIED does not imply ACTIVE.",
+    "A CodeArtifact requires an EvidenceReceipt before it can be labelled VERIFIED.",
+    "PRODUCTION and EXECUTE require explicit, scoped, time-bounded Authorization.",
+    "Federation relationships do not transfer ownership or erase AgentWorld identity."
+  ]
+}
