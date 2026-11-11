@@ -1,0 +1,26 @@
+name: OMNITECH1 Engine Policy CI
+
+on:
+  push:
+    branches: [feat/omnitech1-autonomous-deployment-engine]
+    paths:
+      - "engine/**"
+      - ".github/workflows/omnitech1-engine.yml"
+  pull_request:
+    paths:
+      - "engine/**"
+      - ".github/workflows/omnitech1-engine.yml"
+
+jobs:
+  policy-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile engine
+        run: python -m py_compile engine/engine.py engine/policy.py
+      - name: Test IF/THEN/ELSE recovery policy
+        working-directory: engine
+        run: python -m unittest discover -s tests -v
