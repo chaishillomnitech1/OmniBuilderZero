@@ -1,0 +1,3 @@
+:80 {
+    respond "OMNITECH1 router online; no application has been promoted yet." 503
+}
