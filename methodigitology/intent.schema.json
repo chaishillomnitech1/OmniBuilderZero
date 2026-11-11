@@ -1,0 +1,18 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://scrollverse.co/schemas/methodigitology-intent-1.0.json",
+  "title":"ScrollVerse Methodigitology Intent Record",
+  "type":"object","additionalProperties":false,
+  "required":["languageVersion","source","intention","purpose","conviction","impact","constraints","execution"],
+  "properties":{
+    "languageVersion":{"const":"1.0.0-draft"},
+    "source":{"type":"object","additionalProperties":false,"required":["expression","origin","preserveVerbatim"],"properties":{"expression":{"type":"string","minLength":1,"maxLength":12000},"origin":{"type":"string","minLength":1,"maxLength":128},"preserveVerbatim":{"const":true},"sourceRef":{"type":"string","maxLength":2048}}},
+    "intention":{"type":"string","minLength":1,"maxLength":2000},
+    "purpose":{"type":"object","additionalProperties":false,"required":["statement","beneficiary","harmBoundary"],"properties":{"statement":{"type":"string","minLength":1,"maxLength":2000},"beneficiary":{"type":"string","minLength":1,"maxLength":500},"harmBoundary":{"type":"string","minLength":1,"maxLength":1000}}},
+    "conviction":{"type":"object","additionalProperties":false,"required":["level","statement"],"properties":{"level":{"enum":["LOW","MEDIUM","HIGH","DECLARED"]},"statement":{"type":"string","minLength":1,"maxLength":1000}}},
+    "impact":{"type":"object","additionalProperties":false,"required":["class","rationale"],"properties":{"class":{"enum":["DRAFT","PROPOSAL","MERGE","RUNTIME","PRODUCTION"]},"rationale":{"type":"string","minLength":1,"maxLength":1000}}},
+    "constraints":{"type":"array","items":{"type":"string","minLength":1,"maxLength":1000},"maxItems":50},
+    "execution":{"type":"object","additionalProperties":false,"required":["mode"],"properties":{"mode":{"enum":["RESEARCH","BLUEPRINT","VALIDATE","EXECUTE"]}}},
+    "authorization":{"type":"object","additionalProperties":false,"required":["state","actor","scope","validUntil","actions"],"properties":{"state":{"enum":["NONE","GRANTED","DENIED","EXPIRED"]},"actor":{"type":"string","minLength":1,"maxLength":128},"scope":{"type":"string","minLength":1,"maxLength":1000},"validUntil":{"type":"string","format":"date-time"},"actions":{"type":"array","items":{"type":"string"},"maxItems":20}}}
+  }
+}
