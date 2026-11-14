@@ -1,5 +1,8 @@
 # OmniBuilderZero - Scroll Chess Protocol & OmniTech1 System
 
+<p align="center"><img src="identity/thumbnail.svg" alt="OmniBuilderZero repository identity" width="100%" /></p>
+
+
 [![CI Status](https://github.com/chaishillomnitech1/OmniBuilderZero/actions/workflows/ci.yml/badge.svg)](https://github.com/chaishillomnitech1/OmniBuilderZero/actions/workflows/ci.yml)
 [![Security](https://github.com/chaishillomnitech1/OmniBuilderZero/actions/workflows/security.yml/badge.svg)](https://github.com/chaishillomnitech1/OmniBuilderZero/actions/workflows/security.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
