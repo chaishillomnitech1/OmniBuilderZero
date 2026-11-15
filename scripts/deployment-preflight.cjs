@@ -9,15 +9,33 @@ function requiredAddress(name, value) {
 }
 
 function requiredMetadataUri(value) {
-  if (
-    typeof value !== "string" ||
-    !/^(ipfs:\/\/|ar:\/\/|https:\/\/)/i.test(value) ||
-    /placeholder|replace[-_ ]?me|your[-_ ]?uri|todo/i.test(value) ||
-    /^(ipfs:\/\/|ar:\/\/)$/.test(value)
-  ) {
+  if (typeof value !== "string" || /placeholder|replace[-_ ]?me|your[-_ ]?uri|todo/i.test(value)) {
     throw new Error("BASE_URI must be a real ipfs://, ar://, or https:// metadata URI.");
   }
-  return value;
+
+  const trimmed = value.trim();
+  if (/^(ipfs:\/\/|ar:\/\/)/i.test(trimmed)) {
+    const path = trimmed.split("://", 2)[1];
+    if (!path || path.trim() === "") {
+      throw new Error("BASE_URI must include a non-empty IPFS or Arweave identifier.");
+    }
+    return trimmed;
+  }
+
+  if (/^https:\/\//i.test(trimmed)) {
+    let parsed;
+    try {
+      parsed = new URL(trimmed);
+    } catch {
+      throw new Error("BASE_URI must be a valid HTTPS URL.");
+    }
+    if (!parsed.hostname) {
+      throw new Error("BASE_URI must be a valid HTTPS URL.");
+    }
+    return trimmed;
+  }
+
+  throw new Error("BASE_URI must be a real ipfs://, ar://, or https:// metadata URI.");
 }
 
 function validateDeploymentConfig(input) {
