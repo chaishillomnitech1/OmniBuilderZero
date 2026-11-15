@@ -296,7 +296,19 @@ jobs:
 
 ---
 
+> **Polygon network migration — 2026-11-15:** Polygon Mumbai (80001) is retired. Use Polygon Amoy (80002) for any Polygon testnet rehearsal. This repository's current contract deployment examples target Scroll Sepolia and Scroll Mainnet; do not infer that a Polygon deployment workflow is enabled merely because the Amoy RPC variable exists. Polygon mainnet remains a separate gated release.
+
 ## Network Configuration
+
+### Polygon Amoy (Testnet)
+
+| Property | Value |
+|---|---|
+| Chain ID | 80002 |
+| Hardhat alias | `polygonAmoy` |
+| RPC variable | `AMOY_RPC_URL` (secure provider URL; no public fallback) |
+| Explorer | https://amoy.polygonscan.com |
+
 
 ### Scroll Sepolia (Testnet)
 
