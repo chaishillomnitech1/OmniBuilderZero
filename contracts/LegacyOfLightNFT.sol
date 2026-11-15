@@ -263,10 +263,4 @@ contract LegacyOfLightNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, R
         return super.supportsInterface(interfaceId);
     }
     
-    function _burn(uint256 tokenId) 
-        internal 
-        override(ERC721, ERC721URIStorage, ERC721Royalty) 
-    {
-        super._burn(tokenId);
-    }
 }
