@@ -74,7 +74,7 @@ contract LegacyOfLightNFT1155 is ERC1155, ERC1155Supply, Ownable, ReentrancyGuar
      * @param _kunCoinTreasury Address of the KUN Coin Treasury
      * @param _baseURI Base URI for token metadata
      */
-    constructor(address _kunCoinTreasury, string memory _baseURI) ERC1155(_baseURI) {
+    constructor(address _kunCoinTreasury, string memory _baseURI) ERC1155(_baseURI) Ownable(msg.sender) {
         require(_kunCoinTreasury != address(0), "Invalid treasury address");
         
         // Set OTCP Deployment Timestamp as divine marker
