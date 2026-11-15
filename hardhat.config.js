@@ -29,7 +29,7 @@ const networks = {
 
 // Polygon PoS targets require dedicated, explicitly configured RPC endpoints.
 if (process.env.AMOY_RPC_URL) {
-  networks.amoy = { url: process.env.AMOY_RPC_URL, accounts: deployerAccounts, chainId: 80002 };
+  networks.polygonAmoy = { url: process.env.AMOY_RPC_URL, accounts: deployerAccounts, chainId: 80002 };
 }
 if (process.env.POLYGON_RPC_URL) {
   networks.polygon = { url: process.env.POLYGON_RPC_URL, accounts: deployerAccounts, chainId: 137 };
