@@ -299,7 +299,7 @@ describe("Legacy of Light NFT Collection", function () {
           .withArgs(0, user1.address, 10);
 
         expect(await nft1155.balanceOf(user1.address, 0)).to.equal(10);
-        expect(await nft1155.totalSupply(0)).to.equal(10);
+        expect(await nft1155["totalSupply(uint256)"](0)).to.equal(10);
       });
 
       it("Should enforce max supply", async function () {
@@ -334,7 +334,7 @@ describe("Legacy of Light NFT Collection", function () {
         await nft1155.mintOmniTape(0, user1.address, 1000);
         await nft1155.mintOmniTape(0, user2.address, 1000);
 
-        expect(await nft1155.totalSupply(0)).to.equal(2000);
+        expect(await nft1155["totalSupply(uint256)"](0)).to.equal(2000);
       });
     });
 
