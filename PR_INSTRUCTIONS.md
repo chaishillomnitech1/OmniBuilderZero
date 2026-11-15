@@ -63,12 +63,9 @@ Configure these secrets in GitHub Settings → Secrets and Variables → Actions
 #### Testing
 - `TEST_PRIVATE_KEY` - Private key for running E2E tests (**test wallet only, no real funds**)
 
-#### Rewards System (Test/Pilot Mode - Mumbai Testnet Only)
-- `REWARDS_PRIVATE_KEY` - Private key for reward distribution (**test wallet only**)
-- `ALCHEMY_MUMBAI_URL` - Alchemy RPC URL for Mumbai testnet
-- `REWARDS_API_KEY` - API key for rewards service
-- `REWARDS_CONTRACT_ADDRESS` - Address of rewards contract on Mumbai testnet
-- `PILOT_TEST_WALLET` - Test wallet address for pilot program
+#### Rewards System (Simulation Only)
+- `PILOT_TEST_WALLET` - Optional test wallet label for contributor scoring
+- No private key, RPC endpoint, rewards API key, or contract address is used by the current workflow; no on-chain token transfer occurs.
 
 #### Repository Sync
 - `GITHUB_PAT` - Personal Access Token with repo scope for sync operations
@@ -97,7 +94,7 @@ All workflows are configured with:
 
 - ⚠️ **NO secrets have been committed** to this repository
 - ✅ All secrets managed via GitHub Secrets and Vercel environment variables
-- ✅ **Test mode only** - Uses Mumbai testnet, no mainnet funds at risk
+- ✅ **Test mode only** - Uses simulated reward points only; no testnet or mainnet funds are transferred
 - ✅ Workflows designed with security best practices
 - ✅ Conservative AI settings prevent over-aggressive automation
 
