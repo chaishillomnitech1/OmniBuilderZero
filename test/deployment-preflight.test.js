@@ -33,6 +33,11 @@ describe("OmniBuilderZero Polygon deployment preflight", function () {
     expect(() => validateDeploymentConfig({ ...validAmoy, baseUri: "ipfs://QmPlaceholder/" })).to.throw(/real .* metadata URI/i);
   });
 
+  it("requires a complete HTTPS metadata URL", function () {
+    expect(() => validateDeploymentConfig({ ...validAmoy, baseUri: "https://" })).to.throw(/real .* metadata URI/i);
+    expect(validateDeploymentConfig({ ...validAmoy, baseUri: "https://metadata.example/collection/" }).baseUri).to.equal("https://metadata.example/collection/");
+  });
+
   it("blocks Polygon mainnet without the explicit release confirmation", function () {
     const mainnet = { ...validAmoy, networkName: "polygon", chainId: 137 };
     expect(() => validateDeploymentConfig(mainnet)).to.throw(/MAINNET_RELEASE_CONFIRMATION/i);
