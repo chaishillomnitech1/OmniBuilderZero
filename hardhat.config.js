@@ -39,7 +39,7 @@ if (process.env.POLYGON_RPC_URL) {
 module.exports = {
   solidity: {
     version: "0.8.24",
-    settings: { optimizer: { enabled: true, runs: 200 } },
+    settings: { optimizer: { enabled: true, runs: 200 }, viaIR: true },
   },
   networks,
   etherscan: {
