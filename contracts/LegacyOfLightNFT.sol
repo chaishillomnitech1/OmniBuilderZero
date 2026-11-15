@@ -62,7 +62,7 @@ contract LegacyOfLightNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, R
      * @dev Constructor sets up the NFT collection with OTCP timestamp
      * @param _kunCoinTreasury Address of the KUN Coin Treasury
      */
-    constructor(address _kunCoinTreasury) ERC721("Legacy of Light: Prophetic Omnichords", "LLPO") {
+    constructor(address _kunCoinTreasury) ERC721("Legacy of Light: Prophetic Omnichords", "LLPO") Ownable(msg.sender) {
         require(_kunCoinTreasury != address(0), "Invalid treasury address");
         
         // Set OTCP Deployment Timestamp as divine marker
