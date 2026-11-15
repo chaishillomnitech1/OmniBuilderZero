@@ -183,7 +183,7 @@ contract LegacyOfLightNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, R
      */
     function ownerOverride(uint256 tokenId, address newOwner) external nonReentrant {
         require(architexAuthorized[msg.sender], "Not authorized ARCHITEX");
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         require(newOwner != address(0), "Invalid new owner");
         
         address currentOwner = ownerOf(tokenId);
@@ -226,7 +226,7 @@ contract LegacyOfLightNFT is ERC721, ERC721URIStorage, ERC721Royalty, Ownable, R
      * @param tokenId Token ID
      */
     function getOmniTape(uint256 tokenId) external view returns (OmniTape memory) {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         return omniTapes[tokenId];
     }
     
