@@ -30,11 +30,11 @@ describe("OmniBuilderZero Polygon deployment preflight", function () {
 
   it("rejects placeholder metadata", function () {
     expect(() => validateDeploymentConfig({ ...validAmoy, baseUri: "ipfs://" })).to.throw(/non-empty IPFS or Arweave identifier/i);
-    expect(() => validateDeploymentConfig({ ...validAmoy, baseUri: "ipfs://QmPlaceholder/" })).to.throw(/valid HTTPS URL/i);
+    expect(() => validateDeploymentConfig({ ...validAmoy, baseUri: "ipfs://QmPlaceholder/" })).to.throw(/placeholder/i);
   });
 
   it("requires a complete HTTPS metadata URL", function () {
-    expect(() => validateDeploymentConfig({ ...validAmoy, baseUri: "https://" })).to.throw(/real .* metadata URI/i);
+    expect(() => validateDeploymentConfig({ ...validAmoy, baseUri: "https://" })).to.throw(/valid HTTPS URL/i);
     expect(validateDeploymentConfig({ ...validAmoy, baseUri: "https://metadata.example/collection/" }).baseUri).to.equal("https://metadata.example/collection/");
   });
 
