@@ -456,10 +456,12 @@ npm run deploy:scroll-sepolia
 npm run deploy:sepolia
 ```
 
-#### Polygon Mumbai
+#### Polygon Amoy (testnet)
 ```bash
-npm run deploy:polygon
+npm run deploy:polygon-amoy
 ```
+
+The Mumbai network is retired. Do not use the old Mumbai network name, chain ID 80001, or Mumbai RPC endpoints.
 
 ### Production Networks
 
@@ -504,9 +506,9 @@ npm run verify -- --network <network-name> <contract-address> <constructor-args>
 - Suggests improvements
 
 #### 4. Reward and Mint (`reward-and-mint.yml`)
-- Automated reward distribution
-- NFT minting for contributors
-- Test wallet validation
+- Contributor reward-point simulation only
+- No on-chain token distribution or NFT mint is performed by this workflow
+- Optional test-wallet label validation
 
 #### 5. Repo Sync (`repo-sync.yml`)
 - Syncs with upstream repositories
@@ -526,12 +528,18 @@ Configure these in GitHub Settings → Secrets and Variables → Actions:
 #### OpenAI (for AI PR Bot)
 - `OPENAI_API_KEY`: OpenAI API key for GPT integration
 
-#### Blockchain & Rewards
-- `REWARDS_PRIVATE_KEY`: Private key for reward distribution (test wallet)
-- `ALCHEMY_MUMBAI_URL`: Alchemy RPC URL for Mumbai testnet
-- `REWARDS_API_KEY`: API key for rewards service
-- `REWARDS_CONTRACT_ADDRESS`: Address of rewards contract
-- `PILOT_TEST_WALLET`: Test wallet address for pilot program
+#### Polygon Deployment
+- `PRIVATE_KEY`: Dedicated deployer key, stored only in secure runtime secrets
+- `AMOY_RPC_URL`: Maintained Polygon Amoy provider endpoint
+- `POLYGON_RPC_URL`: Maintained Polygon mainnet provider endpoint
+- `OWNER_MULTISIG_ADDRESS`: Deployed multisig contract on the selected network
+- `KUN_COIN_TREASURY`: Explicit non-zero treasury address
+- `BASE_URI`: Real IPFS, Arweave, or HTTPS metadata base URI
+- `POLYGONSCAN_API_KEY`: Polygon source verification key
+- `MAINNET_RELEASE_CONFIRMATION`: Exact confirmation phrase required by the Polygon mainnet deployment preflight
+
+#### Contributor Reward Simulation
+- `PILOT_TEST_WALLET`: Optional test-wallet label; the current workflow simulates points only and does not require a private key, RPC, rewards API key, or rewards contract.
 
 #### Repository Sync
 - `GITHUB_PAT`: Personal Access Token for repo sync operations
@@ -552,7 +560,7 @@ Configure these in Vercel dashboard:
 - [ ] CI/CD pipelines running correctly
 - [ ] AI PR bot responding to pull requests
 - [ ] E2E tests passing
-- [ ] Reward system functional (test mode)
+- [ ] Contributor reward-point simulation posts an accurate no-transfer disclosure
 
 ### Monitoring
 - Check Vercel deployment logs
