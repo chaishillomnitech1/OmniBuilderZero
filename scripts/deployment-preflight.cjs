@@ -9,8 +9,11 @@ function requiredAddress(name, value) {
 }
 
 function requiredMetadataUri(value) {
-  if (typeof value !== "string" || /placeholder|replace[-_ ]?me|your[-_ ]?uri|todo/i.test(value)) {
+  if (typeof value !== "string") {
     throw new Error("BASE_URI must be a real ipfs://, ar://, or https:// metadata URI.");
+  }
+  if (/placeholder|replace[-_ ]?me|your[-_ ]?uri|todo/i.test(value)) {
+    throw new Error("BASE_URI must not be a placeholder value.");
   }
 
   const trimmed = value.trim();
