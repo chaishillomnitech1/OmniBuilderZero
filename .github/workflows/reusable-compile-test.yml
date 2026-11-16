@@ -77,8 +77,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       node-version: ${{ steps.metadata.outputs.node-version }}
-      compile-result: ${{ steps.compile.outputs.outcome }}
-      test-result: ${{ steps.test.outputs.outcome }}
+      compile-result: ${{ steps.compile.outcome }}
+      test-result: ${{ steps.test.outcome }}
       verification-result: ${{ job.status }}
     steps:
       - name: Checkout source
