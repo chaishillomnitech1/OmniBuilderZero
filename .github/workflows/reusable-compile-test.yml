@@ -67,6 +67,9 @@ on:
       verification-result:
         description: Overall verification job result.
         value: ${{ jobs.verify.outputs.verification-result }}
+      artifact-url:
+        description: Download URL for the uploaded artifact, empty when upload is disabled or no artifact is produced.
+        value: ${{ jobs.verify.outputs.artifact-url }}
 
 permissions:
   contents: read
