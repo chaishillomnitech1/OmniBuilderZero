@@ -58,7 +58,8 @@ Proposed file: `.github/workflows/reusable-compile-test.yml`.
 | `node-version` | Requested Node version |
 | `compile-result` | Compile step outcome: success, failure, or skipped |
 | `test-result` | Test step outcome: success, failure, or skipped |
-| `verification-result` | Overall reusable job result |
+| `verification-result` | Overall compile/test result (`success`, `failure`, or `cancelled`) |
+| `artifact-url` | Uploaded artifact URL; empty when upload is disabled or no artifact is produced |
 
 ### Security and ownership boundary
 
