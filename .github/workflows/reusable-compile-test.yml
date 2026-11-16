@@ -1,0 +1,161 @@
+name: Reusable Compile and Test
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version or version range for this validation run.
+        required: false
+        type: string
+        default: '20.x'
+      run-compile:
+        description: Run the configured compile command before tests.
+        required: false
+        type: boolean
+        default: true
+      compile-command:
+        description: Shell command used for compilation.
+        required: false
+        type: string
+        default: npm run compile
+      run-tests:
+        description: Run the configured test command.
+        required: false
+        type: boolean
+        default: true
+      test-command:
+        description: Shell command used for tests.
+        required: false
+        type: string
+        default: npm test
+      upload-artifacts:
+        description: Upload generated test or coverage artifacts.
+        required: false
+        type: boolean
+        default: false
+      artifact-path:
+        description: Newline-separated paths to upload when artifact upload is enabled.
+        required: false
+        type: string
+        default: |
+          coverage/
+          test-results/
+      artifact-name:
+        description: Name assigned to the uploaded artifact.
+        required: false
+        type: string
+        default: compile-test-results
+      artifact-retention-days:
+        description: Artifact retention period in days.
+        required: false
+        type: number
+        default: 14
+    secrets:
+      test-private-key:
+        description: Optional test-only key; never map deployment credentials here.
+        required: false
+    outputs:
+      node-version:
+        description: Node.js version requested by the caller.
+        value: ${{ jobs.verify.outputs.node-version }}
+      compile-result:
+        description: Compile step outcome (success, failure, or skipped).
+        value: ${{ jobs.verify.outputs.compile-result }}
+      test-result:
+        description: Test step outcome (success, failure, or skipped).
+        value: ${{ jobs.verify.outputs.test-result }}
+      verification-result:
+        description: Overall verification job result.
+        value: ${{ jobs.verify.outputs.verification-result }}
+      artifact-url:
+        description: Download URL for the uploaded artifact, empty when upload is disabled or no artifact is produced.
+        value: ${{ jobs.verify.outputs.artifact-url }}
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Compile and test (Node ${{ inputs.node-version }})
+    runs-on: ubuntu-latest
+    outputs:
+      node-version: ${{ steps.metadata.outputs.node-version }}
+      compile-result: ${{ steps.compile.outcome }}
+      test-result: ${{ steps.test.outcome }}
+      verification-result: ${{ steps.summary.outputs.result }}
+      artifact-url: ${{ steps.upload.outputs.artifact-url }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v5
+
+      - name: Prepare Node.js and npm dependencies
+        uses: ./.github/actions/setup-node-npm
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Record requested runtime
+        id: metadata
+        shell: bash
+        run: echo "node-version=${{ inputs.node-version }}" >> "$GITHUB_OUTPUT"
+
+      - name: Compile
+        id: compile
+        if: inputs.run-compile
+        shell: bash
+        env:
+          COMMAND: ${{ inputs.compile-command }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Test
+        id: test
+        if: inputs.run-tests && !failure() && !cancelled()
+        shell: bash
+        env:
+          COMMAND: ${{ inputs.test-command }}
+          PRIVATE_KEY: ${{ secrets.test-private-key }}
+        run: bash -euo pipefail -c "$COMMAND"
+
+      - name: Upload verification artifacts
+        id: upload
+        if: always() && inputs.upload-artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
+          retention-days: ${{ inputs.artifact-retention-days }}
+          if-no-files-found: ignore
+
+      - name: Record verification result
+        id: summary
+        if: always()
+        shell: bash
+        env:
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          TEST_OUTCOME: ${{ steps.test.outcome }}
+        run: |
+          if [[ "$COMPILE_OUTCOME" == "failure" || "$TEST_OUTCOME" == "failure" ]]; then
+            echo "result=failure" >> "$GITHUB_OUTPUT"
+          elif [[ "$COMPILE_OUTCOME" == "cancelled" || "$TEST_OUTCOME" == "cancelled" ]]; then
+            echo "result=cancelled" >> "$GITHUB_OUTPUT"
+          else
+            echo "result=success" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish reusable workflow output summary
+        if: always()
+        shell: bash
+        env:
+          NODE_VERSION: ${{ steps.metadata.outputs.node-version }}
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          TEST_OUTCOME: ${{ steps.test.outcome }}
+          VERIFICATION_RESULT: ${{ steps.summary.outputs.result }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+        run: |
+          {
+            echo "### Reusable compile/test result"
+            echo "- Node.js: $NODE_VERSION"
+            echo "- Compile: ${COMPILE_OUTCOME:-skipped}"
+            echo "- Tests: ${TEST_OUTCOME:-skipped}"
+            echo "- Overall: $VERIFICATION_RESULT"
+            if [[ -n "$ARTIFACT_URL" ]]; then echo "- Artifact: $ARTIFACT_URL"; else echo "- Artifact: not produced"; fi
+          } >> "$GITHUB_STEP_SUMMARY"
