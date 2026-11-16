@@ -34,7 +34,9 @@ Post-merge push runs on `0dd2251b9503075fa9e04b9d4535cc872a35f1c5`:
 
 ## Reusable workflow contract
 
-Proposed file: `.github/workflows/reusable-compile-test.yml`.
+Workflow file: `.github/workflows/reusable-compile-test.yml`.
+
+Dedicated caller-only validation file: `.github/workflows/test-reusable-compile-test.yml`. It invokes the reusable workflow as a Node `18.x` / `20.x` matrix, runs the repository's actual `npm run compile` and `npm test` scripts, and uploads the generated Hardhat `artifacts/` directory under a version-specific artifact name. The reusable workflow publishes the requested Node version, compile/test outcomes, overall result, and artifact URL in the job summary; it also exposes these as reusable-workflow outputs.
 
 ### Inputs
 
@@ -72,10 +74,10 @@ Proposed file: `.github/workflows/reusable-compile-test.yml`.
 
 ## Adoption sequence
 
-1. Validate this reusable workflow with a dedicated caller-only test workflow on a draft PR.
-2. Run a Node 18.x / 20.x caller matrix; compare compile/test outputs and artifacts to the existing CI.
+1. The dedicated caller-only test workflow is now committed on the same isolated PR branch; it targets Node 18.x and 20.x and does not replace any existing workflow.
+2. Await and inspect both matrix jobs, their compile/test outcomes, generated artifacts, and artifact URLs before treating the reusable workflow as validated.
 3. Confirm E2E reporting/comment behavior remains in the E2E caller (the reusable workflow does not own PR comments).
-4. Only after equivalence is proven, propose one caller migration at a time. Do not migrate security, release, Pages, Vercel, or contract-deploy workflows as a bundle.
+4. Only after the caller run proves equivalence, propose one caller migration at a time. Do not migrate security, release, Pages, Vercel, or contract-deploy workflows as a bundle.
 5. Retain independent security and release/deployment gates.
 
 ## Measured timing — preliminary, not a savings claim
