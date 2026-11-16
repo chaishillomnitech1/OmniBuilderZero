@@ -72,23 +72,19 @@ jobs:
           echo "deletions=$DELETIONS" >> $GITHUB_OUTPUT
           echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
-      - name: Test reward distribution (Mumbai testnet)
+      - name: Simulate contributor reward points (no chain interaction)
         if: steps.validate-wallet.outputs.wallet_valid == 'true'
         run: |
           echo "🧪 TEST MODE: Simulating reward distribution"
           echo "Contributor: ${{ steps.validate-wallet.outputs.contributor }}"
           echo "Wallet: ${{ steps.validate-wallet.outputs.wallet }}"
           echo "Points: ${{ steps.calculate-reward.outputs.points }}"
-          echo "Network: Mumbai Testnet"
+          echo "Execution: simulation only; no network, wallet signature, contract call, or token transfer"
           
           # In a real implementation, this would call a rewards contract
           # For now, we just log the action
           echo "✅ Test reward simulation completed"
         env:
-          REWARDS_PRIVATE_KEY: ${{ secrets.REWARDS_PRIVATE_KEY }}
-          ALCHEMY_MUMBAI_URL: ${{ secrets.ALCHEMY_MUMBAI_URL }}
-          REWARDS_API_KEY: ${{ secrets.REWARDS_API_KEY }}
-          REWARDS_CONTRACT_ADDRESS: ${{ secrets.REWARDS_CONTRACT_ADDRESS }}
 
       - name: Post reward notification
         uses: actions/github-script@v7
@@ -118,7 +114,7 @@ jobs:
               comment += `Reward system is in pilot mode. Contact maintainer to participate.\n`;
             }
             
-            comment += `\n---\n*Pilot Program • Mumbai Testnet • No mainnet funds*`;
+            comment += `\n---\n*Pilot Program • Simulated reward points only • No testnet or mainnet token transfer*`;
             
             github.rest.issues.createComment({
               issue_number: context.issue.number,

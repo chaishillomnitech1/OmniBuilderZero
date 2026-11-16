@@ -1,128 +1,135 @@
 const hre = require("hardhat");
+const fs = require("node:fs");
+const path = require("node:path");
+const { validateDeploymentConfig } = require("./deployment-preflight.cjs");
 
-/**
- * Deploy Legacy of Light: Prophetic Omnichords NFT Collection
- * 
- * This script deploys the Music NFT smart contract with OTCP divine marker
- * and connects it to the KUN Coin Treasury.
- */
 async function main() {
-  console.log("🌟 Initiating Legacy of Light: Prophetic Omnichords Deployment 🌟");
-  console.log("=".repeat(70));
-  
-  // Get deployer account
   const [deployer] = await hre.ethers.getSigners();
-  console.log("📍 Deploying from account:", deployer.address);
-  
-  const balance = await hre.ethers.provider.getBalance(deployer.address);
-  console.log("💰 Account balance:", hre.ethers.formatEther(balance), "ETH");
-  console.log("");
-  
-  // KUN Coin Treasury address (update this with actual treasury address)
-  const KUN_COIN_TREASURY = process.env.KUN_COIN_TREASURY || deployer.address;
-  console.log("🏦 KUN Coin Treasury:", KUN_COIN_TREASURY);
-  console.log("");
-  
-  // Deploy ERC-721 version
-  console.log("📜 Deploying ERC-721 Contract: LegacyOfLightNFT...");
-  const LegacyOfLightNFT = await hre.ethers.getContractFactory("LegacyOfLightNFT");
-  const nft721 = await LegacyOfLightNFT.deploy(KUN_COIN_TREASURY);
-  await nft721.waitForDeployment();
-  
-  const nft721Address = await nft721.getAddress();
-  console.log("✅ LegacyOfLightNFT (ERC-721) deployed to:", nft721Address);
-  
-  // Get OTCP timestamp
-  const otcpTimestamp = await nft721.otcpDeploymentTimestamp();
-  const otcpDate = new Date(Number(otcpTimestamp) * 1000);
-  console.log("⏰ OTCP Deployment Timestamp (Divine Marker):", otcpTimestamp.toString());
-  console.log("📅 OTCP Date:", otcpDate.toISOString());
-  console.log("");
-  
-  // Deploy ERC-1155 version
-  console.log("📜 Deploying ERC-1155 Contract: LegacyOfLightNFT1155...");
-  const baseURI = process.env.BASE_URI || "ipfs://";
-  const LegacyOfLightNFT1155 = await hre.ethers.getContractFactory("LegacyOfLightNFT1155");
-  const nft1155 = await LegacyOfLightNFT1155.deploy(KUN_COIN_TREASURY, baseURI);
-  await nft1155.waitForDeployment();
-  
-  const nft1155Address = await nft1155.getAddress();
-  console.log("✅ LegacyOfLightNFT1155 (ERC-1155) deployed to:", nft1155Address);
-  
-  // Get OTCP timestamp for 1155
-  const otcpTimestamp1155 = await nft1155.otcpDeploymentTimestamp();
-  const otcpDate1155 = new Date(Number(otcpTimestamp1155) * 1000);
-  console.log("⏰ OTCP Deployment Timestamp (Divine Marker):", otcpTimestamp1155.toString());
-  console.log("📅 OTCP Date:", otcpDate1155.toISOString());
-  console.log("");
-  
-  // Display deployment summary
-  console.log("=".repeat(70));
-  console.log("🎉 DEPLOYMENT COMPLETE - DIVINE MARKERS SET 🎉");
-  console.log("=".repeat(70));
-  console.log("");
-  console.log("📋 DEPLOYMENT SUMMARY:");
-  console.log("─".repeat(70));
-  console.log("Network:", hre.network.name);
-  console.log("Deployer:", deployer.address);
-  console.log("KUN Coin Treasury:", KUN_COIN_TREASURY);
-  console.log("");
-  console.log("ERC-721 Contract:", nft721Address);
-  console.log("  - OTCP Timestamp:", otcpTimestamp.toString());
-  console.log("  - Deployed:", otcpDate.toISOString());
-  console.log("");
-  console.log("ERC-1155 Contract:", nft1155Address);
-  console.log("  - OTCP Timestamp:", otcpTimestamp1155.toString());
-  console.log("  - Deployed:", otcpDate1155.toISOString());
-  console.log("");
-  console.log("=".repeat(70));
-  console.log("");
-  
-  // Save deployment info
-  const deploymentInfo = {
-    network: hre.network.name,
-    deployer: deployer.address,
-    kunCoinTreasury: KUN_COIN_TREASURY,
-    contracts: {
-      erc721: {
-        address: nft721Address,
-        otcpTimestamp: otcpTimestamp.toString(),
-        deploymentDate: otcpDate.toISOString()
-      },
-      erc1155: {
-        address: nft1155Address,
-        otcpTimestamp: otcpTimestamp1155.toString(),
-        deploymentDate: otcpDate1155.toISOString()
-      }
-    },
-    timestamp: new Date().toISOString()
-  };
-  
-  console.log("💾 Deployment Info:");
-  console.log(JSON.stringify(deploymentInfo, null, 2));
-  console.log("");
-  
-  // Verification instructions
-  if (hre.network.name !== "hardhat" && hre.network.name !== "localhost") {
-    console.log("📝 To verify contracts on Etherscan:");
-    console.log("─".repeat(70));
-    console.log(`npx hardhat verify --network ${hre.network.name} ${nft721Address} "${KUN_COIN_TREASURY}"`);
-    console.log(`npx hardhat verify --network ${hre.network.name} ${nft1155Address} "${KUN_COIN_TREASURY}" "${baseURI}"`);
-    console.log("");
+  if (!deployer) {
+    throw new Error("No deployer signer configured. Set PRIVATE_KEY in the secure runtime.");
   }
-  
-  console.log("🔮 The Omni-Temporal Coherence Protocol (OTCP) has been anchored.");
-  console.log("🎵 The GOAT USB-Cassette OmniTapes catalog is ready for tokenization.");
-  console.log("💎 KUN Coin Treasury royalty systems are active.");
-  console.log("∞ ARCHITEX OwnerOverride() functionality is operational.");
-  console.log("");
-  console.log("🌟 Legacy of Light: Prophetic Omnichords - LIVE 🌟");
+
+  const network = await hre.ethers.provider.getNetwork();
+  const config = validateDeploymentConfig({
+    networkName: hre.network.name,
+    chainId: network.chainId.toString(),
+    deployerAddress: deployer.address,
+    kunCoinTreasury: process.env.KUN_COIN_TREASURY,
+    ownerMultisigAddress: process.env.OWNER_MULTISIG_ADDRESS,
+    baseUri: process.env.BASE_URI,
+    mainnetConfirmation: process.env.MAINNET_RELEASE_CONFIRMATION,
+  });
+
+  const multisigCode = await hre.ethers.provider.getCode(config.ownerMultisigAddress);
+  if (!multisigCode || multisigCode === "0x") {
+    throw new Error("OWNER_MULTISIG_ADDRESS has no deployed contract code on the selected network.");
+  }
+
+  if (["polygonAmoy", "polygon"].includes(hre.network.name) &&
+      (!process.env.POLYGONSCAN_API_KEY || process.env.POLYGONSCAN_API_KEY.trim() === "")) {
+    throw new Error("POLYGONSCAN_API_KEY is required for Polygon source verification.");
+  }
+
+  const outputPath = path.resolve(__dirname, "../deployments", hre.network.name + ".json");
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+  const deployment = {
+    schemaVersion: 1,
+    status: "DEPLOYMENT_IN_PROGRESS",
+    network: hre.network.name,
+    chainId: network.chainId.toString(),
+    timestamp: new Date().toISOString(),
+    deployer: deployer.address,
+    ownerMultisig: config.ownerMultisigAddress,
+    kunCoinTreasury: config.kunCoinTreasury,
+    baseUri: config.baseUri,
+    contracts: {},
+    deploymentTransactions: {},
+    setupTransactions: {},
+    verification: "PENDING",
+  };
+  const persist = () => fs.writeFileSync(outputPath, JSON.stringify(deployment, null, 2) + "\n", { mode: 0o600 });
+  persist();
+
+  console.log("ScrollVerse Legacy of Light controlled deployment");
+  console.log("Network:", hre.network.name, "Chain ID:", network.chainId.toString());
+  console.log("Deployer:", deployer.address);
+  console.log("Treasury:", config.kunCoinTreasury);
+  console.log("Owner multisig:", config.ownerMultisigAddress);
+
+  const LegacyOfLightNFT = await hre.ethers.getContractFactory("LegacyOfLightNFT");
+  const nft721 = await LegacyOfLightNFT.deploy(config.kunCoinTreasury);
+  await nft721.waitForDeployment();
+  deployment.contracts.erc721 = await nft721.getAddress();
+  deployment.deploymentTransactions.erc721 = nft721.deploymentTransaction()?.hash || null;
+  persist();
+
+  const LegacyOfLightNFT1155 = await hre.ethers.getContractFactory("LegacyOfLightNFT1155");
+  const nft1155 = await LegacyOfLightNFT1155.deploy(config.kunCoinTreasury, config.baseUri);
+  await nft1155.waitForDeployment();
+  deployment.contracts.erc1155 = await nft1155.getAddress();
+  deployment.deploymentTransactions.erc1155 = nft1155.deploymentTransaction()?.hash || null;
+  persist();
+
+  // The deployer is the temporary Ownable owner during setup. Transfer the
+  // ARCHITEX privilege to the multisig and revoke the deployer's special role.
+  for (const [label, contract] of [["erc721", nft721], ["erc1155", nft1155]]) {
+    const revokeDeployer = await contract.setArchitexAuthorization(deployer.address, false);
+    await revokeDeployer.wait();
+    deployment.setupTransactions[label + "RevokeDeployerArchitex"] = revokeDeployer.hash;
+    persist();
+
+    const authorizeMultisig = await contract.setArchitexAuthorization(config.ownerMultisigAddress, true);
+    await authorizeMultisig.wait();
+    deployment.setupTransactions[label + "AuthorizeMultisigArchitex"] = authorizeMultisig.hash;
+    persist();
+
+    const transferOwner = await contract.transferOwnership(config.ownerMultisigAddress);
+    await transferOwner.wait();
+    deployment.setupTransactions[label + "TransferOwnership"] = transferOwner.hash;
+    persist();
+  }
+
+  const [owner721, owner1155, treasury721, treasury1155, deployerRole721, deployerRole1155, multisigRole721, multisigRole1155] = await Promise.all([
+    nft721.owner(),
+    nft1155.owner(),
+    nft721.kunCoinTreasury(),
+    nft1155.kunCoinTreasury(),
+    nft721.architexAuthorized(deployer.address),
+    nft1155.architexAuthorized(deployer.address),
+    nft721.architexAuthorized(config.ownerMultisigAddress),
+    nft1155.architexAuthorized(config.ownerMultisigAddress),
+  ]);
+
+  const same = (a, b) => a.toLowerCase() === b.toLowerCase();
+  if (!same(owner721, config.ownerMultisigAddress) || !same(owner1155, config.ownerMultisigAddress)) {
+    throw new Error("Final Ownable verification failed: both contracts must be owned by the configured multisig.");
+  }
+  if (!same(treasury721, config.kunCoinTreasury) || !same(treasury1155, config.kunCoinTreasury)) {
+    throw new Error("Treasury readback failed for one or both NFT contracts.");
+  }
+  if (deployerRole721 || deployerRole1155 || !multisigRole721 || !multisigRole1155) {
+    throw new Error("ARCHITEX role verification failed: deployer must be revoked and multisig authorized.");
+  }
+
+  deployment.ownershipVerification = {
+    erc721Owner: owner721,
+    erc1155Owner: owner1155,
+    deployerArchitexRevoked: !deployerRole721 && !deployerRole1155,
+    multisigArchitexAuthorized: multisigRole721 && multisigRole1155,
+    treasury721,
+    treasury1155,
+  };
+  deployment.status = "DEPLOYED_PENDING_EXTERNAL_VERIFICATION";
+  persist();
+
+  console.log("Deployment record:", outputPath);
+  console.log("ERC-721:", deployment.contracts.erc721);
+  console.log("ERC-1155:", deployment.contracts.erc1155);
+  console.log("Ownership and ARCHITEX roles verified against multisig.");
+  console.log("Source verification and independent review remain pending.");
 }
 
-// Execute deployment
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error("❌ Deployment failed:", error);
-    process.exit(1);
-  });
+main().catch((error) => {
+  console.error("Deployment stopped:", error.message);
+  process.exitCode = 1;
+});

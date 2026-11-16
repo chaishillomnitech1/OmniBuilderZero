@@ -67,14 +67,14 @@ contract LegacyOfLightNFT1155 is ERC1155, ERC1155Supply, Ownable, ReentrancyGuar
     
     event ArchitexAuthorized(address indexed account, bool authorized);
     event KunCoinTreasuryUpdated(address indexed oldTreasury, address indexed newTreasury);
-    event OwnerOverrideExecuted(address indexed architex, uint256 indexed tokenId, address indexed from, address indexed to, uint256 amount);
+    event OwnerOverrideExecuted(address indexed architex, uint256 indexed tokenId, address indexed from, address to, uint256 amount);
     
     /**
      * @dev Constructor sets up the NFT collection with OTCP timestamp
      * @param _kunCoinTreasury Address of the KUN Coin Treasury
      * @param _baseURI Base URI for token metadata
      */
-    constructor(address _kunCoinTreasury, string memory _baseURI) ERC1155(_baseURI) {
+    constructor(address _kunCoinTreasury, string memory _baseURI) ERC1155(_baseURI) Ownable(msg.sender) {
         require(_kunCoinTreasury != address(0), "Invalid treasury address");
         
         // Set OTCP Deployment Timestamp as divine marker
@@ -274,18 +274,16 @@ contract LegacyOfLightNFT1155 is ERC1155, ERC1155Supply, Ownable, ReentrancyGuar
         royaltyAmount = (salePrice * ROYALTY_BASIS_POINTS) / 10000;
     }
     
-    // Required overrides
-    function _beforeTokenTransfer(
-        address operator,
+    // OpenZeppelin v5 updates ERC1155Supply accounting through _update.
+    function _update(
         address from,
         address to,
         uint256[] memory ids,
-        uint256[] memory amounts,
-        bytes memory data
+        uint256[] memory amounts
     ) internal override(ERC1155, ERC1155Supply) {
-        super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
+        super._update(from, to, ids, amounts);
     }
-    
+
     function supportsInterface(bytes4 interfaceId)
         public
         view
