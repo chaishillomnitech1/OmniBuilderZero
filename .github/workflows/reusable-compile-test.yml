@@ -140,3 +140,22 @@ jobs:
           else
             echo "result=success" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Publish reusable workflow output summary
+        if: always()
+        shell: bash
+        env:
+          NODE_VERSION: ${{ steps.metadata.outputs.node-version }}
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          TEST_OUTCOME: ${{ steps.test.outcome }}
+          VERIFICATION_RESULT: ${{ steps.summary.outputs.result }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+        run: |
+          {
+            echo "### Reusable compile/test result"
+            echo "- Node.js: $NODE_VERSION"
+            echo "- Compile: ${COMPILE_OUTCOME:-skipped}"
+            echo "- Tests: ${TEST_OUTCOME:-skipped}"
+            echo "- Overall: $VERIFICATION_RESULT"
+            if [[ -n "$ARTIFACT_URL" ]]; then echo "- Artifact: $ARTIFACT_URL"; else echo "- Artifact: not produced"; fi
+          } >> "$GITHUB_STEP_SUMMARY"
