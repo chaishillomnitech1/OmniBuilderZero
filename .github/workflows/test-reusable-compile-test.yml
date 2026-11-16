@@ -1,0 +1,36 @@
+name: Reusable Compile/Test Contract Validation
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/reusable-compile-test.yml'
+      - '.github/workflows/test-reusable-compile-test.yml'
+      - '.github/actions/setup-node-npm/action.yml'
+      - 'contracts/**'
+      - 'test/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'hardhat.config.*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reusable-compile-test:
+    name: Reusable verification / Node ${{ matrix.node-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['18.x', '20.x']
+    uses: ./.github/workflows/reusable-compile-test.yml
+    with:
+      node-version: ${{ matrix.node-version }}
+      run-compile: true
+      compile-command: npm run compile
+      run-tests: true
+      test-command: npm test
+      upload-artifacts: true
+      artifact-path: artifacts/
+      artifact-name: omni-builderzero-hardhat-artifacts-node-${{ matrix.node-version }}
+      artifact-retention-days: 7
