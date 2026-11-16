@@ -79,7 +79,8 @@ jobs:
       node-version: ${{ steps.metadata.outputs.node-version }}
       compile-result: ${{ steps.compile.outcome }}
       test-result: ${{ steps.test.outcome }}
-      verification-result: ${{ job.status }}
+      verification-result: ${{ steps.summary.outputs.result }}
+      artifact-url: ${{ steps.upload.outputs.artifact-url }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v5
@@ -112,6 +113,7 @@ jobs:
         run: bash -euo pipefail -c "$COMMAND"
 
       - name: Upload verification artifacts
+        id: upload
         if: always() && inputs.upload-artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -119,3 +121,19 @@ jobs:
           path: ${{ inputs.artifact-path }}
           retention-days: ${{ inputs.artifact-retention-days }}
           if-no-files-found: ignore
+
+      - name: Record verification result
+        id: summary
+        if: always()
+        shell: bash
+        env:
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          TEST_OUTCOME: ${{ steps.test.outcome }}
+        run: |
+          if [[ "$COMPILE_OUTCOME" == "failure" || "$TEST_OUTCOME" == "failure" ]]; then
+            echo "result=failure" >> "$GITHUB_OUTPUT"
+          elif [[ "$COMPILE_OUTCOME" == "cancelled" || "$TEST_OUTCOME" == "cancelled" ]]; then
+            echo "result=cancelled" >> "$GITHUB_OUTPUT"
+          else
+            echo "result=success" >> "$GITHUB_OUTPUT"
+          fi
