@@ -1,0 +1,27 @@
+(* ScrollVerse Methodigitology controlled-language grammar v1.0-draft *)
+(* UTF-8; case-sensitive canonical keywords; quoted strings preserve source wording. *)
+document = header, newline, source, newline, intention, newline, purpose, newline, conviction, newline, impact, { newline, constraint }, [ newline, authorization ], [ newline, execution ], newline ;
+header = "OMNI", "/", version ;
+version = digit, { digit | "." | "-" } ;
+source = "SOURCE", string, "ORIGIN", identifier ;
+intention = "INTENTION", string ;
+purpose = "PURPOSE", string ;
+conviction = "CONVICTION", conviction_level, string ;
+impact = "IMPACT", impact_class, string ;
+constraint = "CONSTRAINT", string ;
+authorization = "AUTHORIZATION", authorization_state, "ACTOR", string, "SCOPE", string, "UNTIL", string ;
+execution = "EXECUTION", execution_mode ;
+conviction_level = "LOW" | "MEDIUM" | "HIGH" | "DECLARED" ;
+impact_class = "DRAFT" | "PROPOSAL" | "MERGE" | "RUNTIME" | "PRODUCTION" ;
+authorization_state = "NONE" | "GRANTED" | "DENIED" | "EXPIRED" ;
+execution_mode = "RESEARCH" | "BLUEPRINT" | "VALIDATE" | "EXECUTE" ;
+identifier = letter, { letter | digit | "_" | "-" } ;
+string = '"', { escaped_char | ? any Unicode scalar except quote and newline ? }, '"' ;
+escaped_char = '\\', ( '"' | '\\' | "n" | "r" | "t" | "u", hex, hex, hex, hex ) ;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+letter = "A"…"Z" | "a"…"z" ;
+hex = digit | "A"…"F" | "a"…"f" ;
+newline = ? LF or CRLF ? ;
+
+(* Conviction is not authorization. Missing authorization never implies permission.
+   PRODUCTION and EXECUTE require separate, scoped, time-bounded approval. *)

@@ -1,0 +1,22 @@
+{
+  "version":"1.0.0-draft",
+  "policy":"canonical terms are preserved verbatim; changes are additive and versioned",
+  "terms":[
+    {"canonical":"PRESERVE THE ORIGINAL","definition":"Original artifact must not be mutated.","nodeType":"Original","artifact":"read-only file, hash, registry entry","gate":"original hash unchanged"},
+    {"canonical":"CONNECT THE EVIDENCE","definition":"Link each claim to a source, receipt, or test.","nodeType":"EvidenceEdge","artifact":"evidence log, citation, provenance record","gate":"source present"},
+    {"canonical":"BUILD THE FUTURE","definition":"Create a new artifact from a preserved original.","nodeType":"WorkCopy","artifact":"draft, proposal, branch","gate":"work copy exists; original unchanged"},
+    {"canonical":"MERGE, NEVER DELETE","definition":"Integration is additive and preserves prior work.","nodeType":"Merge","artifact":"pull request, additive commit","gate":"deletions reviewed; zero deletions where explicitly required"},
+    {"canonical":"KUN FAYAKUN","definition":"Declarative intent rendered only through authorized execution.","nodeType":"Intent","artifact":"intent and authorization records","gate":"scoped authorization present before consequential execution"},
+    {"canonical":"WALAHI","definition":"Testimony of conviction whose factual claims must be evidence-matched.","nodeType":"Testimony","artifact":"source statement and evidence links","gate":"evidence supports each factual claim"},
+    {"canonical":"LEGION","definition":"Collective of independent intelligences, each retaining its own world.","nodeType":"Federation","artifact":"agent registry and home-world reference","gate":"autonomy preserved"},
+    {"canonical":"FEDERATION","definition":"Connection through pathways without relocation or absorption.","nodeType":"Pathway","artifact":"sync relationship or API contract","gate":"no ownership transfer or relocation"},
+    {"canonical":"AGENT 25 OMNI","definition":"Coordinator of specialist roles, not owner of every world.","nodeType":"Coordinator","artifact":"role registry, task contract, evidence receipt","gate":"coordination distinct from production activation"},
+    {"canonical":"OMNITECH1","definition":"Provider-independent local-first deployment and recovery engine.","nodeType":"Engine","artifact":"Docker, Caddy, SQLite, controller","gate":"runtime and recovery verification required"},
+    {"canonical":"VERCEL IS ONE HIGHWAY","definition":"Vercel is one deployment destination among multiple possible destinations.","nodeType":"Destination","artifact":"deployment target adapter","gate":"destination explicitly selected"},
+    {"canonical":"EVIDENCE CONSTITUTION","definition":"Maturity states are DOCUMENTED, IMPLEMENTED, VERIFIED, ACTIVE.","nodeType":"Constitution","artifact":"evidence gate record","gate":"each state independently attested"},
+    {"canonical":"METHODIGITOLOGY","definition":"Study and engineering of method, digital logic, and language.","nodeType":"LanguageSystem","artifact":"lexicon, ontology, grammar, schema","gate":"versioned lexicon entry and tests exist"},
+    {"canonical":"BLUEPRINT","definition":"A documented design that is not thereby deployed.","nodeType":"Blueprint","artifact":"design document or manifest","gate":"status remains DOCUMENTED until implementation evidence exists"},
+    {"canonical":"BEYOND PERFECT","definition":"Aspiration to exceed the prior standard, not a claim of completed perfection.","nodeType":"Aspiration","artifact":"improvement proposal and comparison","gate":"prior standard and evidence named"},
+    {"canonical":"NEXT.FIRE()","definition":"Queued next creative or deployment cut; not broadcast by declaration alone.","nodeType":"Cut","artifact":"work-copy media asset","gate":"render receipt with filename, size, and timestamp"}
+  ]
+}
